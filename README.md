@@ -1,4 +1,4 @@
-# Kahvakuulatreeni Ohjaajatyökalu
+## Kahvakuulatreeni Ohjaajatyökalu
 
 **Verkkopohjainen työkalu kahvakuulakurssien ohjaajille.**  
 Tämän sovelluksen avulla voit nopeasti koota päivän treenin valmiista harjoitteista, käyttää ajastimia sekä hyödyntää ohjauksen tueksi kuvia ja taukoja. Sovellus on suunniteltu käytettäväksi tietokoneen näytöltä kurssin aikana.
@@ -26,8 +26,34 @@ Tämän sovelluksen avulla voit nopeasti koota päivän treenin valmiista harjoi
 │   └── exercises.json      # Harjoitedata (nimi, kesto, kuva, yms.)
 ├── img/                    # Harjoituskuvat
 └── audio/                  # Äänimerkit
+```
 
-## License
+---
 
-This project is licensed under the [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) license.  
-Commercial use is not allowed. Please give credit to **Vesa Perasto** if you share or modify the code.
+## 📦 Asennus ja käyttö
+
+1. Lataa tai kloonaa repositorio:
+   ```bash
+   git clone https://github.com/vesaperasto/kahvakuulatreeni-ohjaaja.git
+   ```
+2. Avaa `index.html` selaimessa (suositus: laajakuvanäyttö tai läppäri).
+3. Valitse treeni ja aloita käyttö.
+
+> Sovellus toimii täysin paikallisesti eikä vaadi internetyhteyttä käytön aikana.
+
+---
+
+## 🔒 Lisenssi
+
+Creative Commons Attribution-NonCommercial 4.0 International License  
+Tämä työ on lisensoitu nimellä: **Vesa Perasto**  
+[Katso lisenssi](http://creativecommons.org/licenses/by-nc/4.0/)
+
+---
+
+## 🙌 Kiitokset
+
+Sovellus kehitetty omaksi avuksi ja muiden ohjaajien tueksi.  
+Jos teet muutoksia tai laajennuksia, säilytä alkuperäinen tekijämerkintä.
+
+---
