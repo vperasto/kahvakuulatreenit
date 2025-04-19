@@ -1,0 +1,144 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&display=swap');
+
+:root {
+  --bg-dark: #121212;
+  --bg-panel: #1f1f1f;
+  --text-main: #ffffff;
+  --text-subtle: #aaaaaa;
+  --accent-blue: #2196f3;
+  --accent-orange: #ff9800;
+  --font-main: 'Rajdhani', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+header {
+  background-color: var(--bg-panel);
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 2px solid var(--accent-blue);
+}
+
+main {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  flex: 1;
+  overflow: hidden;
+}
+
+section {
+  background-color: var(--bg-panel);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+#workoutSelection {
+  transition: all 0.3s ease;
+}
+
+#workoutSelection.collapsed {
+  display: none;
+}
+
+#exerciseList .exercise-item {
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background-color: #2a2a2a;
+  border-left: 4px solid var(--accent-orange);
+  cursor: pointer;
+}
+
+#exerciseList .exercise-item:hover {
+  background-color: #333;
+}
+
+#exerciseDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#exerciseDisplay h2 {
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+#exerciseDisplay img {
+  max-width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+#timerDisplay {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--accent-blue);
+  margin-top: 1rem;
+}
+
+#controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#controls button {
+  background-color: var(--accent-blue);
+  color: var(--text-main);
+  border: none;
+  border-radius: 6px;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+#controls button:hover {
+  background-color: #1976d2;
+}
+
+button.pause {
+  background-color: var(--accent-orange);
+}
+
+button.pause:hover {
+  background-color: #e68900;
+}
+
+#toggleWorkoutSelection {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: transparent;
+  border: 2px solid var(--accent-orange);
+  color: var(--accent-orange);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#toggleWorkoutSelection:hover {
+  background-color: #333;
+}

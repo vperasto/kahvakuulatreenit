@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kahvakuulatreeni</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- Header -->
+    <header>
+      <h1>Kahvakuulakurssi – Ohjaajan Työkalu</h1>
+      <button id="toggle-training-select">Valitse treeni ⯆</button>
+    </header>
+
+    <!-- Treenin valinta (Piilotettava) -->
+    <section id="training-select" class="collapsible">
+      <h2>Valitse treeni</h2>
+      <select id="training-dropdown">
+        <option value="">-- Valitse viikkotreeni --</option>
+        <option value="week1">Viikko 1</option>
+        <option value="week2">Viikko 2</option>
+        <option value="week3">Viikko 3</option>
+        <option value="presetA">Pikatreeni A</option>
+        <option value="presetB">Pikatreeni B</option>
+        <option value="presetC">Pikatreeni C</option>
+      </select>
+    </section>
+
+    <main>
+      <!-- Treenilista (vasen sarake) -->
+      <aside id="exercise-list">
+        <h2>Harjoitukset</h2>
+        <ul id="exercise-items">
+          <!-- Harjoitteet listataan tänne -->
+        </ul>
+      </aside>
+
+      <!-- Harjoitusnäkymä (keskellä) -->
+      <section id="exercise-display">
+        <h2 id="exercise-name">Valitse treeni</h2>
+        <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
+        <div id="timer">
+          <span id="time-remaining">00:00</span>
+          <p id="timer-label">Odottamassa...</p>
+        </div>
+        <div class="controls">
+          <button id="prev-btn">⏮ Edellinen</button>
+          <button id="pause-btn">⏸ Tauko</button>
+          <button id="next-btn">⏭ Seuraava</button>
+          <button id="stop-btn">⏹ Lopeta</button>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
