@@ -12,10 +12,10 @@
     <!-- Header -->
     <header>
       <h1>Kahvakuulakurssi – Ohjaajan Työkalu</h1>
-      <button id="toggle-training-select">Valitse treeni ⯆ / ⯅</button> <!-- ID korjattu/täsmennetty -->
+      <button id="toggle-training-select">Valitse treeni ⯆ / ⯅</button>
     </header>
 
-    <!-- Treenin valinta (lisätty .hidden luokka oletuksena) -->
+    <!-- Treenin valinta -->
     <section id="training-select" class="collapsible hidden">
       <h2>Valitse treeni</h2>
       <select id="training-dropdown">
@@ -36,30 +36,38 @@
 
       <!-- Harjoitusnäkymä -->
       <section id="exercise-display">
-        <h2 id="exercise-name">Valitse treeni</h2>
 
-        <!-- Start-painike: Aloittaa koko treenin -->
-        <button id="start-btn" disabled>▶ Aloita Treeni</button> <!-- ID korjattu, disabled oletuksena -->
-
-        <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
-
-        <!-- Lisätty kuvaus elementti -->
-        <p id="exercise-description"></p>
-
-        <div id="timer">
-          <!-- ID korjattu -->
-          <span id="time-remaining">00:00</span>
-          <p id="timer-label">Odottamassa...</p>
+        <!-- Otsikkoalue napeilla -->
+        <div id="title-area">
+          <button id="prev-btn" class="title-nav-btn" disabled>⏮</button>
+          <h2 id="exercise-name">Valitse treeni</h2>
+          <button id="next-btn" class="title-nav-btn" disabled>⏭</button>
         </div>
 
-        <!-- ID:t korjattu painikkeille -->
-        <div class="controls">
-          <button id="prev-btn" disabled>⏮ Edellinen</button>
-          <button id="pause-btn" disabled>⏸ Tauko</button>
-          <button id="next-btn" disabled>⏭ Seuraava</button>
-          <button id="stop-btn" disabled>⏹ Lopeta</button>
-        </div>
-      </section>
+        <!-- Sisällön jakaminen kahteen osaan -->
+        <div id="content-split">
+
+          <!-- Vasen puoli (Kuva ja kuvaus) -->
+          <div id="exercise-details">
+            <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
+            <p id="exercise-description"></p>
+          </div>
+
+          <!-- Oikea puoli (Ajastin ja kontrollit) -->
+          <div id="timer-and-controls">
+            <div id="timer">
+              <span id="time-remaining">00:00</span>
+              <p id="timer-label">Odottamassa...</p>
+            </div>
+            <button id="start-btn" class="control-button" disabled>▶ Aloita Treeni</button>
+            <button id="pause-btn" class="control-button" disabled>⏸ Tauko</button>
+            <button id="stop-btn" class="control-button" disabled>⏹ Lopeta</button>
+          </div>
+
+        </div> <!-- #content-split loppuu -->
+
+      </section> <!-- #exercise-display loppuu -->
+
     </main>
 
   </div>
