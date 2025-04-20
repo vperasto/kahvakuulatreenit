@@ -67,15 +67,15 @@
   ],
   "presetWorkouts": [
     {
-      "name": "Nopea koko keho",
+      "name": "Pikatreeni A: Nopea koko keho",
       "exercises": ["Goblet-kyykky", "Kahvakuulaheilautus", "Pystypunnerrus", "Kahvakuula ympäri vartaloa"]
     },
     {
-      "name": "Voimapainotteinen",
+      "name": "Pikatreeni B: Voimapainotteinen",
       "exercises": ["Maastaveto kahvakuulalla", "Askelkyykky ja kahvakuula", "Pystypunnerrus", "Kahvakuulasoutu"]
     },
     {
-      "name": "Keskivartalo keskittymä",
+      "name": "Pikatreeni C: Keskivartalo keskittymä",
       "exercises": ["Keskivartalon kierto", "Kahvakuula ympäri vartaloa", "Goblet-kyykky", "Kahvakuulaheilautus"]
     }
   ],
@@ -91,10 +91,10 @@
     {
       "week": "Viikko 3",
       "exercises": ["Askelkyykky ja kahvakuula", "Kahvakuula ympäri vartaloa", "Pystypunnerrus"]
-    }
+    },  /* <-- Pilkku lisätty */
     {
-      "week": "Viikko 4",
-      "exercises": ["Askelkyykky ja kahvakuula", "Kahvakuula ympäri vartaloa", "Pystypunnerrus"]
+      "week": "Viikko 4", /* Lisätty esimerkkinä */
+      "exercises": ["Goblet-kyykky", "Maastaveto kahvakuulalla", "Kahvakuulasoutu", "Keskivartalon kierto"]
     }
   ]
 }
