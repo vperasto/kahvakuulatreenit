@@ -8,8 +8,8 @@
   --text-subtle: #aaaaaa;
   --accent-blue: #2196f3;
   --accent-orange: #ff9800;
-  --accent-green: #4caf50; /* Lisätty lepoajalle */
-  --accent-red: #f44336;  /* Lisätty stop-painikkeelle */
+  --accent-green: #4caf50;
+  --accent-red: #f44336;
   --font-main: 'Rajdhani', sans-serif;
 }
 
@@ -21,34 +21,33 @@ body {
   color: var(--text-main);
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* Käytä min-height joustavuuden vuoksi */
+  min-height: 100vh;
 }
 
 #app {
   display: flex;
   flex-direction: column;
-  flex: 1; /* Vie käytettävissä olevan tilan */
+  flex: 1;
 }
 
 header {
   background-color: var(--bg-panel);
   padding: 1rem 2rem;
-  font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
   border-bottom: 2px solid var(--accent-blue);
-  position: relative; /* Tarvitaan toggle-napille */
+  position: relative;
 }
 
 header h1 {
   margin: 0;
-  font-size: 1.8rem; /* Hieman suurempi otsikko */
+  font-size: 1.8rem;
 }
 
-#toggle-training-select { /* Korjattu selektori */
+#toggle-training-select {
   position: absolute;
   top: 50%;
-  right: 1rem; /* Siirretty oikeaan reunaan */
+  right: 1rem;
   transform: translateY(-50%);
   background-color: var(--accent-orange);
   color: var(--text-main);
@@ -65,22 +64,22 @@ header h1 {
 }
 
 
-#training-select { /* Korjattu selektori */
+#training-select {
   background-color: var(--bg-panel);
   padding: 1rem;
   border-bottom: 1px solid #333;
-  transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out; /* Lisätty siirtymäefektit */
-  max-height: 200px; /* Aseta riittävä max-height näkyvälle tilalle */
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
+  max-height: 200px;
   overflow: hidden;
   opacity: 1;
 }
 
-#training-select.hidden { /* Luokka piilottamiseen */
+#training-select.hidden {
   max-height: 0;
   padding-top: 0;
   padding-bottom: 0;
   opacity: 0;
-  border-bottom: none; /* Piilota reunaviiva kun piilossa */
+  border-bottom: none;
 }
 
 #training-select h2 {
@@ -102,12 +101,11 @@ header h1 {
 
 main {
   display: grid;
-  /* Muutettu grid: lista vie auto-levyden, näyttö loput */
   grid-template-columns: auto 1fr;
   gap: 1rem;
   padding: 1rem;
   flex: 1;
-  overflow: hidden; /* Estää pääsisällön ylivuodon */
+  overflow: hidden;
 }
 
 /* Yleiset section-tyylit */
@@ -115,13 +113,12 @@ section, aside {
   background-color: var(--bg-panel);
   border-radius: 8px;
   padding: 1rem;
-  display: flex; /* Käytä flexboxia sisällön hallintaan */
-  flex-direction: column; /* Aseta suunta pystysuoraksi */
-  overflow-y: auto; /* Salli vieritys tarvittaessa */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 aside#exercise-list {
-   /* Aseta maksimileveys listalle tai käytä autoa */
    max-width: 300px;
 }
 
@@ -133,14 +130,14 @@ aside#exercise-list {
   text-align: center;
 }
 
-#exercise-items { /* Korjattu selektori ul -> id */
+#exercise-items {
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1; /* Täyttää saatavilla olevan tilan */
+  flex-grow: 1;
 }
 
-#exercise-items li { /* Lisätty .exercise-item luokka JS:ssä */
+#exercise-items li {
   margin-bottom: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: #2a2a2a;
@@ -148,122 +145,189 @@ aside#exercise-list {
   cursor: pointer;
   transition: background-color 0.2s, border-color 0.2s;
   font-size: 1rem;
+  /* Lisätään luokka .exercise-item JS:ssä */
 }
 
 #exercise-items li:hover {
   background-color: #383838;
 }
 
-#exercise-items li.active { /* Lisätty aktiivisen itemin tyyli */
+#exercise-items li.active {
   background-color: #333;
   border-left-color: var(--accent-green);
   font-weight: 600;
 }
 
+/* ------------------------------------ */
+/* --- Exercise Display Section --- */
+/* ------------------------------------ */
+
 #exercise-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; Poistettu keskitys, jotta sisältö voi kasvaa */
+  text-align: center;
+  padding: 1rem 1.5rem; /* Lisää tilaa sectionin reunoille */
+}
+
+/* Otsikkoalueen tyylit */
+#title-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 1.5rem;
+}
+
+#exercise-display h2#exercise-name {
+  margin: 0 1rem;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-main);
+  flex-grow: 1;
   text-align: center;
 }
 
-#exercise-display h2#exercise-name { /* Korjattu selektori */
-  font-size: 2.2rem;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: var(--text-main);
-  font-weight: 600;
+/* Otsikon viereisten navinappien tyyli */
+.title-nav-btn {
+  background: none;
+  border: 2px solid var(--accent-blue);
+  color: var(--accent-blue);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.2rem;
+  padding: 0;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Estää nappien kutistumisen */
 }
 
-#exercise-display img#exercise-image { /* Korjattu selektori */
-  max-width: 80%; /* Hieman pienennetty */
-  max-height: 300px;
-  height: auto; /* Säilytä kuvasuhde */
+.title-nav-btn:hover:not(:disabled) {
+  background-color: var(--accent-blue);
+  color: var(--text-main);
+}
+
+.title-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: #555;
+  color: #555;
+}
+
+/* Sisällön jakajan tyylit (Grid leveämmille näytöille) */
+#content-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  flex: 1; /* Vie lopun tilan #exercise-display:sta */
+  align-items: start; /* Kohdista sarakkeiden yläreunat */
+  overflow: hidden; /* Estää sisällön ylivuodon */
+}
+
+/* Vasemman puolen tyylit */
+#exercise-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto; /* Salli vieritys tarvittaessa */
+  max-height: 100%; /* Vie korkeutta */
+  padding-right: 0.5rem; /* Pieni väli vierityspalkille */
+}
+
+#exercise-display img#exercise-image {
+  max-width: 100%;
+  width: auto;
+  max-height: 400px; /* Säädä tarvittaessa */
+  height: auto;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 1rem;
-  background-color: #2a2a2a; /* Taustaväri jos kuva on läpinäkyvä */
+  background-color: #2a2a2a;
 }
 
-/* Lisätty kuvaustyyli */
 #exercise-description {
   color: var(--text-subtle);
-  margin-bottom: 1.5rem;
   font-size: 1.1rem;
-  max-width: 90%; /* Rajaa leveyttä hieman */
   line-height: 1.5;
+  max-width: 95%;
+}
+
+/* Oikean puolen tyylit */
+#timer-and-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Keskittää sisällön pystysuunnassa */
+  height: 100%; /* Yrittää viedä koko korkeuden */
+  gap: 1rem; /* Väliä elementtien välille */
 }
 
 #timer {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
-#time-remaining { /* Korjattu selektori */
-  font-size: 4rem; /* Suurennettu fonttikoko */
-  font-weight: 600; /* Lihavoitu */
+#time-remaining {
+  font-size: 4.5rem;
+  font-weight: 600;
   color: var(--accent-blue);
-  display: block; /* Varmista, että vie oman rivinsä */
+  display: block;
 }
 
-/* Lisätty labelin tyyli */
 #timer-label {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   color: var(--text-subtle);
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
 }
 
-.controls { /* Korjattu selektori luokalle */
-  display: grid; /* Käytä gridiä painikkeille */
-  grid-template-columns: repeat(2, 1fr); /* Kaksi saraketta */
-  gap: 0.75rem; /* Väli painikkeiden välillä */
-  width: 80%; /* Rajaa kontrollien leveyttä */
-  max-width: 400px; /* Maksimileveys */
-  margin-top: auto; /* Työnnä kontrollit alaosaan */
-  padding-top: 1rem; /* Pieni väli yläpuolelle */
-}
-
-.controls button {
+/* Yleiset kontrollinapit (#start-btn, #pause-btn, #stop-btn) */
+.control-button {
   background-color: var(--accent-blue);
   color: var(--text-main);
   border: none;
   border-radius: 6px;
-  padding: 0.8rem 1rem; /* Hieman säädetty padding */
-  font-size: 1.1rem;
+  padding: 0.9rem 1.5rem;
+  font-size: 1.2rem;
   font-family: var(--font-main);
   cursor: pointer;
   transition: background-color 0.2s, opacity 0.2s;
   font-weight: 600;
+  width: 80%;
+  max-width: 250px;
 }
 
-.controls button:hover:not(:disabled) { /* Hover-tila vain aktiivisille napeille */
-  background-color: #1976d2;
+.control-button:hover:not(:disabled) {
+  /* Värit määritellään ID-kohtaisesti */
 }
 
-/* Erityistyylit painikkeille */
+/* Yksittäisten nappien värit */
 #start-btn {
-  grid-column: 1 / -1; /* Vie koko rivin leveyden */
   background-color: var(--accent-green);
 }
 #start-btn:hover:not(:disabled) {
   background-color: #388e3c;
 }
 
-#pause-btn { /* Korjattu selektori */
+#pause-btn {
   background-color: var(--accent-orange);
 }
 #pause-btn:hover:not(:disabled) {
   background-color: #e68900;
 }
-#pause-btn.paused { /* Tyyli kun ajastin on pausetettu */
-   background-color: var(--accent-green); /* Muuttuu "Jatka"-napiksi */
+#pause-btn.paused {
+   background-color: var(--accent-green);
 }
 #pause-btn.paused:hover:not(:disabled) {
    background-color: #388e3c;
 }
 
-
-#stop-btn { /* Korjattu selektori */
+#stop-btn {
   background-color: var(--accent-red);
 }
 #stop-btn:hover:not(:disabled) {
@@ -271,32 +335,101 @@ aside#exercise-list {
 }
 
 /* Tyyli disabloiduille napeille */
-.controls button:disabled {
+.control-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background-color: #555; /* Harmaampi tausta */
+  background-color: #555 !important; /* Varmista taustaväri */
 }
 
-/* Mobiiliresponsiivisuus (esimerkki) */
+/* ------------------------------- */
+/* --- Responsiivisuus --- */
+/* ------------------------------- */
+
+@media (max-width: 1024px) { /* Hieman isompi breakpoint gridille? */
+    #content-split {
+        gap: 1rem; /* Pienempi väli tableteilla */
+    }
+    #time-remaining {
+        font-size: 4rem;
+    }
+    #timer-label {
+        font-size: 1.2rem;
+    }
+    .control-button {
+        padding: 0.8rem 1.2rem;
+        font-size: 1.1rem;
+    }
+}
+
+
 @media (max-width: 768px) {
-  header h1 {
-    font-size: 1.5rem;
-  }
   main {
-    grid-template-columns: 1fr; /* Vaihda yhteen sarakkeeseen */
-    grid-template-rows: auto auto; /* Lista ja näyttö päällekkäin */
+      /* Pinotaan sivupalkki ja näyttö mobiilissa */
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr; /* Lista ensin, näyttö vie loput */
+      overflow-y: auto; /* Salli vieritys päälokerossa */
   }
   aside#exercise-list {
      max-width: 100%; /* Vie koko leveyden */
-     max-height: 250px; /* Rajaa korkeutta */
+     max-height: 200px; /* Rajaa korkeutta, salli vieritys */
+     order: 1; /* Varmistetaan että lista tulee ensin */
   }
+  section#exercise-display {
+      padding: 1rem 0.5rem;
+      order: 2; /* Näyttö tulee listan jälkeen */
+      overflow: hidden; /* Estää sisällön ylivuodon */
+  }
+
+  #title-area {
+     max-width: 100%;
+     margin-bottom: 1rem;
+  }
+   #exercise-display h2#exercise-name {
+     font-size: 1.6rem;
+     margin: 0 0.5rem;
+   }
+   .title-nav-btn {
+     width: 35px;
+     height: 35px;
+     font-size: 1rem;
+   }
+
+  #content-split {
+    grid-template-columns: 1fr; /* Yksi sarake mobiilissa */
+    gap: 1.5rem; /* Väliä pinotuilla osilla */
+    align-items: stretch; /* Anna osien venyä */
+    overflow: auto; /* Salli vieritys jos sisältö pitkä */
+    max-height: calc(100% - 60px); /* Arvio korkeudelle, jotta ei ylitä näyttöä. Säädä otsikkoalueen mukaan */
+  }
+
+  /* Responsiivinen järjestys (Oikea div ensin mobiilissa) */
+  #timer-and-controls {
+    order: 1; /* Tämä tulee ensin visuaalisesti */
+    justify-content: flex-start; /* Älä keskitä, aloita ylhäältä */
+    height: auto; /* Anna korkeuden määräytyä sisällön mukaan */
+    padding-bottom: 1rem; /* Lisää tilaa alaosaan */
+  }
+
+  #exercise-details {
+    order: 2; /* Tämä tulee toisena */
+     max-height: none; /* Poista korkeusrajoitus mobiilissa */
+     padding-right: 0; /* Ei tarvita paddingia */
+  }
+
   #exercise-display img#exercise-image {
-    max-height: 200px;
+    max-height: 250px;
   }
-  .controls {
-    width: 95%;
+
+  .control-button {
+      width: 90%;
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
   }
-  #time-remaining {
-    font-size: 3rem;
-  }
+
+   #time-remaining {
+     font-size: 3.5rem;
+   }
+   #timer-label {
+       font-size: 1.1rem;
+   }
 }
