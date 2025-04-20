@@ -1,99 +1,83 @@
 // app.js
 
-let harjoituksetData;
-let nykyinenTreeni = [];
-let nykyinenIndeksi = 0;
-let ajastin = null;
-let onTauko = false;
-let onKeskeytetty = false;
+let exercises = [];
+let currentExerciseIndex = 0;
+let timerInterval = null;
+let isPaused = false;
+let remainingTime = 0;
 
-// Lataa data JSON-tiedostosta
-fetch("data/exercises.json")
-  .then(response => response.json())
-  .then(data => {
-    harjoituksetData = data;
-    naytaTreeniValinnat();
-  });
+const startButton = document.getElementById("start-button");
+const pauseButton = document.getElementById("pause-button");
+const resetButton = document.getElementById("reset-button");
+const timerDisplay = document.getElementById("timer-display");
+const currentExerciseName = document.getElementById("current-exercise-name");
+const currentExerciseImage = document.getElementById("current-exercise-image");
+const currentExerciseInfo = document.getElementById("current-exercise-info");
 
-function naytaTreeniValinnat() {
-  const valinnat = document.getElementById("treeni-valinnat");
-
-  const rakennaKortti = (treeni, tunniste, tyyppi) => {
-    const div = document.createElement("div");
-    div.className = "treeni-kortti";
-    div.innerText = treeni.nimi;
-    div.onclick = () => aloitaTreeni(treeni.harjoitteet);
-    valinnat.appendChild(div);
-  };
-
-  for (const [avain, treeni] of Object.entries(harjoituksetData.valmiit)) {
-    rakennaKortti(treeni, avain, "valmis");
-  }
-
-  for (const [avain, treeni] of Object.entries(harjoituksetData.viikot)) {
-    rakennaKortti(treeni, avain, "viikko");
-  }
+async function loadExercises() {
+  const response = await fetch("data/exercises.json");
+  const data = await response.json();
+  exercises = data.predefined[0].exercises;
+  displayExercise();
 }
 
-function aloitaTreeni(harjoitteet) {
-  nykyinenTreeni = harjoitteet;
-  nykyinenIndeksi = 0;
-  onTauko = false;
-  onKeskeytetty = false;
-  document.getElementById("treeni-valinnat").style.display = "none";
-  document.getElementById("harjoitus-naytto").style.display = "block";
-  seuraavaHarjoite();
+function displayExercise() {
+  const exercise = exercises[currentExerciseIndex];
+  currentExerciseName.textContent = exercise.name;
+  currentExerciseImage.src = exercise.image || "";
+  currentExerciseInfo.textContent = `${exercise.bodypart} | ${exercise.instructions}`;
+  remainingTime = exercise.duration;
+  updateTimerDisplay();
 }
 
-function seuraavaHarjoite() {
-  if (nykyinenIndeksi >= nykyinenTreeni.length) {
-    document.getElementById("nimi").innerText = "Treeni valmis!";
-    document.getElementById("aika").innerText = "";
-    return;
+function updateTimerDisplay() {
+  const minutes = Math.floor(remainingTime / 60).toString().padStart(2, "0");
+  const seconds = (remainingTime % 60).toString().padStart(2, "0");
+  timerDisplay.textContent = `${minutes}:${seconds}`;
+}
+
+function startTimer() {
+  if (isPaused) {
+    isPaused = false;
+  } else {
+    displayExercise();
   }
-
-  const harjoite = nykyinenTreeni[nykyinenIndeksi];
-  const vaihe = onTauko ? "Tauko" : harjoite.nimi;
-  const kesto = onTauko ? harjoite.tauko : harjoite.kesto;
-
-  document.getElementById("nimi").innerText = vaihe;
-  document.getElementById("kuva").src = harjoite.kuva || "";
-  kaynnistaAjastin(kesto);
-}
-
-function kaynnistaAjastin(sekunnit) {
-  let aika = sekunnit;
-  paivitaAika(aika);
-  clearInterval(ajastin);
-
-  ajastin = setInterval(() => {
-    if (onKeskeytetty) return;
-    aika--;
-    paivitaAika(aika);
-    if (aika <= 0) {
-      clearInterval(ajastin);
-      uusiVaihe();
+  timerInterval = setInterval(() => {
+    if (!isPaused) {
+      remainingTime--;
+      updateTimerDisplay();
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        nextExercise();
+      }
     }
   }, 1000);
 }
 
-function paivitaAika(aika) {
-  document.getElementById("aika").innerText = aika + " s";
+function pauseTimer() {
+  isPaused = true;
+  clearInterval(timerInterval);
 }
 
-function uusiVaihe() {
-  if (!onTauko) {
-    onTauko = true;
+function resetTimer() {
+  clearInterval(timerInterval);
+  isPaused = false;
+  displayExercise();
+}
+
+function nextExercise() {
+  if (currentExerciseIndex < exercises.length - 1) {
+    currentExerciseIndex++;
+    displayExercise();
+    startTimer();
   } else {
-    onTauko = false;
-    nykyinenIndeksi++;
+    currentExerciseName.textContent = "Treeni valmis!";
+    timerDisplay.textContent = "00:00";
   }
-  seuraavaHarjoite();
 }
 
-function keskeytaTaiJatka() {
-  onKeskeytetty = !onKeskeytetty;
-  document.getElementById("keskeyta-btn").innerText = onKeskeytetty ? "Jatka" : "Pause";
-}
+startButton.addEventListener("click", startTimer);
+pauseButton.addEventListener("click", pauseTimer);
+resetButton.addEventListener("click", resetTimer);
 
-document.getElementById("keskeyta-btn").addEventListener("click", keskeytaTaiJatka);
+document.addEventListener("DOMContentLoaded", loadExercises);
