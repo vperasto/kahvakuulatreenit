@@ -91,9 +91,9 @@
     {
       "week": "Viikko 3",
       "exercises": ["Askelkyykky ja kahvakuula", "Kahvakuula ympäri vartaloa", "Pystypunnerrus"]
-    },  /* <-- Pilkku lisätty */
+    },
     {
-      "week": "Viikko 4", /* Lisätty esimerkkinä */
+      "week": "Viikko 4",
       "exercises": ["Goblet-kyykky", "Maastaveto kahvakuulalla", "Kahvakuulasoutu", "Keskivartalon kierto"]
     }
   ]
