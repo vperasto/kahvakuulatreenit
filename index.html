@@ -15,7 +15,7 @@
       <button id="toggle-training-select">Valitse treeni ⯆</button>
     </header>
 
-    <!-- Treenin valinta (Piilotettava) -->
+    <!-- Treenin valinta -->
     <section id="training-select" class="collapsible">
       <h2>Valitse treeni</h2>
       <select id="training-dropdown">
@@ -30,7 +30,7 @@
     </section>
 
     <main>
-      <!-- Treenilista (vasen sarake) -->
+      <!-- Treenilista -->
       <aside id="exercise-list">
         <h2>Harjoitukset</h2>
         <ul id="exercise-items">
@@ -38,14 +38,20 @@
         </ul>
       </aside>
 
-      <!-- Harjoitusnäkymä (keskellä) -->
+      <!-- Harjoitusnäkymä -->
       <section id="exercise-display">
         <h2 id="exercise-name">Valitse treeni</h2>
+        
+        <!-- ✅ Korjattu: Start-painike lisätty -->
+        <button id="startButton">▶ Aloita treeni</button>
+        
         <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
+        
         <div id="timer">
           <span id="time-remaining">00:00</span>
           <p id="timer-label">Odottamassa...</p>
         </div>
+
         <div class="controls">
           <button id="prev-btn">⏮ Edellinen</button>
           <button id="pause-btn">⏸ Tauko</button>
@@ -57,7 +63,6 @@
 
   </div>
 
-  <!-- Ladataan JavaScript vasta kun DOM on valmis -->
-  <script src="app.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
