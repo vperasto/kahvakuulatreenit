@@ -1,0 +1,96 @@
+{
+  "exercises": [
+    {
+      "name": "Goblet-kyykky",
+      "duration": 45,
+      "rest": 15,
+      "image": "img/goblet-kyykky.png",
+      "description": "Pidä kahvakuula rinnalla molemmin käsin. Laskeudu kyykkyyn pitäen selkä suorana ja polvet linjassa varpaiden kanssa.",
+      "muscleGroups": ["reidet", "pakarat", "keskivartalo"]
+    },
+    {
+      "name": "Kahvakuulaheilautus",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/heilautus.png",
+      "description": "Heilauta kahvakuulaa lantiolla tuotetulla voimalla. Selkä pysyy neutraalina, liike lähtee lantiosta.",
+      "muscleGroups": ["pakarat", "reidet", "alaselkä"]
+    },
+    {
+      "name": "Pystypunnerrus",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/pystypunnerrus.png",
+      "description": "Punnerra kahvakuula suorille käsille pään yläpuolelle. Vältä yliojennusta alaselässä.",
+      "muscleGroups": ["hartiat", "käsivarret", "yläselkä"]
+    },
+    {
+      "name": "Maastaveto kahvakuulalla",
+      "duration": 45,
+      "rest": 15,
+      "image": "img/maastaveto.png",
+      "description": "Pidä selkä suorana ja nosta kahvakuulaa lantiolla. Aktivoi keskivartalo.",
+      "muscleGroups": ["takareidet", "pakarat", "selkä"]
+    },
+    {
+      "name": "Kahvakuulasoutu",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/soutu.png",
+      "description": "Vie kahvakuulaa kohti kylkeä pitäen selkä suorana ja lavat aktiivisina.",
+      "muscleGroups": ["yläselkä", "hauikset"]
+    },
+    {
+      "name": "Keskivartalon kierto",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/kierto.png",
+      "description": "Istu lattialla, kallista ylävartaloa taakse ja kierrä kahvakuulaa puolelta toiselle.",
+      "muscleGroups": ["keskivartalo", "vinot vatsalihakset"]
+    },
+    {
+      "name": "Askelkyykky ja kahvakuula",
+      "duration": 45,
+      "rest": 15,
+      "image": "img/askelkyykky.png",
+      "description": "Astu eteenpäin ja laskeudu hallitusti. Kahvakuula voi olla rinnalla tai molemmissa käsissä sivuilla.",
+      "muscleGroups": ["reidet", "pakarat", "keskivartalo"]
+    },
+    {
+      "name": "Kahvakuula ympäri vartaloa",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/ympari-vartaloa.png",
+      "description": "Pyöritä kahvakuulaa lantiotason ympäri. Aktivoi keskivartalo.",
+      "muscleGroups": ["keskivartalo", "käsivarret"]
+    }
+  ],
+  "presetWorkouts": [
+    {
+      "name": "Nopea koko keho",
+      "exercises": ["Goblet-kyykky", "Kahvakuulaheilautus", "Pystypunnerrus", "Kahvakuula ympäri vartaloa"]
+    },
+    {
+      "name": "Voimapainotteinen",
+      "exercises": ["Maastaveto kahvakuulalla", "Askelkyykky ja kahvakuula", "Pystypunnerrus", "Kahvakuulasoutu"]
+    },
+    {
+      "name": "Keskivartalo keskittymä",
+      "exercises": ["Keskivartalon kierto", "Kahvakuula ympäri vartaloa", "Goblet-kyykky", "Kahvakuulaheilautus"]
+    }
+  ],
+  "weeklyWorkouts": [
+    {
+      "week": "Viikko 1",
+      "exercises": ["Goblet-kyykky", "Kahvakuulaheilautus", "Pystypunnerrus"]
+    },
+    {
+      "week": "Viikko 2",
+      "exercises": ["Maastaveto kahvakuulalla", "Kahvakuulasoutu", "Keskivartalon kierto"]
+    },
+    {
+      "week": "Viikko 3",
+      "exercises": ["Askelkyykky ja kahvakuula", "Kahvakuula ympäri vartaloa", "Pystypunnerrus"]
+    }
+  ]
+}
