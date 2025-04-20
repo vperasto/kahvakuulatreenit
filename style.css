@@ -8,6 +8,8 @@
   --text-subtle: #aaaaaa;
   --accent-blue: #2196f3;
   --accent-orange: #ff9800;
+  --accent-green: #4caf50; /* Lisätty lepoajalle */
+  --accent-red: #f44336;  /* Lisätty stop-painikkeelle */
   --font-main: 'Rajdhani', sans-serif;
 }
 
@@ -19,7 +21,13 @@ body {
   color: var(--text-main);
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh; /* Käytä min-height joustavuuden vuoksi */
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Vie käytettävissä olevan tilan */
 }
 
 header {
@@ -29,116 +37,266 @@ header {
   font-weight: 600;
   text-align: center;
   border-bottom: 2px solid var(--accent-blue);
+  position: relative; /* Tarvitaan toggle-napille */
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem; /* Hieman suurempi otsikko */
+}
+
+#toggle-training-select { /* Korjattu selektori */
+  position: absolute;
+  top: 50%;
+  right: 1rem; /* Siirretty oikeaan reunaan */
+  transform: translateY(-50%);
+  background-color: var(--accent-orange);
+  color: var(--text-main);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+#toggle-training-select:hover {
+  background-color: #e68900;
+}
+
+
+#training-select { /* Korjattu selektori */
+  background-color: var(--bg-panel);
+  padding: 1rem;
+  border-bottom: 1px solid #333;
+  transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out; /* Lisätty siirtymäefektit */
+  max-height: 200px; /* Aseta riittävä max-height näkyvälle tilalle */
+  overflow: hidden;
+  opacity: 1;
+}
+
+#training-select.hidden { /* Luokka piilottamiseen */
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-bottom: none; /* Piilota reunaviiva kun piilossa */
+}
+
+#training-select h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--accent-orange);
+}
+
+#training-dropdown {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #333;
+  color: var(--text-main);
+  border: 1px solid var(--accent-blue);
+  border-radius: 4px;
+  font-family: var(--font-main);
 }
 
 main {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  /* Muutettu grid: lista vie auto-levyden, näyttö loput */
+  grid-template-columns: auto 1fr;
   gap: 1rem;
   padding: 1rem;
   flex: 1;
-  overflow: hidden;
+  overflow: hidden; /* Estää pääsisällön ylivuodon */
 }
 
-section {
+/* Yleiset section-tyylit */
+section, aside {
   background-color: var(--bg-panel);
   border-radius: 8px;
   padding: 1rem;
-  overflow-y: auto;
+  display: flex; /* Käytä flexboxia sisällön hallintaan */
+  flex-direction: column; /* Aseta suunta pystysuoraksi */
+  overflow-y: auto; /* Salli vieritys tarvittaessa */
 }
 
-#workoutSelection {
-  transition: all 0.3s ease;
+aside#exercise-list {
+   /* Aseta maksimileveys listalle tai käytä autoa */
+   max-width: 300px;
 }
 
-#workoutSelection.collapsed {
-  display: none;
-}
-
-#exerciseList .exercise-item {
-  margin-bottom: 0.5rem;
-  padding: 0.5rem;
-  background-color: #2a2a2a;
-  border-left: 4px solid var(--accent-orange);
-  cursor: pointer;
-}
-
-#exerciseList .exercise-item:hover {
-  background-color: #333;
-}
-
-#exerciseDisplay {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+#exercise-list h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--accent-orange);
+  font-size: 1.3rem;
   text-align: center;
 }
 
-#exerciseDisplay h2 {
-  font-size: 2rem;
-  margin: 1rem 0;
+#exercise-items { /* Korjattu selektori ul -> id */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1; /* Täyttää saatavilla olevan tilan */
 }
 
-#exerciseDisplay img {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+#exercise-items li { /* Lisätty .exercise-item luokka JS:ssä */
+  margin-bottom: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #2a2a2a;
+  border-left: 4px solid var(--accent-blue);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  font-size: 1rem;
 }
 
-#timerDisplay {
-  font-size: 3rem;
-  font-weight: bold;
-  color: var(--accent-blue);
-  margin-top: 1rem;
+#exercise-items li:hover {
+  background-color: #383838;
 }
 
-#controls {
+#exercise-items li.active { /* Lisätty aktiivisen itemin tyyli */
+  background-color: #333;
+  border-left-color: var(--accent-green);
+  font-weight: 600;
+}
+
+#exercise-display {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; Poistettu keskitys, jotta sisältö voi kasvaa */
+  text-align: center;
 }
 
-#controls button {
+#exercise-display h2#exercise-name { /* Korjattu selektori */
+  font-size: 2.2rem;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+#exercise-display img#exercise-image { /* Korjattu selektori */
+  max-width: 80%; /* Hieman pienennetty */
+  max-height: 300px;
+  height: auto; /* Säilytä kuvasuhde */
+  object-fit: contain;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #2a2a2a; /* Taustaväri jos kuva on läpinäkyvä */
+}
+
+/* Lisätty kuvaustyyli */
+#exercise-description {
+  color: var(--text-subtle);
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  max-width: 90%; /* Rajaa leveyttä hieman */
+  line-height: 1.5;
+}
+
+#timer {
+  margin-bottom: 1.5rem;
+}
+
+#time-remaining { /* Korjattu selektori */
+  font-size: 4rem; /* Suurennettu fonttikoko */
+  font-weight: 600; /* Lihavoitu */
+  color: var(--accent-blue);
+  display: block; /* Varmista, että vie oman rivinsä */
+}
+
+/* Lisätty labelin tyyli */
+#timer-label {
+  font-size: 1.2rem;
+  color: var(--text-subtle);
+  margin-top: 0.2rem;
+}
+
+.controls { /* Korjattu selektori luokalle */
+  display: grid; /* Käytä gridiä painikkeille */
+  grid-template-columns: repeat(2, 1fr); /* Kaksi saraketta */
+  gap: 0.75rem; /* Väli painikkeiden välillä */
+  width: 80%; /* Rajaa kontrollien leveyttä */
+  max-width: 400px; /* Maksimileveys */
+  margin-top: auto; /* Työnnä kontrollit alaosaan */
+  padding-top: 1rem; /* Pieni väli yläpuolelle */
+}
+
+.controls button {
   background-color: var(--accent-blue);
   color: var(--text-main);
   border: none;
   border-radius: 6px;
-  padding: 1rem 2rem;
-  font-size: 1.2rem;
-  margin: 0.5rem;
+  padding: 0.8rem 1rem; /* Hieman säädetty padding */
+  font-size: 1.1rem;
+  font-family: var(--font-main);
   cursor: pointer;
-  width: 100%;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, opacity 0.2s;
+  font-weight: 600;
 }
 
-#controls button:hover {
+.controls button:hover:not(:disabled) { /* Hover-tila vain aktiivisille napeille */
   background-color: #1976d2;
 }
 
-button.pause {
+/* Erityistyylit painikkeille */
+#start-btn {
+  grid-column: 1 / -1; /* Vie koko rivin leveyden */
+  background-color: var(--accent-green);
+}
+#start-btn:hover:not(:disabled) {
+  background-color: #388e3c;
+}
+
+#pause-btn { /* Korjattu selektori */
   background-color: var(--accent-orange);
 }
-
-button.pause:hover {
+#pause-btn:hover:not(:disabled) {
   background-color: #e68900;
 }
-
-#toggleWorkoutSelection {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  background-color: transparent;
-  border: 2px solid var(--accent-orange);
-  color: var(--accent-orange);
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  cursor: pointer;
+#pause-btn.paused { /* Tyyli kun ajastin on pausetettu */
+   background-color: var(--accent-green); /* Muuttuu "Jatka"-napiksi */
+}
+#pause-btn.paused:hover:not(:disabled) {
+   background-color: #388e3c;
 }
 
-#toggleWorkoutSelection:hover {
-  background-color: #333;
+
+#stop-btn { /* Korjattu selektori */
+  background-color: var(--accent-red);
+}
+#stop-btn:hover:not(:disabled) {
+  background-color: #d32f2f;
+}
+
+/* Tyyli disabloiduille napeille */
+.controls button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #555; /* Harmaampi tausta */
+}
+
+/* Mobiiliresponsiivisuus (esimerkki) */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.5rem;
+  }
+  main {
+    grid-template-columns: 1fr; /* Vaihda yhteen sarakkeeseen */
+    grid-template-rows: auto auto; /* Lista ja näyttö päällekkäin */
+  }
+  aside#exercise-list {
+     max-width: 100%; /* Vie koko leveyden */
+     max-height: 250px; /* Rajaa korkeutta */
+  }
+  #exercise-display img#exercise-image {
+    max-height: 200px;
+  }
+  .controls {
+    width: 95%;
+  }
+  #time-remaining {
+    font-size: 3rem;
+  }
 }
