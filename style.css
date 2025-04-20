@@ -264,9 +264,9 @@ aside#exercise-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Keskittää sisällön pystysuunnassa */
-  height: 100%; /* Yrittää viedä koko korkeuden */
-  gap: 1rem; /* Väliä elementtien välille */
+  /* justify-content: center;  Keskittää sisällön pystysuunnassa */
+  height: 100%; 
+  gap: 1rem; /* elementtien väli */
 }
 
 #timer {
