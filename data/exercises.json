@@ -63,6 +63,30 @@
       "image": "img/ympari-vartaloa.png",
       "description": "Pyöritä kahvakuulaa lantiotason ympäri. Aktivoi keskivartalo.",
       "muscleGroups": ["keskivartalo", "käsivarret"]
+    },
+    {
+      "name": "Turkkilainen ylösnousu",
+      "duration": 60,
+      "rest": 30,
+      "image": "img/turkish-getup.png",
+      "description": "Monivaiheinen liike, jossa noustaan lattialta ylös kahvakuula pään päällä. Kehittää voimaa, hallintaa ja liikkuvuutta.",
+      "muscleGroups": ["keskivartalo", "hartiat", "lonkankoukistajat", "pakarat"]
+    },
+    {
+      "name": "Kahvakuula rinnalle",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/clean.png",
+      "description": "Nosta kahvakuula lantiolla tuotetulla voimalla rinnalle hallitusti. Käytä vartalon liike-energiaa, vältä kättä paukahtamasta.",
+      "muscleGroups": ["pakarat", "reidet", "keskivartalo", "käsivarret"]
+    },
+    {
+      "name": "Kahvakuula rinnalle ja työntö",
+      "duration": 30,
+      "rest": 15,
+      "image": "img/clean-press.png",
+      "description": "Yhdistä clean ja pystypunnerrus sujuvaksi liikkeeksi. Rytmi ja hallinta ovat keskeisiä.",
+      "muscleGroups": ["reidet", "pakarat", "hartiat", "keskivartalo"]
     }
   ],
   "presetWorkouts": [
@@ -77,24 +101,64 @@
     {
       "name": "Pikatreeni C: Keskivartalo keskittymä",
       "exercises": ["Keskivartalon kierto", "Kahvakuula ympäri vartaloa", "Goblet-kyykky", "Kahvakuulaheilautus"]
+    },
+    {
+      "name": "Pikatreeni D: Perusliikkeet",
+      "exercises": ["Maastaveto kahvakuulalla", "Goblet-kyykky", "Kahvakuulaheilautus"]
+    },
+    {
+      "name": "Pikatreeni E: Yhdistelmät",
+      "exercises": ["Kahvakuula rinnalle ja työntö", "Askelkyykky ja kahvakuula", "Core clean"]
+    },
+    {
+      "name": "Pikatreeni F: Ylävartalo – kädet ja hartiat",
+      "exercises": ["Kahvakuula rinnalle", "Kahvakuulasoutu", "Pystypunnerrus"]
     }
   ],
   "weeklyWorkouts": [
     {
       "week": "Viikko 1",
-      "exercises": ["Goblet-kyykky", "Kahvakuulaheilautus", "Pystypunnerrus"]
+      "exercises": ["Kahvakuulaheilautus", "Maastaveto kahvakuulalla", "Goblet-kyykky", "Pystypunnerrus", "Keskivartalon kierto"]
     },
     {
       "week": "Viikko 2",
-      "exercises": ["Maastaveto kahvakuulalla", "Kahvakuulasoutu", "Keskivartalon kierto"]
+      "exercises": ["Kahvakuula rinnalle", "Goblet-kyykky", "Kahvakuulasoutu", "Maastaveto kahvakuulalla", "Kahvakuula ympäri vartaloa"]
     },
     {
       "week": "Viikko 3",
-      "exercises": ["Askelkyykky ja kahvakuula", "Kahvakuula ympäri vartaloa", "Pystypunnerrus"]
+      "exercises": ["Kahvakuulaheilautus", "Kahvakuula rinnalle ja työntö", "Askelkyykky ja kahvakuula", "Keskivartalon kierto"]
     },
     {
       "week": "Viikko 4",
-      "exercises": ["Goblet-kyykky", "Maastaveto kahvakuulalla", "Kahvakuulasoutu", "Keskivartalon kierto"]
+      "exercises": ["Kahvakuula ympäri vartaloa", "Keskivartalon kierto", "Turkkilainen ylösnousu"]
+    },
+    {
+      "week": "Viikko 5",
+      "exercises": ["Goblet-kyykky", "Askelkyykky ja kahvakuula", "Kahvakuulaheilautus", "Maastaveto kahvakuulalla"]
+    },
+    {
+      "week": "Viikko 6",
+      "exercises": ["Kahvakuula rinnalle ja työntö", "Kahvakuulasoutu", "Pystypunnerrus", "Kahvakuula ympäri vartaloa"]
+    },
+    {
+      "week": "Viikko 7",
+      "exercises": ["Kahvakuula rinnalle", "Goblet-kyykky", "Kahvakuula rinnalle ja työntö", "Askelkyykky ja kahvakuula"]
+    },
+    {
+      "week": "Viikko 8",
+      "exercises": ["Kahvakuulaheilautus", "Kahvakuula rinnalle ja työntö", "Goblet-kyykky", "Maastaveto kahvakuulalla"]
+    },
+    {
+      "week": "Viikko 9",
+      "exercises": ["Pystypunnerrus", "Kahvakuula ympäri vartaloa", "Keskivartalon kierto", "Maastaveto kahvakuulalla"]
+    },
+    {
+      "week": "Viikko 10",
+      "exercises": ["Turkkilainen ylösnousu", "Kahvakuulaheilautus", "Kahvakuula rinnalle"]
+    },
+    {
+      "week": "Viikko 11",
+      "exercises": ["Kahvakuulaheilautus", "Kahvakuula rinnalle ja työntö", "Goblet-kyykky", "Pystypunnerrus", "Keskivartalon kierto"]
     }
   ]
 }
