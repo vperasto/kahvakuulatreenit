@@ -15,7 +15,7 @@
       <button id="toggle-training-select">Valitse treeni ⯆ / ⯅</button>
     </header>
 
-    <!-- Treenin valinta (MUOKATTU OSASTO) -->
+    <!-- Treenin valinta -->
     <section id="training-select" class="collapsible hidden">
       <h2>Valitse treeni</h2>
 
@@ -60,6 +60,14 @@
         </ul>
       </aside>
 
+      <!-- Viikon Ohjeet (Notes) -->
+      <aside id="workout-instructions">
+          <h2>Viikon Ohjeet</h2>
+          <div id="workout-notes-container">
+              <p id="workout-notes">Valitse ensin viikkotreeni nähdäksesi ohjeet.</p>
+          </div>
+      </aside>
+
       <!-- Harjoitusnäkymä -->
       <section id="exercise-display">
 
@@ -73,13 +81,9 @@
         <!-- Sisällön jakaminen kahteen osaan -->
         <div id="content-split">
 
-          <!-- Vasen puoli (Kuva, Muistiinpanot ja kuvaus) (MUOKATTU) -->
+          <!-- Vasen puoli (Kuva ja kuvaus) -->
           <div id="exercise-details">
             <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
-            <!-- Treenin muistiinpanot tulevat tähän -->
-            <div id="workout-notes-container">
-                 <p id="workout-notes"></p>
-            </div>
             <!-- Yksittäisen harjoituksen kuvaus -->
             <p id="exercise-description"></p>
           </div>
