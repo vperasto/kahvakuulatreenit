@@ -13,15 +13,25 @@
   --font-main: 'Rajdhani', sans-serif;
 }
 
+/* Basic Reset & Body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px; /* Base font size */
+}
+
 body {
-  margin: 0;
-  padding: 0;
   font-family: var(--font-main);
   background-color: var(--bg-dark);
   color: var(--text-main);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  line-height: 1.5;
 }
 
 #app {
@@ -30,6 +40,7 @@ body {
   flex: 1;
 }
 
+/* Header */
 header {
   background-color: var(--bg-panel);
   padding: 1rem 2rem;
@@ -41,7 +52,7 @@ header {
 
 header h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 1.8rem); /* Responsive font size */
 }
 
 #toggle-training-select {
@@ -58,22 +69,20 @@ header h1 {
   font-size: 0.9rem;
   font-weight: 600;
 }
-
 #toggle-training-select:hover {
   background-color: #e68900;
 }
 
-/* --- Treenin valinta Section --- */
+/* Training Selection Section */
 #training-select {
   background-color: var(--bg-panel);
-  padding: 1rem 1.5rem; /* Lisää hieman paddingia */
+  padding: 1rem 1.5rem;
   border-bottom: 1px solid #333;
   transition: max-height 0.3s ease-out, padding 0.3s ease-out, opacity 0.3s ease-out;
-  max-height: 500px; /* Lisää tilaa napeille ja inputeille */
+  max-height: 600px; /* Increased height */
   overflow: hidden;
   opacity: 1;
 }
-
 #training-select.hidden {
   max-height: 0;
   padding-top: 0;
@@ -81,25 +90,22 @@ header h1 {
   opacity: 0;
   border-bottom: none;
 }
-
 #training-select h2 {
   margin-top: 0;
-  margin-bottom: 1rem; /* Lisää väliä */
-  font-size: 1.4rem; /* Hieman isompi */
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
   color: var(--accent-orange);
   text-align: center;
 }
 
-/* --- Viikkonappien Container --- */
+/* Week Buttons */
 #week-buttons-container {
   display: flex;
-  flex-wrap: wrap; /* Sallii rivittymisen */
-  gap: 0.75rem; /* Väliä nappien välille */
-  margin-bottom: 1.5rem; /* Väliä seuraavaan osioon */
-  justify-content: center; /* Keskittää napit jos tilaa */
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  justify-content: center;
 }
-
-/* --- Yksittäinen Viikkonappi --- */
 .week-button {
   background-color: var(--accent-blue);
   color: var(--text-main);
@@ -111,48 +117,44 @@ header h1 {
   font-family: var(--font-main);
   font-weight: 600;
   transition: background-color 0.2s, transform 0.1s;
-  flex-grow: 1; /* Yrittää täyttää tilaa tasaisesti */
+  flex-grow: 1;
   text-align: center;
+  min-width: 160px; /* Minimum width for readability */
 }
-
 .week-button:hover {
-  background-color: #1a78c2; /* Hieman tummempi sininen */
+  background-color: #1a78c2;
 }
-
 .week-button.active {
-  background-color: var(--accent-green); /* Vihreä aktiivisena */
-  transform: scale(1.02); /* Pieni korostus */
+  background-color: var(--accent-green);
+  transform: scale(1.02);
   box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
 }
 
-/* --- Oletusaikojen Asetukset --- */
+/* Default Time Settings */
 .default-time-settings {
-  background-color: #2a2a2a; /* Hieman eri tausta */
+  background-color: #2a2a2a;
   padding: 1rem;
   border-radius: 6px;
   margin-bottom: 1.5rem;
 }
-
 .default-time-settings h3 {
   margin-top: 0;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
   color: var(--accent-orange);
 }
-
 .time-input-group {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
 }
-
 .time-input-group label {
-  width: 120px; /* Kiinteä leveys labeleille tasausta varten */
+  width: 100px; /* Adjusted width */
   text-align: right;
   font-size: 0.95rem;
+  flex-shrink: 0; /* Prevent label shrinking */
 }
-
 .default-time-settings input[type="number"] {
   padding: 0.4rem 0.6rem;
   background-color: #333;
@@ -160,9 +162,8 @@ header h1 {
   border: 1px solid var(--accent-blue);
   border-radius: 4px;
   font-family: var(--font-main);
-  width: 80px; /* Sopiva leveys numeroille */
+  width: 80px;
 }
-
 .default-time-settings small {
   display: block;
   margin-top: 0.5rem;
@@ -170,18 +171,16 @@ header h1 {
   color: var(--text-subtle);
 }
 
-/* --- Pikatreenien Valinta --- */
+/* Preset Workout Selection */
 .preset-select-container {
-    margin-top: 1.5rem; /* Erotetaan oletusajoista */
+    margin-top: 1.5rem;
 }
-
 .preset-select-container h3 {
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 1.1rem;
 }
-
-#training-dropdown { /* Pudotusvalikon tyyli (jos käytössä pikatreenille) */
+#training-dropdown {
   width: 100%;
   padding: 0.5rem;
   background-color: #333;
@@ -191,32 +190,33 @@ header h1 {
   font-family: var(--font-main);
 }
 
-/* --- Main Content Area --- */
+/* Main Content Area */
 main {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto auto 1fr; /* List, Instructions, Display */
   gap: 1rem;
   padding: 1rem;
   flex: 1;
-  overflow: hidden;
+  overflow: hidden; /* Prevents overflow of the grid container */
 }
 
-/* Yleiset section-tyylit */
-section, aside {
+/* Common styles for aside/section in main */
+main > aside, main > section {
   background-color: var(--bg-panel);
   border-radius: 8px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  overflow-y: auto; /* Salli vieritys tarvittaessa */
+  overflow-y: auto; /* Allow internal scrolling */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-blue) #333;
+  max-height: calc(100vh - 120px); /* Approximate max height based on header */
 }
 
+/* Exercise List (Left Column) */
 aside#exercise-list {
    max-width: 300px;
-   /* Estä listaa venymästä liian pitkäksi */
-   overflow-y: auto;
 }
-
 #exercise-list h2 {
   margin-top: 0;
   margin-bottom: 1rem;
@@ -224,92 +224,96 @@ aside#exercise-list {
   font-size: 1.3rem;
   text-align: center;
 }
-
 #exercise-items {
   list-style: none;
   padding: 0;
   margin: 0;
   flex-grow: 1;
 }
-
 #exercise-items li {
   margin-bottom: 0.5rem;
   padding: 0.75rem 1rem;
   background-color: #2a2a2a;
   border-left: 4px solid var(--accent-blue);
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s, border-left-width 0.2s;
-  font-size: 1.1rem; /* === SUURENNETTU KÄYTTÄJÄN PYYNNÖSTÄ === */
-  overflow: hidden; /* Estää tekstin valumisen */
-  white-space: nowrap; /* Pitää tekstin yhdellä rivillä */
-  text-overflow: ellipsis; /* Lisää ... jos teksti liian pitkä */
+  transition: background-color 0.2s, border-color 0.2s, border-left-width 0.2s, color 0.2s;
+  font-size: 1.1rem; /* Increased font size */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-
 #exercise-items li:hover {
   background-color: #383838;
 }
-
-/* Aktiivisen harjoituksen korostus */
 #exercise-items li.active {
-  background-color: #3c3c3c; /* Hieman kirkkaampi tausta */
+  background-color: #3c3c3c;
   border-left-color: var(--accent-green);
-  border-left-width: 6px; /* Paksumpi korostusreuna */
+  border-left-width: 6px;
   font-weight: 600;
-  color: var(--accent-green); /* Tekstin väriksi vihreä */
+  color: var(--accent-green);
 }
 
-/* === SEURAAVAN HARJOITUKSEN KOROSTUS ANIMAATIOLLA === */
+/* Next Exercise Highlight Animation */
 @keyframes subtle-pulse {
-  0%, 100% {
-    border-left-color: var(--accent-orange);
-    /* background-color: #2f2f2f; */
-  }
-  50% {
-    border-left-color: var(--accent-blue); /* Palaa normaaliin */
-    /* background-color: #2a2a2a; */
-  }
+  0%, 100% { border-left-color: var(--accent-orange); }
+  50% { border-left-color: var(--accent-blue); }
 }
-
 #exercise-items li.next-up {
-  /* Voit valita vain yhden tai useamman näistä */
-  border-left-width: 5px; /* Hieman paksumpi reunus */
+  border-left-width: 5px;
   animation: subtle-pulse 1.5s infinite ease-in-out;
-  /* font-style: italic; */ /* Vaihtoehtoinen korostus */
 }
-/* ================================================ */
 
-/* ------------------------------------ */
-/* --- Exercise Display Section --- */
-/* ------------------------------------ */
+/* Workout Instructions (Middle Column) */
+aside#workout-instructions {
+   max-width: 350px;
+}
+#workout-instructions h2 {
+   margin-top: 0;
+   margin-bottom: 1rem;
+   color: var(--accent-orange);
+   font-size: 1.3rem;
+   text-align: center;
+}
+#workout-notes-container {
+  width: 100%;
+  margin: 0 auto 1rem auto;
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-left: 4px solid var(--accent-orange);
+  border-radius: 4px;
+  flex-grow: 1;
+  overflow-y: auto; /* Allow scrolling for long notes */
+}
+#workout-notes {
+  color: var(--accent-orange);
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  white-space: pre-wrap; /* Preserve line breaks from JSON */
+  margin: 0;
+}
 
-#exercise-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+/* Exercise Display (Right Column) */
+section#exercise-display {
   padding: 1rem 1.5rem;
-  overflow: hidden; /* Estetään ylivuoto tässä */
+  overflow: hidden; /* Prevent internal content overflow */
 }
-
-/* Otsikkoalueen tyylit */
 #title-area {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 600px;
-  margin-bottom: 1.5rem;
+  max-width: 600px; /* Limit width of title area */
+  margin: 0 auto 1.5rem auto; /* Center title area */
 }
-
 #exercise-display h2#exercise-name {
   margin: 0 1rem;
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 5vw, 2rem); /* Responsive title */
   font-weight: 600;
   color: var(--text-main);
   flex-grow: 1;
   text-align: center;
 }
-
 .title-nav-btn {
   background: none;
   border: 2px solid var(--accent-blue);
@@ -326,12 +330,10 @@ aside#exercise-list {
   justify-content: center;
   flex-shrink: 0;
 }
-
 .title-nav-btn:hover:not(:disabled) {
   background-color: var(--accent-blue);
   color: var(--text-main);
 }
-
 .title-nav-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -339,95 +341,69 @@ aside#exercise-list {
   color: #555;
 }
 
-/* Sisällön jakajan tyylit */
+/* Content Split within Exercise Display */
 #content-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr; /* Image/Desc | Timer/Controls */
   gap: 2rem;
   width: 100%;
-  flex: 1;
+  flex: 1; /* Take remaining vertical space */
   align-items: start;
-  overflow: hidden; /* Varmista ettei sisältö ylitä */
+  overflow: hidden; /* Prevent split content overflow */
+  /* max-height needed? Flex:1 should handle it */
 }
-
-/* Vasemman puolen tyylit */
-#exercise-details {
+#exercise-details { /* Left side of split */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  overflow-y: auto; /* Salli vieritys jos sisältö pitkä */
-  max-height: 100%;
-  padding-right: 0.5rem;
+  overflow-y: auto; /* Scroll if needed */
+  max-height: 100%; /* Fit within parent */
+  padding-right: 0.5rem; /* Space for scrollbar */
 }
-
 #exercise-display img#exercise-image {
   max-width: 100%;
   width: auto;
-  max-height: 350px; /* Hieman pienempi jotta notes mahtuu paremmin */
+  max-height: 400px;
   height: auto;
   object-fit: contain;
   border-radius: 8px;
   margin-bottom: 1rem;
   background-color: #2a2a2a;
 }
-
-/* === MUISTIINPANOJEN (NOTES) TYTLIT === */
-#workout-notes-container {
-  width: 95%; /* Vie lähes koko leveyden */
-  margin: 0 auto 1rem auto; /* Keskittää ja lisää väliä */
-  padding: 0.75rem 1rem;
-  background-color: rgba(0, 0, 0, 0.2); /* Läpikuultava tumma tausta */
-  border-left: 4px solid var(--accent-orange);
-  border-radius: 4px;
-}
-
-#workout-notes {
-  color: var(--accent-orange); /* Oranssi väri noteille */
-  font-size: 1rem;
-  line-height: 1.4;
-  text-align: left; /* Vasen tasaus luettavuuden parantamiseksi */
-  white-space: pre-wrap; /* Säilyttää rivinvaihdot JSONista */
-  margin: 0; /* Poista oletusmarginaalit */
-}
-/* ======================================= */
-
-
 #exercise-description {
   color: var(--text-subtle);
   font-size: 1.1rem;
   line-height: 1.5;
   max-width: 95%;
-  text-align: left; /* Myös kuvaus vasemmalle? Tai center */
-  margin-top: 0.5rem; /* Pieni väli noteihin */
+  text-align: left;
+  margin-top: 0.5rem;
 }
 
-/* Oikean puolen tyylit */
+/* Timer and Controls (Right side of split) */
 #timer-and-controls {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Center vertically within its column */
   height: 100%;
   gap: 1rem;
 }
-
 #timer {
   margin-bottom: 1rem;
+  text-align: center;
 }
-
 #time-remaining {
-  font-size: 4.5rem;
+  font-size: clamp(3rem, 10vw, 4.5rem); /* Responsive timer font */
   font-weight: 600;
   color: var(--accent-blue);
   display: block;
 }
-
 #timer-label {
-  font-size: 1.3rem;
+  font-size: clamp(1rem, 3vw, 1.3rem);
   color: var(--text-subtle);
   margin-top: 0.1rem;
 }
-
 .control-button {
   background-color: var(--accent-blue);
   color: var(--text-main);
@@ -442,168 +418,100 @@ aside#exercise-list {
   width: 80%;
   max-width: 250px;
 }
-
-.control-button:hover:not(:disabled) {
-  /* Värit määritellään ID-kohtaisesti */
-}
-
+.control-button:hover:not(:disabled) { /* Specific hover defined below */}
 #start-btn { background-color: var(--accent-green); }
 #start-btn:hover:not(:disabled) { background-color: #388e3c; }
-
 #pause-btn { background-color: var(--accent-orange); }
 #pause-btn:hover:not(:disabled) { background-color: #e68900; }
-#pause-btn.paused { background-color: var(--accent-green); } /* Vihreä kun voi jatkaa */
+#pause-btn.paused { background-color: var(--accent-green); }
 #pause-btn.paused:hover:not(:disabled) { background-color: #388e3c; }
-
 #stop-btn { background-color: var(--accent-red); }
 #stop-btn:hover:not(:disabled) { background-color: #d32f2f; }
-
 .control-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   background-color: #555 !important;
 }
 
-/* ------------------------------- */
-/* --- Responsiivisuus --- */
-/* ------------------------------- */
+/* --- Responsiveness --- */
 
+/* Tablet */
 @media (max-width: 1024px) {
-    #content-split {
-        gap: 1rem;
+    main {
+        grid-template-columns: auto auto 1fr;
+        gap: 0.75rem;
     }
-    #time-remaining {
-        font-size: 4rem;
+    main > aside, main > section {
+         padding: 0.75rem; /* Slightly less padding */
+         max-height: calc(100vh - 110px); /* Adjust max height */
     }
-    #timer-label {
-        font-size: 1.2rem;
-    }
-    .control-button {
-        padding: 0.8rem 1.2rem;
-        font-size: 1.1rem;
-    }
-     /* Viikkonapeille enemmän tilaa tarvittaessa */
-     .week-button {
-        flex-basis: calc(33.33% - 1rem); /* 3 nappia riviin jos mahtuu */
-        min-width: 150px; /* Minimileveys */
-     }
+    aside#exercise-list { max-width: 240px; }
+    aside#workout-instructions { max-width: 280px; }
+
+    #content-split { gap: 1rem; }
+    #time-remaining { font-size: 4rem; }
+    #timer-label { font-size: 1.2rem; }
+    .control-button { padding: 0.8rem 1.2rem; font-size: 1.1rem; }
+    .week-button { flex-basis: calc(33.33% - 1rem); }
 }
 
-
+/* Mobile */
 @media (max-width: 768px) {
-  /* Asetukset piiloon oletuksena mobiilissa? Tai jätä näkyviin */
-  #training-select {
-      padding: 1rem;
-       max-height: 600px; /* Varmista että kaikki mahtuu */
-  }
-
-   /* Stack week buttons vertically */
-  #week-buttons-container {
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: stretch; /* Venytä napit koko leveydelle */
-  }
-   .week-button {
-      flex-basis: auto; /* Poista basis */
-   }
-
-  .default-time-settings {
-     padding: 0.75rem;
-  }
-   .time-input-group {
-       flex-direction: column; /* Pinoa label ja input */
-       align-items: flex-start; /* Tasaa vasemmalle */
-       gap: 0.2rem;
-       margin-bottom: 0.75rem;
-   }
-   .time-input-group label {
-       width: auto; /* Poista kiinteä leveys */
-       text-align: left;
-   }
-   .default-time-settings input[type="number"] {
-       width: 100%; /* Vie koko leveyden */
-   }
-
+  #training-select { padding: 1rem; max-height: 80vh; overflow-y: auto; } /* Allow scroll in select */
+  #week-buttons-container { flex-direction: column; gap: 0.5rem; align-items: stretch; }
+  .week-button { flex-basis: auto; min-width: unset; }
+  .default-time-settings { padding: 0.75rem; }
+  .time-input-group { flex-direction: column; align-items: flex-start; gap: 0.2rem; margin-bottom: 0.75rem; }
+  .time-input-group label { width: auto; text-align: left; }
+  .default-time-settings input[type="number"] { width: 100%; }
 
   main {
-      grid-template-columns: 1fr;
-      grid-template-rows: auto 1fr;
-      overflow-y: auto;
+      grid-template-columns: 1fr; /* Stack all columns */
+      grid-template-rows: auto auto auto; /* List, Instructions, Display */
+      overflow-y: auto; /* Allow main area to scroll if needed */
+       padding: 0.5rem; /* Less padding */
+       gap: 0.5rem;
+  }
+  main > aside, main > section {
+      max-height: none; /* Remove max height when stacked */
+      overflow-y: visible; /* Let main scroll handle it */
+      padding: 0.75rem;
   }
   aside#exercise-list {
      max-width: 100%;
-     max-height: 250px; /* Hieman enemmän tilaa isommalla fontilla */
+     max-height: 200px; /* Still limit list height */
+     overflow-y: auto; /* Allow internal scroll */
      order: 1;
-     /* Lisää scrollbar-tyylit halutessasi */
-     scrollbar-width: thin;
-     scrollbar-color: var(--accent-blue) #333;
   }
-  section#exercise-display {
-      padding: 1rem 0.5rem;
-      order: 2;
-      overflow: hidden;
-  }
-
-  #title-area {
+  aside#workout-instructions {
      max-width: 100%;
-     margin-bottom: 1rem;
+     max-height: 180px; /* Limit instructions height */
+     overflow-y: auto; /* Allow internal scroll */
+     order: 2;
   }
-   #exercise-display h2#exercise-name {
-     font-size: 1.6rem;
-     margin: 0 0.5rem;
-   }
-   .title-nav-btn {
-     width: 35px;
-     height: 35px;
-     font-size: 1rem;
-   }
+   #workout-instructions h2 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+   #workout-notes-container { padding: 0.5rem 0.75rem; }
+   #workout-notes { font-size: 0.9rem; }
+
+  section#exercise-display {
+      max-width: 100%;
+      order: 3;
+  }
+  #title-area { margin-bottom: 1rem; }
+  #exercise-display h2#exercise-name { font-size: 1.6rem; margin: 0 0.5rem; }
+  .title-nav-btn { width: 35px; height: 35px; font-size: 1rem; }
 
   #content-split {
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    align-items: stretch;
-    overflow: auto;
-    max-height: calc(100% - 60px); /* Säädä tarvittaessa */
+    /* No overflow/max-height needed here if parent scrolls */
   }
+  #timer-and-controls { order: 1; padding-bottom: 1rem; justify-content: flex-start; }
+  #exercise-details { order: 2; padding-right: 0; }
+  #exercise-display img#exercise-image { max-height: 200px; } /* Smaller image on mobile */
+  #exercise-description { font-size: 1rem; }
 
-  #timer-and-controls {
-    order: 1;
-    justify-content: flex-start;
-    height: auto;
-    padding-bottom: 1rem;
-  }
-
-  #exercise-details {
-    order: 2;
-     max-height: none;
-     padding-right: 0;
-  }
-
-  #exercise-display img#exercise-image {
-    max-height: 250px; /* Varmista että kuva ei vie liikaa tilaa */
-  }
-
-  #workout-notes-container {
-      padding: 0.5rem 0.75rem; /* Pienempi padding mobiilissa */
-  }
-  #workout-notes {
-      font-size: 0.9rem;
-  }
-   #exercise-description {
-       font-size: 1rem;
-   }
-
-
-  .control-button {
-      width: 90%;
-      padding: 0.8rem 1rem;
-      font-size: 1.1rem;
-  }
-
-   #time-remaining {
-     font-size: 3.5rem;
-   }
-   #timer-label {
-       font-size: 1.1rem;
-   }
+  .control-button { width: 90%; padding: 0.8rem 1rem; font-size: 1.1rem; }
+  #time-remaining { font-size: 3.5rem; }
+  #timer-label { font-size: 1.1rem; }
 }
