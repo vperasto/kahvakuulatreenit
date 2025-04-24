@@ -3,12 +3,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elementit ---
     const trainingSelectSection = document.getElementById('training-select');
-    const trainingDropdown = document.getElementById('training-dropdown');
     const toggleTrainingSelectBtn = document.getElementById('toggle-training-select');
+    // UUSI: Container viikkonapeille
+    const weekButtonsContainer = document.getElementById('week-buttons-container'); // <<< LISÄÄ TÄMÄ HTML:ÄÄN
+    // PIDETÄÄN: Pudotusvalikko pikatreenien varalle (tai voidaan poistaa/muuttaa myöh.)
+    const trainingDropdown = document.getElementById('training-dropdown');
     const exerciseListUl = document.getElementById('exercise-items');
     const exerciseNameH2 = document.getElementById('exercise-name');
     const exerciseImageImg = document.getElementById('exercise-image');
     const exerciseDescriptionP = document.getElementById('exercise-description');
+    // UUSI: Elementti treenin muistiinpanoille
+    const workoutNotesP = document.getElementById('workout-notes'); // <<< LISÄÄ TÄMÄ HTML:ÄÄN
     const timeRemainingSpan = document.getElementById('time-remaining');
     const timerLabelP = document.getElementById('timer-label');
     const startBtn = document.getElementById('start-btn');
@@ -16,14 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const pauseBtn = document.getElementById('pause-btn');
     const nextBtn = document.getElementById('next-btn');
     const stopBtn = document.getElementById('stop-btn');
+    // UUDET: Input-kentät oletusajoille
+    const defaultDurationInput = document.getElementById('default-duration'); // <<< LISÄÄ TÄMÄ HTML:ÄÄN
+    const defaultRestInput = document.getElementById('default-rest');       // <<< LISÄÄ TÄMÄ HTML:ÄÄN
+
 
     // --- Sovelluksen tila ---
-    let allExercisesData = null; // Tähän ladataan koko exercises.json
-    let currentWorkoutExercises = []; // Nykyisen valitun treenin harjoitukset objekteina
+    let allExercisesData = null;
+    let currentWorkoutExercises = [];
+    let currentWorkoutNotes = ''; // Lisätty tallentamaan valitun treenin muistiinpanot
     let currentExerciseIndex = 0;
     let timerInterval = null;
-    let remainingTime = 0; // Sekunteina
-    const TimerState = { // Enum ajastimen tiloille
+    let remainingTime = 0;
+    const TimerState = {
         IDLE: 'idle',
         RUNNING_EXERCISE: 'running_exercise',
         RUNNING_REST: 'running_rest',
@@ -42,186 +52,188 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
             }
-            console.log("Fetch response OK, attempting to parse JSON...");
             allExercisesData = await response.json();
-            console.log("Exercise data loaded and parsed successfully:", allExercisesData);
+            console.log("Exercise data loaded and parsed successfully.");
 
             if (!allExercisesData || !allExercisesData.exercises || !allExercisesData.weeklyWorkouts || !allExercisesData.presetWorkouts) {
-                console.error("Loaded data is missing expected sections (exercises, weeklyWorkouts, presetWorkouts).");
+                console.error("Loaded data is missing expected sections.");
                 throw new Error("Loaded data structure is incorrect.");
             }
 
-            populateTrainingDropdown();
-            resetWorkoutState(); // Aseta alkutila (tämä kutsuu nyt myös resetWorkoutState-funktion, joka nollaa UI:n)
+            populateTrainingSelectors(); // Yksi funktio molemmille
+            resetWorkoutState();
 
         } catch (error) {
             console.error("Could not load or process exercise data:", error);
-            exerciseNameH2.textContent = "Virhe ladattaessa treenidataa. Tarkista konsoli.";
-            if (trainingDropdown.options.length <= 1) {
-                 trainingDropdown.innerHTML = '<option value="">Lataus epäonnistui</option>';
-                 trainingDropdown.disabled = true;
-            }
-            // Kutsu resetWorkoutState silti varmuuden vuoksi, jotta UI on tyhjä
-             resetWorkoutState();
+            exerciseNameH2.textContent = "Virhe ladattaessa treenidataa.";
+             resetWorkoutState(); // Resetoi UI virhetilanteessa
         }
     }
 
-    function populateTrainingDropdown() {
-        console.log("Populating training dropdown...");
-        if (!allExercisesData || !allExercisesData.weeklyWorkouts || !allExercisesData.presetWorkouts) {
-            console.error("Cannot populate dropdown, data is missing.");
+    // --- UUSI: Populates both week buttons and preset dropdown ---
+    function populateTrainingSelectors() {
+        console.log("Populating training selectors...");
+        if (!allExercisesData || !allExercisesData.weeklyWorkouts || !allExercisesData.presetWorkouts || !allExercisesData.exercises) {
+            console.error("Cannot populate selectors, data is missing.");
             return;
         }
 
-        trainingDropdown.innerHTML = '<option value="">-- Valitse treeni --</option>';
-        trainingDropdown.disabled = false;
-
-        let addedWorkouts = 0;
-
-        // Lisää viikkotreenit
-        console.log("Adding weekly workouts...");
+        // 1. Populate Week Buttons
+        weekButtonsContainer.innerHTML = ''; // Clear previous buttons
         if (allExercisesData.weeklyWorkouts && Array.isArray(allExercisesData.weeklyWorkouts)) {
-             const groupWeek = document.createElement('optgroup');
-             groupWeek.label = "Viikkotreenit";
-             allExercisesData.weeklyWorkouts.forEach((workout, index) => {
-                 console.log(`Adding week workout ${index}: ${workout.week}`);
-                 if (workout && workout.week && workout.exercises) {
+            allExercisesData.weeklyWorkouts.forEach((workout) => {
+                if (workout && workout.week && workout.exercises) {
+                    const button = document.createElement('button');
+                    button.textContent = workout.week; // Display week number and theme
+                    button.classList.add('week-button'); // Add class for styling
+                    // Use the 'week' field directly as the identifier
+                    button.dataset.workoutId = `week_${workout.week}`;
+                    button.addEventListener('click', () => handleTrainingSelect(button.dataset.workoutId));
+                    weekButtonsContainer.appendChild(button);
+                } else {
+                    console.warn(`Skipping invalid weekly workout:`, workout);
+                }
+            });
+        } else {
+            console.warn("weeklyWorkouts data is missing or not an array.");
+            weekButtonsContainer.innerHTML = '<p>Viikkotreenejä ei löytynyt.</p>';
+        }
+
+        // 2. Populate Preset Workouts Dropdown (kept for now)
+        trainingDropdown.innerHTML = '<option value="">-- Valitse Pikatreeni --</option>'; // Reset dropdown
+        trainingDropdown.disabled = true; // Disable initially
+        if (allExercisesData.presetWorkouts && Array.isArray(allExercisesData.presetWorkouts)) {
+             let addedPresets = 0;
+             allExercisesData.presetWorkouts.forEach((workout) => {
+                 if (workout && workout.name && workout.exercises) {
                      const option = document.createElement('option');
-                     option.value = `week_${workout.week}`;
-                     option.textContent = workout.week;
-                     groupWeek.appendChild(option);
-                     addedWorkouts++;
+                     // Use preset name as identifier
+                     option.value = `preset_${workout.name}`;
+                     option.textContent = workout.name;
+                     trainingDropdown.appendChild(option);
+                     addedPresets++;
                  } else {
-                     console.warn(`Skipping invalid weekly workout at index ${index}:`, workout);
+                     console.warn(`Skipping invalid preset workout:`, workout);
                  }
              });
-             if (groupWeek.childElementCount > 0) {
-                trainingDropdown.appendChild(groupWeek);
-             }
-        } else {
-             console.warn("weeklyWorkouts data is missing or not an array.");
-        }
-
-        // Lisää pikatreenit
-        console.log("Adding preset workouts...");
-         if (allExercisesData.presetWorkouts && Array.isArray(allExercisesData.presetWorkouts)) {
-            const groupPreset = document.createElement('optgroup');
-            groupPreset.label = "Pikatreenit";
-            allExercisesData.presetWorkouts.forEach((workout, index) => {
-                console.log(`Adding preset workout ${index}: ${workout.name}`);
-                 if (workout && workout.name && workout.exercises) {
-                    const option = document.createElement('option');
-                    option.value = `preset_${workout.name}`;
-                    option.textContent = workout.name;
-                    groupPreset.appendChild(option);
-                    addedWorkouts++;
-                 } else {
-                     console.warn(`Skipping invalid preset workout at index ${index}:`, workout);
-                 }
-            });
-             if (groupPreset.childElementCount > 0) {
-                trainingDropdown.appendChild(groupPreset);
-             }
+              if (addedPresets > 0) {
+                trainingDropdown.disabled = false; // Enable if presets exist
+                trainingDropdown.addEventListener('change', (e) => handleTrainingSelect(e.target.value));
+              } else {
+                 trainingDropdown.innerHTML = '<option value="">Pikatreenejä ei löytynyt</option>';
+              }
         } else {
              console.warn("presetWorkouts data is missing or not an array.");
-        }
-
-        if (addedWorkouts === 0) {
-            console.warn("No workouts were added to the dropdown. Check JSON data structure.");
-            trainingDropdown.innerHTML = '<option value="">Treenilistoja ei löytynyt</option>';
-            trainingDropdown.disabled = true;
-        } else {
-            console.log(`Successfully added ${addedWorkouts} workouts to the dropdown.`);
+             trainingDropdown.innerHTML = '<option value="">Pikatreenejä ei löytynyt</option>';
         }
     }
 
-    // --- Treenin käsittely (KORJATTU VERSIO) ---
-    function handleTrainingSelect() {
-        const selectedValue = trainingDropdown.value;
 
-        // --- 1. Nollaa tila HETI kun valinta muuttuu ---
-        console.log("Dropdown changed, resetting state first.");
-        resetWorkoutState(); // Nollaa edellinen tila ja UI välittömästi
+    // --- MUOKATTU: Käsittelee sekä nappien että dropdownin valinnat ---
+    function handleTrainingSelect(selectedValue) {
+        console.log("Dropdown/Button changed, resetting state first.");
+        resetWorkoutState();
+
+         // Reset dropdown if a week button was clicked, and vice versa visually
+         if (selectedValue && selectedValue.startsWith('week_')) {
+             trainingDropdown.value = ""; // Reset dropdown selection
+             // Highlight the clicked button (optional)
+             document.querySelectorAll('.week-button').forEach(btn => {
+                 btn.classList.toggle('active', btn.dataset.workoutId === selectedValue);
+             });
+         } else if (selectedValue && selectedValue.startsWith('preset_')) {
+              document.querySelectorAll('.week-button').forEach(btn => {
+                 btn.classList.remove('active'); // Remove highlight from week buttons
+             });
+         } else {
+             // If selection is cleared ("-- Valitse --")
+             document.querySelectorAll('.week-button').forEach(btn => {
+                 btn.classList.remove('active');
+             });
+         }
+
 
         if (!selectedValue || !allExercisesData) {
-            // Jos valinta tyhjennettiin tai dataa ei ole, nollaus riittää.
-            console.log("Dropdown cleared or data missing, state reset.");
+            console.log("Selection cleared or data missing, state reset.");
             return;
         }
 
-        console.log(`Handling selection: ${selectedValue}`); // Loki valinnasta
+        console.log(`Handling selection: ${selectedValue}`);
 
-        // --- 2. Etsi valitun treenin data ---
         let selectedWorkout = null;
+        currentWorkoutNotes = ''; // Reset notes for the new selection
+
         if (selectedValue.startsWith('week_')) {
             const weekName = selectedValue.replace('week_', '');
             selectedWorkout = allExercisesData.weeklyWorkouts.find(w => w.week === weekName);
+            if (selectedWorkout) {
+                currentWorkoutNotes = selectedWorkout.notes || ''; // Get notes
+            }
         } else if (selectedValue.startsWith('preset_')) {
             const presetName = selectedValue.replace('preset_', '');
             selectedWorkout = allExercisesData.presetWorkouts.find(w => w.name === presetName);
+             if (selectedWorkout) {
+                // Preset workouts might also have notes in the future
+                 currentWorkoutNotes = selectedWorkout.notes || '';
+            }
         }
 
-        // --- 3. Käsittele löydetty treeni ---
-        if (selectedWorkout && selectedWorkout.exercises && allExercisesData.exercises) {
-            console.log("Selected workout found:", selectedWorkout.name || selectedWorkout.week); // Loki löydetystä treenistä
+        // Display notes IMMEDIATELY after finding the workout
+        workoutNotesP.textContent = currentWorkoutNotes;
 
-            // Muodosta harjoituslista täysistä objekteista nimien perusteella
+        if (selectedWorkout && selectedWorkout.exercises && allExercisesData.exercises) {
+            console.log("Selected workout found:", selectedWorkout.name || selectedWorkout.week);
+
             const exerciseNames = selectedWorkout.exercises;
             const mappedExercises = exerciseNames
                 .map(exerciseName => {
                     const foundEx = allExercisesData.exercises.find(ex => ex.name === exerciseName);
                     if (!foundEx) {
-                        // Varoitus jos jotain harjoitusnimeä ei löytynyt päälistasta
                         console.warn(`Exercise named "${exerciseName}" not found in main exercise list.`);
                     }
-                    return foundEx; // Palauta löydetty objekti tai undefined
+                    return foundEx;
                 })
-                .filter(ex => ex !== undefined); // Suodata pois ne, joita ei löytynyt
+                .filter(ex => ex !== undefined);
 
-            console.log("Mapped exercises for workout:", mappedExercises); // Loki muodostetusta listasta
+            console.log("Mapped exercises for workout:", mappedExercises);
 
-            // --- 4. Päivitä tila ja UI VAIN jos valideja harjoituksia löytyi ---
             if (mappedExercises.length > 0) {
-                currentWorkoutExercises = mappedExercises; // Aseta treenin harjoitukset
-                currentExerciseIndex = 0; // Aseta indeksi alkuun
-
-                console.log(`Populating list and displaying exercise index ${currentExerciseIndex} (Total: ${currentWorkoutExercises.length})`); // Loki ennen näyttöä
-
-                populateExerciseList(); // Päivitä sivupalkin lista
-                displayExercise(currentExerciseIndex); // Näytä ensimmäinen harjoitus
-                updateButtonStates(); // Aktivoi/passivoi napit oikein
+                currentWorkoutExercises = mappedExercises;
+                currentExerciseIndex = 0;
+                console.log(`Populating list and displaying exercise index ${currentExerciseIndex} (Total: ${currentWorkoutExercises.length})`);
+                populateExerciseList();
+                displayExercise(currentExerciseIndex);
+                updateButtonStates();
             } else {
-                // Valitulle treenille ei löytynyt yhtään kelvollista harjoitusta
                 console.error(`Selected workout "${selectedWorkout.name || selectedWorkout.week}" has no valid/found exercises.`);
                 exerciseNameH2.textContent = "Treenin harjoituksia ei löytynyt.";
-                // resetWorkoutState ajettiin jo alussa, napit pysyvät passiivisina.
             }
         } else {
-            // Valitun treenin määrittelyä ei löytynyt JSONista tai exercises-päälista puuttuu
             console.error("Could not find selected workout definition in JSON or base 'exercises' list is missing.");
             exerciseNameH2.textContent = "Treenin määrittelyä ei löytynyt.";
-            // resetWorkoutState ajettiin jo alussa.
         }
-
-        // Valinnainen: Piilota treenivalikko valinnan jälkeen
-        // trainingSelectSection.classList.add('hidden');
     }
 
-
     function populateExerciseList() {
-        exerciseListUl.innerHTML = ''; // Tyhjennä vanha lista
+        exerciseListUl.innerHTML = '';
         if (currentWorkoutExercises.length === 0) {
-             exerciseListUl.innerHTML = '<li>Valitse ensin treeni.</li>';
+             exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>'; // Clearer message
              return;
         }
 
         currentWorkoutExercises.forEach((exercise, index) => {
             const li = document.createElement('li');
+            // Add index number for clarity
             li.textContent = `${index + 1}. ${exercise.name}`;
-            li.dataset.index = index; // Tallenna indeksi data-attribuuttiin
-            li.classList.add('exercise-item'); // Lisää CSS-luokka
+            li.dataset.index = index;
+            li.classList.add('exercise-item');
             li.addEventListener('click', () => {
-                jumpToExercise(index);
+                // Allow jumping only if timer is not running/paused
+                 if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
+                    jumpToExercise(index);
+                 } else {
+                     console.log("Cannot jump while timer is active.");
+                 }
             });
             exerciseListUl.appendChild(li);
         });
@@ -229,34 +241,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
      function jumpToExercise(index) {
         if (index >= 0 && index < currentWorkoutExercises.length) {
-            stopTimer(); // Pysäytä ajastin jos päällä
+            stopTimer();
             currentExerciseIndex = index;
-            timerState = TimerState.IDLE; // Nollaa tila IDLEksi
+            timerState = TimerState.IDLE;
             displayExercise(currentExerciseIndex);
             updateButtonStates();
+             clearNextUpHighlight(); // Clear highlight when jumping manually
         }
     }
 
-    // --- Harjoituksen näyttö (KORJATTU VERSIO) ---
     function displayExercise(index) {
-        console.log(`Attempting to display exercise at index: ${index}. Current list length: ${currentWorkoutExercises.length}`); // Loki yrityksestä
+         console.log(`Attempting to display exercise at index: ${index}. Current list length: ${currentWorkoutExercises.length}`);
+        // Remove "next-up" highlight from the item *about* to be displayed
+         clearNextUpHighlight();
 
-        // --- TÄRKEÄ TARKISTUS ---
-        if (index < 0 || index >= currentWorkoutExercises.length) {
-            // Loki jos indeksi on virheellinen
-            console.error(`Invalid exercise index detected! Index: ${index}, Workout Length: ${currentWorkoutExercises.length}`);
-            // Näytä virheilmoitus käyttäjälle selkeämmin
+        if (index < 0 || index >= currentWorkoutExercises.length || !currentWorkoutExercises[index]) {
+            console.error(`Invalid exercise index or exercise data! Index: ${index}, Workout Length: ${currentWorkoutExercises.length}`);
             exerciseNameH2.textContent = "Virhe harjoituksen näyttämisessä";
-            exerciseDescriptionP.textContent = `Yritettiin näyttää harjoitusta indeksillä ${index}, mutta valitussa treenissä on vain ${currentWorkoutExercises.length} harjoitusta. Valitse treeni uudelleen.`;
+            exerciseDescriptionP.textContent = `Harjoitusta ei löytynyt indeksillä ${index}. Valitse treeni uudelleen.`;
             exerciseImageImg.style.display = 'none';
-            // Varmistetaan nappien tila
             updateButtonStates();
-            return; // Keskeytä funktion suoritus, koska indeksi on virheellinen
+            return;
         }
 
-        // Jos indeksi on kelvollinen, jatketaan normaalisti:
         const exercise = currentWorkoutExercises[index];
-        console.log(`Displaying: ${exercise.name}`); // Loki näytettävästä harjoituksesta
+        console.log(`Displaying: ${exercise.name}`);
         exerciseNameH2.textContent = exercise.name;
         exerciseDescriptionP.textContent = exercise.description || '';
 
@@ -270,28 +279,43 @@ document.addEventListener('DOMContentLoaded', () => {
             exerciseImageImg.alt = '';
         }
 
-        // Aseta työaika näytölle, kun siirrytään harjoitukseen manuaalisesti tai alussa
         if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
-             remainingTime = exercise.duration;
+             // Use default duration if provided, otherwise use exercise duration
+             const durationToUse = getDefaultTime('duration') ?? exercise.duration;
+             remainingTime = durationToUse;
              updateTimerDisplay(remainingTime, "Työaika");
         }
-        // Muissa tiloissa (RUNNING, PAUSED) ajastinlogiikka hoitaa remainingTimen ja labelin päivityksen.
 
         highlightCurrentExercise();
-        // updateButtonStates(); // Päivitetään napit yleensä tämän kutsun jälkeen
+        // Buttons are updated by the calling function (handleTrainingSelect, jumpTo, next/prev, start)
     }
 
+    // --- UUSI: Helper function to get default time ---
+    function getDefaultTime(type) { // type = 'duration' or 'rest'
+        const inputElement = (type === 'duration') ? defaultDurationInput : defaultRestInput;
+        if (!inputElement) return null; // Input element not found in HTML
 
-    // --- Ajastimen toiminnot ---
+        const value = parseInt(inputElement.value, 10);
+        if (!isNaN(value) && value > 0) {
+            console.log(`Using default ${type}: ${value}s`);
+            return value;
+        }
+        return null; // Return null if no valid value is entered
+    }
+
+    // --- Ajastimen toiminnot (MUOKATTU käyttämään oletusaikoja) ---
     function startWorkout() {
         if (currentWorkoutExercises.length === 0 || timerState !== TimerState.IDLE) {
             console.log("Cannot start workout: No workout selected or timer already active.");
             return;
         }
         console.log("Starting workout");
-        currentExerciseIndex = 0; // Varmista että alkaa alusta
+        currentExerciseIndex = 0; // Start from the beginning
         displayExercise(currentExerciseIndex);
-        startTimerForPhase(TimerState.RUNNING_EXERCISE, currentWorkoutExercises[currentExerciseIndex].duration);
+        const firstExercise = currentWorkoutExercises[currentExerciseIndex];
+        // Use default duration if set, otherwise exercise's duration
+        const durationToUse = getDefaultTime('duration') ?? firstExercise.duration;
+        startTimerForPhase(TimerState.RUNNING_EXERCISE, durationToUse);
     }
 
     function pauseResumeTimer() {
@@ -301,53 +325,68 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("Timer Paused");
             pauseBtn.textContent = "▶ Jatka";
             pauseBtn.classList.add('paused');
+            // Keep next-up highlight if paused during rest
         } else if (timerState === TimerState.PAUSED) {
              console.log("Timer Resumed");
-             // Päättele oikea tila labelin perusteella (yksinkertaistus)
+             const wasResting = timerLabelP.textContent.includes("Lepo"); // Check if paused during rest
              if (timerLabelP.textContent.includes("Työaika")) {
                  timerState = TimerState.RUNNING_EXERCISE;
-             } else if (timerLabelP.textContent.includes("Lepo")) {
+             } else if (wasResting) {
                  timerState = TimerState.RUNNING_REST;
              } else {
-                 // Turvaverkko: jos tila oli epäselvä, aloitetaan nykyinen harjoitus alusta
                  console.warn("Timer state unclear on resume, restarting current exercise phase.");
-                 startTimerForPhase(TimerState.RUNNING_EXERCISE, currentWorkoutExercises[currentExerciseIndex].duration);
-                 return; // Poistu funktiosta, koska tila asetettiin jo
+                  const currentExercise = currentWorkoutExercises[currentExerciseIndex];
+                  if(currentExercise){
+                       const durationToUse = getDefaultTime('duration') ?? currentExercise.duration;
+                       startTimerForPhase(TimerState.RUNNING_EXERCISE, durationToUse);
+                  } else {
+                      resetWorkoutState(); // Safety reset
+                  }
+                 return;
              }
-             runTimerInterval(); // Käynnistä interval uudelleen
+             runTimerInterval();
              pauseBtn.textContent = "⏸ Tauko";
              pauseBtn.classList.remove('paused');
+              // Re-apply next-up highlight if resuming during rest
+              if (wasResting) {
+                  highlightNextExercise();
+              }
         }
         updateButtonStates();
     }
 
     function stopWorkout() {
-        stopTimer(); // Pysäyttää intervalin ja asettaa IDLE-tilan
+        stopTimer(); // Stops interval, sets state to IDLE
         console.log("Workout Stopped by user.");
-        // resetWorkoutState nollaisi koko valinnan, ehkä halutaan vain pysäyttää
-        // ajastin ja palata nykyisen treenin alkuun?
-        // Nykyinen stopTimer asettaa IDLE, joten voi aloittaa alusta.
-        // Jos halutaan täysi reset:
-        // resetWorkoutState();
-        // Jos halutaan vain nollata nykyinen harjoitus ja ajastin:
+         clearNextUpHighlight(); // Clear highlight
         if (currentWorkoutExercises.length > 0) {
-             displayExercise(currentExerciseIndex); // Näytä nykyinen harjoitus uudelleen nollatulla ajalla
+            // Reset timer display to the duration of the current exercise
+            const currentExercise = currentWorkoutExercises[currentExerciseIndex];
+             if(currentExercise){
+                 const durationToUse = getDefaultTime('duration') ?? currentExercise.duration;
+                 updateTimerDisplay(durationToUse, "Työaika");
+             } else {
+                 updateTimerDisplay(0,"Odottamassa...");
+             }
+            displayExercise(currentExerciseIndex); // Show current exercise again
         } else {
-             resetWorkoutState(); // Jos ei treeniä, nollaa kaikki
+             resetWorkoutState(); // If no workout loaded, fully reset
         }
-         updateButtonStates(); // Päivitä napit IDLE-tilaan
+         updateButtonStates(); // Update buttons to IDLE state
     }
 
     function stopTimer() {
         stopTimerInterval();
-        timerState = TimerState.IDLE; // Aseta tila IDLEksi
+        timerState = TimerState.IDLE;
         console.log("Timer interval stopped, state set to IDLE.");
     }
 
     function stopTimerInterval() {
-        clearInterval(timerInterval);
-        timerInterval = null;
-         console.log("Timer interval cleared.");
+        if (timerInterval) {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            console.log("Timer interval cleared.");
+        }
     }
 
      function startTimerForPhase(phaseState, duration) {
@@ -357,24 +396,32 @@ document.addEventListener('DOMContentLoaded', () => {
         const label = (phaseState === TimerState.RUNNING_EXERCISE) ? "Työaika" : "Lepo";
         console.log(`Starting phase: ${phaseState}, Duration: ${duration}, Label: ${label}`);
         updateTimerDisplay(remainingTime, label);
-        updateButtonStates();
+        updateButtonStates(); // Update buttons for the new state
+
+        // Highlight next exercise if starting a rest phase
+        if (phaseState === TimerState.RUNNING_REST) {
+            highlightNextExercise();
+        } else {
+            clearNextUpHighlight(); // Clear highlight when starting work phase
+        }
+
 
         if (remainingTime > 0) {
             runTimerInterval();
         } else {
-            console.log("Phase duration is 0, handling timer end immediately.");
-            handleTimerEnd();
+            console.log("Phase duration is 0 or less, handling timer end immediately.");
+            handleTimerEnd(); // Directly handle end if duration is 0
         }
     }
 
     function runTimerInterval() {
         if (timerInterval) {
             console.warn("runTimerInterval called but interval already exists.");
-            return;
+            return; // Avoid multiple intervals
         }
         console.log("Starting timer interval (1000ms)");
         timerInterval = setInterval(() => {
-            if (timerState === TimerState.PAUSED) return; // Älä tee mitään jos pausella
+            if (timerState === TimerState.PAUSED) return;
 
             remainingTime--;
             const label = (timerState === TimerState.RUNNING_EXERCISE) ? "Työaika" : "Lepo";
@@ -388,10 +435,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handleTimerEnd() {
-         stopTimerInterval(); // Pysäytä NYKYINEN interval
+         stopTimerInterval();
          if (!currentWorkoutExercises[currentExerciseIndex]) {
              console.error("Cannot handle timer end: current exercise is undefined.");
-             resetWorkoutState(); // Hätäjarru: nollaa tila
+             resetWorkoutState();
              return;
          }
 
@@ -400,20 +447,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
          if (timerState === TimerState.RUNNING_EXERCISE) {
             console.log(`Exercise phase ended: ${currentExercise.name}`);
-            if (!isLastExercise && currentExercise.rest > 0) {
-                console.log(`Starting rest period (${currentExercise.rest}s)`);
-                startTimerForPhase(TimerState.RUNNING_REST, currentExercise.rest);
+             // Use default rest if set, otherwise exercise's rest
+             const restDurationToUse = getDefaultTime('rest') ?? currentExercise.rest;
+
+            if (!isLastExercise && restDurationToUse > 0) {
+                console.log(`Starting rest period (${restDurationToUse}s)`);
+                startTimerForPhase(TimerState.RUNNING_REST, restDurationToUse);
             } else {
-                console.log("No rest period or last exercise, moving to next phase.");
-                moveToNextPhase();
+                 if(isLastExercise){
+                     console.log("Last exercise finished.");
+                 } else {
+                    console.log("No rest period defined (or 0), moving to next exercise.");
+                 }
+                moveToNextPhase(); // Move immediately if no rest or last exercise
             }
         } else if (timerState === TimerState.RUNNING_REST) {
             console.log("Rest phase ended.");
+            clearNextUpHighlight(); // Clear highlight as rest ends
             moveToNextPhase();
         } else {
              console.warn(`handleTimerEnd called from unexpected state: ${timerState}`);
-             // Turvatoimena yritetään siirtyä eteenpäin
-             moveToNextPhase();
+             moveToNextPhase(); // Attempt to recover
         }
     }
 
@@ -421,22 +475,29 @@ document.addEventListener('DOMContentLoaded', () => {
         currentExerciseIndex++;
         if (currentExerciseIndex < currentWorkoutExercises.length) {
             console.log(`Moving to next exercise index: ${currentExerciseIndex}`);
-            displayExercise(currentExerciseIndex);
-            startTimerForPhase(TimerState.RUNNING_EXERCISE, currentWorkoutExercises[currentExerciseIndex].duration);
+            const nextExercise = currentWorkoutExercises[currentExerciseIndex];
+            const durationToUse = getDefaultTime('duration') ?? nextExercise.duration;
+            displayExercise(currentExerciseIndex); // Display before starting timer
+            startTimerForPhase(TimerState.RUNNING_EXERCISE, durationToUse);
         } else {
             console.log("Workout Finished");
-            timerState = TimerState.FINISHED;
+            timerState = TimerState.FINISHED; // Indicate finished state
             exerciseNameH2.textContent = "Treeni Valmis!";
             exerciseDescriptionP.textContent = "Hyvää työtä!";
             exerciseImageImg.style.display = 'none';
+             workoutNotesP.textContent = "Valitse uusi treeni tai aloita tämä alusta."; // Update notes area
             updateTimerDisplay(0, "Valmis");
             updateButtonStates();
-            // Palauta IDLE-tilaan ja nollaa indeksi, jotta voi aloittaa saman treenin uudelleen
-            currentExerciseIndex = 0;
-            timerState = TimerState.IDLE;
-            highlightCurrentExercise(); // Poista korostus
-            // Viiveellä voisi päivittää napit uudelleen, jotta "Start" tulee aktiiviseksi
-             setTimeout(updateButtonStates, 100); // Pieni viive varmuudeksi
+            highlightCurrentExercise(); // De-highlight last item
+
+            // Option: Reset to IDLE automatically after a short delay?
+            // setTimeout(() => {
+            //     timerState = TimerState.IDLE;
+            //     currentExerciseIndex = 0; // Ready to restart
+            //     updateButtonStates();
+            //     // Optionally display first exercise again
+            //      if(currentWorkoutExercises.length > 0) displayExercise(0);
+            // }, 3000);
         }
     }
 
@@ -446,44 +507,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const seconds = (timeInSeconds % 60).toString().padStart(2, "0");
         timeRemainingSpan.textContent = `${minutes}:${seconds}`;
         timerLabelP.textContent = label;
-        // console.log(`Timer display updated: ${minutes}:${seconds} - ${label}`); // Vähennä tätä jos liikaa lokeja
     }
 
-    // --- Navigointipainikkeet ---
+    // --- Navigointipainikkeet (MUOKATTU: Toimivat vain IDLE/FINISHED tilassa) ---
     function prevExercise() {
+        if (timerState !== TimerState.IDLE && timerState !== TimerState.FINISHED) {
+            console.log("Cannot navigate while timer is active.");
+            return;
+        }
         if (currentExerciseIndex > 0) {
             console.log("Moving to previous exercise.");
-            stopTimer();
-            currentExerciseIndex--;
-            timerState = TimerState.IDLE;
-            displayExercise(currentExerciseIndex);
-            updateButtonStates();
+            jumpToExercise(currentExerciseIndex - 1);
         }
     }
 
     function nextExercise() {
+         if (timerState !== TimerState.IDLE && timerState !== TimerState.FINISHED) {
+            console.log("Cannot navigate while timer is active.");
+            return;
+        }
         if (currentExerciseIndex < currentWorkoutExercises.length - 1) {
             console.log("Moving to next exercise.");
-            stopTimer();
-            currentExerciseIndex++;
-            timerState = TimerState.IDLE;
-            displayExercise(currentExerciseIndex);
-            updateButtonStates();
+             jumpToExercise(currentExerciseIndex + 1);
         } else {
-            // Jos ollaan viimeisessä, voitaisiin hypätä Valmis-tilaan
-            if (timerState !== TimerState.FINISHED && currentWorkoutExercises.length > 0) {
-                 console.log("Next pressed on last exercise, setting to Finished state.");
-                 stopTimer();
-                 timerState = TimerState.FINISHED; // Väliaikainen tila
-                 exerciseNameH2.textContent = "Treeni Valmis!";
-                 updateTimerDisplay(0, "Valmis");
-                  updateButtonStates();
-                 currentExerciseIndex = 0; // Nollaa valmiiksi
-                 timerState = TimerState.IDLE; // Takaisin IDLE tilaan
-                 highlightCurrentExercise();
-                 // Päivitä napit IDLE-tilaan
-                 setTimeout(updateButtonStates, 100);
-             }
+            // Optional: Maybe jump to FINISHED state if next is pressed on last item?
+            console.log("Already at the last exercise.");
         }
     }
 
@@ -493,19 +541,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const isIdle = timerState === TimerState.IDLE;
         const isRunning = timerState === TimerState.RUNNING_EXERCISE || timerState === TimerState.RUNNING_REST;
         const isPaused = timerState === TimerState.PAUSED;
-        const isFinished = timerState === TimerState.FINISHED; // Tätä tilaa käytetään nyt hetkellisesti
+        const isFinished = timerState === TimerState.FINISHED;
 
+        // Allow starting only if workout selected and timer is idle
         startBtn.disabled = !hasWorkout || !isIdle;
+        // Allow pause/resume only if timer is running or paused
         pauseBtn.disabled = !isRunning && !isPaused;
-        // Stop-nappi on aktiivinen jos treeni on valittu (ja ei IDLE) tai jos ajastin käy/pausella
-        stopBtn.disabled = !hasWorkout || isIdle;
-        // Tai jos haluat että Stop toimii aina jos treeni on valittu:
-        // stopBtn.disabled = !hasWorkout;
+        // Allow stopping if timer is running or paused
+        stopBtn.disabled = !isRunning && !isPaused;
+         // Allow navigation only if workout selected AND timer is idle or finished
+        const canNavigate = hasWorkout && (isIdle || isFinished);
+        prevBtn.disabled = !canNavigate || currentExerciseIndex <= 0;
+        nextBtn.disabled = !canNavigate || currentExerciseIndex >= currentWorkoutExercises.length - 1;
 
-        prevBtn.disabled = !hasWorkout || currentExerciseIndex <= 0 || isRunning || isPaused; // Ei voi selata kun ajastin käy
-        nextBtn.disabled = !hasWorkout || currentExerciseIndex >= currentWorkoutExercises.length - 1 || isRunning || isPaused; // Ei voi selata kun ajastin käy
 
-        // Päivitä Pause/Resume -teksti
+        // Update Pause/Resume text and style
         if (isPaused) {
             pauseBtn.textContent = "▶ Jatka";
             pauseBtn.classList.add('paused');
@@ -513,69 +563,99 @@ document.addEventListener('DOMContentLoaded', () => {
             pauseBtn.textContent = "⏸ Tauko";
             pauseBtn.classList.remove('paused');
         }
-         // console.log("Button states updated."); // Vähennä tarvittaessa
+         // console.log("Button states updated.");
     }
 
-     // --- Reset-funktio (KORJATTU VERSIO) ---
+     // --- MUOKATTU Reset-funktio ---
      function resetWorkoutState() {
-        console.log("Resetting workout state..."); // Loki alusta
-        stopTimerInterval(); // Pysäytä mahdollinen ajastin
-        currentWorkoutExercises = []; // Tyhjennä lista
+        console.log("Resetting workout state...");
+        stopTimerInterval();
+        currentWorkoutExercises = [];
+        currentWorkoutNotes = ''; // Clear notes
         currentExerciseIndex = 0;
         remainingTime = 0;
         timerState = TimerState.IDLE;
 
-        // Nollaa UI-elementit
+        // Nollaa UI
         exerciseNameH2.textContent = "Valitse treeni";
         exerciseDescriptionP.textContent = "";
+        workoutNotesP.textContent = ""; // Clear notes display
         exerciseImageImg.style.display = 'none';
         exerciseImageImg.src = '';
-        exerciseListUl.innerHTML = '<li>Valitse ensin treeni yläpuolelta.</li>';
+        exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>';
         updateTimerDisplay(0, "Odottamassa...");
-        highlightCurrentExercise(); // Varmista ettei mikään jää korostetuksi
-        updateButtonStates(); // Deaktivoi napit
-        console.log("Workout state reset complete."); // Loki lopusta
+        highlightCurrentExercise(); // De-highlight all
+        clearNextUpHighlight(); // Clear next-up highlight
+        updateButtonStates(); // Disable buttons appropriately
+
+        // Reset dropdown and button highlights
+        trainingDropdown.value = "";
+        document.querySelectorAll('.week-button').forEach(btn => btn.classList.remove('active'));
+
+        console.log("Workout state reset complete.");
     }
 
-    // --- Highlight-funktio (KORJATTU VERSIO) ---
+    // --- MUOKATTU Highlight-funktio ---
     function highlightCurrentExercise() {
-        const items = exerciseListUl.querySelectorAll('li.exercise-item'); // Varmista että kohdistuu oikeisiin li-elementteihin
+        const items = exerciseListUl.querySelectorAll('li.exercise-item');
         items.forEach((item) => {
-             // Varmista että data-index on olemassa ja muunna se numeroksi vertailua varten
             const itemIndex = parseInt(item.dataset.index, 10);
-            // Tarkista myös että treeni on valittu (currentWorkoutExercises.length > 0)
-            if (item.dataset.index !== undefined && currentWorkoutExercises.length > 0 && itemIndex === currentExerciseIndex) {
+            // Highlight only if workout is loaded and index matches
+            if (currentWorkoutExercises.length > 0 && !isNaN(itemIndex) && itemIndex === currentExerciseIndex) {
                 item.classList.add('active');
-                // Vieritä aktiivinen item näkyviin tarvittaessa
                 item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             } else {
                 item.classList.remove('active');
             }
         });
-         // Jos treeniä ei ole valittu, varmista ettei mikään ole aktiivinen
+        // Ensure nothing is active if no workout is loaded
          if (currentWorkoutExercises.length === 0) {
-              const allItems = exerciseListUl.querySelectorAll('li'); // Kohdista kaikkiin li-elementteihin
+              const allItems = exerciseListUl.querySelectorAll('li');
               allItems.forEach(item => item.classList.remove('active'));
          }
     }
 
+    // --- UUDET: Functions to handle next exercise highlight ---
+    function highlightNextExercise() {
+        clearNextUpHighlight(); // Clear previous one first
+        const nextIndex = currentExerciseIndex + 1;
+        if (nextIndex < currentWorkoutExercises.length) {
+             const nextItem = exerciseListUl.querySelector(`li[data-index="${nextIndex}"]`);
+             if (nextItem) {
+                 nextItem.classList.add('next-up'); // Add class for CSS styling/animation
+                 console.log(`Highlighting next exercise: ${nextItem.textContent}`);
+             }
+        }
+    }
+
+    function clearNextUpHighlight() {
+        const highlightedItem = exerciseListUl.querySelector('li.next-up');
+        if (highlightedItem) {
+            highlightedItem.classList.remove('next-up');
+             console.log("Cleared next-up highlight.");
+        }
+    }
+
     function toggleTrainingSelectionVisibility() {
          trainingSelectSection.classList.toggle('hidden');
-         if (trainingSelectSection.classList.contains('hidden')) {
-            toggleTrainingSelectBtn.textContent = "Valitse treeni ⯆";
-         } else {
-            toggleTrainingSelectBtn.textContent = "Piilota valikko ⯅";
-         }
+         toggleTrainingSelectBtn.textContent = trainingSelectSection.classList.contains('hidden')
+             ? "Valitse treeni ⯆"
+             : "Piilota valikko ⯅";
     }
 
     // --- Event Listeners ---
-    trainingDropdown.addEventListener('change', handleTrainingSelect);
+    // Button listeners are added dynamically in populateTrainingSelectors
+    // Dropdown listener added dynamically in populateTrainingSelectors if presets exist
     startBtn.addEventListener('click', startWorkout);
     pauseBtn.addEventListener('click', pauseResumeTimer);
     stopBtn.addEventListener('click', stopWorkout);
     prevBtn.addEventListener('click', prevExercise);
     nextBtn.addEventListener('click', nextExercise);
     toggleTrainingSelectBtn.addEventListener('click', toggleTrainingSelectionVisibility);
+    // Optional: Listen for changes in default time inputs to provide feedback?
+     // defaultDurationInput.addEventListener('change', () => console.log(`Default duration set to: ${defaultDurationInput.value}`));
+     // defaultRestInput.addEventListener('change', () => console.log(`Default rest set to: ${defaultRestInput.value}`));
+
 
     // --- Sovelluksen käynnistys ---
     loadAppData();
