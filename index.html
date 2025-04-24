@@ -15,13 +15,39 @@
       <button id="toggle-training-select">Valitse treeni ⯆ / ⯅</button>
     </header>
 
-    <!-- Treenin valinta -->
+    <!-- Treenin valinta (MUOKATTU OSASTO) -->
     <section id="training-select" class="collapsible hidden">
       <h2>Valitse treeni</h2>
-      <select id="training-dropdown">
-        <option value="">-- Valitse treeni --</option>
-        <!-- Vaihtoehdot lisätään dynaamisesti JS:llä -->
-      </select>
+
+      <!-- Viikkotreenien napit tulevat tähän JS:llä -->
+      <div id="week-buttons-container" class="button-container">
+          <!-- Nappeja lisätään tähän dynaamisesti -->
+          <p>Ladataan viikkotreenejä...</p>
+      </div>
+
+      <!-- Oletusaikojen asetukset -->
+      <div class="default-time-settings">
+        <h3>Oletusajat (valinnainen)</h3>
+        <div class="time-input-group">
+            <label for="default-duration">Työaika (s):</label>
+            <input type="number" id="default-duration" min="5" placeholder="Harjoituksen oletus">
+        </div>
+        <div class="time-input-group">
+            <label for="default-rest">Lepoaika (s):</label>
+            <input type="number" id="default-rest" min="0" placeholder="Harjoituksen oletus">
+        </div>
+         <small>Syötä numero (esim. 45) yliajaaksesi kaikki harjoituskohtaiset ajat tälle sessiolle.</small>
+      </div>
+
+      <!-- Pikatreenien pudotusvalikko (JS täyttää tämän) -->
+       <div class="preset-select-container">
+          <h3>Tai valitse Pikatreeni:</h3>
+          <select id="training-dropdown">
+            <option value="">-- Valitse Pikatreeni --</option>
+            <!-- Vaihtoehdot lisätään dynaamisesti JS:llä -->
+          </select>
+       </div>
+
     </section>
 
     <main>
@@ -47,9 +73,14 @@
         <!-- Sisällön jakaminen kahteen osaan -->
         <div id="content-split">
 
-          <!-- Vasen puoli (Kuva ja kuvaus) -->
+          <!-- Vasen puoli (Kuva, Muistiinpanot ja kuvaus) (MUOKATTU) -->
           <div id="exercise-details">
             <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
+            <!-- Treenin muistiinpanot tulevat tähän -->
+            <div id="workout-notes-container">
+                 <p id="workout-notes"></p>
+            </div>
+            <!-- Yksittäisen harjoituksen kuvaus -->
             <p id="exercise-description"></p>
           </div>
 
