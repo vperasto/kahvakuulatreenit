@@ -231,7 +231,7 @@
     },
     {
       "week": "Viikko 11: Yhdistelmätreeni",
-      "exercises": ["Kahvakuulaheilautus", "Goblet-kyykky", "Kahvakuulasoutu", "Kahvakuula rinnalle ja työntö"], // Voit muokata liikkeitä
+      "exercises": ["Kahvakuulaheilautus", "Goblet-kyykky", "Kahvakuulasoutu", "Kahvakuula rinnalle ja työntö"], 
       "notes": "LÄMMITTELY: Kertaa tärkeimmät liikemallit. TREENI: Kertausviikko! Tee esim. AMRAP 15-20 min: Heilautus x 10, Kyykky x 8, Soutu 6+6 (tai Clean & Press x 4+4). Käytä ajastinta koko AMRAP-ajan mittaamiseen. TAI Kiertoharjoittelu 3-4 kierrosta listan liikkeillä (esim. 40s työ / 20s lepo). JÄÄHDYTTELY: Koko kehon venyttely, kurssin kertaus."
     }
   ]
