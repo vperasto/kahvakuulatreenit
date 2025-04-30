@@ -1,238 +1,303 @@
 {
+  "warmup": {
+    "durationMinutes": 5,
+    "description": "Dynaaminen lämmittely. Noin 30-60 sekuntia per liike tai 10-15 toistoa.",
+    "steps": [
+      { "name": "Nivelten pyörittelyt (ranteet, kyynärp., olkap., lantio, polvet, nilkat)" },
+      { "name": "Jalan heilautukset eteen-taakse & sivulle (molemmat jalat)" },
+      { "name": "Vartalon kierrot" },
+      { "name": "Syväkyykky ilman painoa" },
+      { "name": "Kevyt hölkkä paikallaan / Haarahypyt" },
+      { "name": "Halo kevyellä kuulalla (muutama hidas kierto / suunta)", "optional": true }
+    ]
+  },
+  "cooldown": {
+    "durationMinutes": 7,
+    "description": "Rauhallisia, staattisia venytyksiä. Pidä 20-30 sekuntia per venytys.",
+    "steps": [
+      { "name": "Takareisien venytys" },
+      { "name": "Pakaran venytys" },
+      { "name": "Etureiden venytys" },
+      { "name": "Rintalihaksen venytys" },
+      { "name": "Hartian / Takaolkapään venytys" },
+      { "name": "Ojentajan venytys" },
+      { "name": "Selän kevyt pyöristys/ojennus (esim. kissakameli)" }
+    ]
+  },
   "exercises": [
-    
     {
-      "name": "Goblet-kyykky",
-      "duration": 45, 
-      "rest": 15,
+      "id": "goblet_squat",
+      "name": "Pokaalikyykky",
       "image": "img/goblet-kyykky.png",
       "description": "Pidä kahvakuula rinnalla sarvista kiinni. Laskeudu kyykkyyn pitäen selkä suorana, rinta auki ja polvet linjassa varpaiden kanssa. Pyri riittävään syvyyteen liikkuvuuden mukaan.",
       "muscleGroups": ["reidet", "pakarat", "keskivartalo", "ryhti"]
     },
     {
-      "name": "Kahvakuulaheilautus", 
-      "duration": 30, 
-      "rest": 15,
-      "image": "img/heilautus.png", 
+      "id": "two_hand_swing",
+      "name": "Kahden käden etuheilautus",
+      "image": "img/heilautus.png",
       "description": "Kahden käden heilautus. Seiso haara-asennossa, ota kuulasta kiinni. Vie kuula jalkojen väliin (lantion sarana). Heilauta kuula rinnan korkeudelle räjähtävällä lantion ojennuksella. Kädet ohjaavat, voima lantiosta! Pidä keskivartalo tiukkana yläasennossa.",
       "muscleGroups": ["pakarat", "takareidet", "alaselkä", "keskivartalo", "voimantuotto"]
     },
     {
-      "name": "Pystypunnerrus", 
-      "duration": 45, 
-      "rest": 15,
-      "image": "img/pystypunnerrus.png",
-      "description": "Seisten, kuula rinnalle vedettynä (rack position). Punnerra kuula suoralle kädelle pään yläpuolelle pitäen keskivartalo tiukkana ja ranne suorana. Laske hallitusti takaisin rinnalle.",
-      "muscleGroups": ["hartiat", "ojentajat", "yläselkä", "keskivartalo"]
+      "id": "halo",
+      "name": "Halo",
+      "image": "img/halo.png",
+      "description": "Seiso ryhdikkäästi, kuula rinnalla sarvista kiinni (pohja ylöspäin). Pyöritä kuulaa hitaasti pään ympäri pitäen kuula mahdollisimman lähellä. Aktivoi keskivartalo, pidä lantio paikallaan. Tee molempiin suuntiin. Avaa hartiarenkaan liikkuvuutta.",
+      "muscleGroups": ["hartiat", "keskivartalo", "liikkuvuus", "yläselkä"]
     },
     {
-      "name": "Maastaveto kahvakuulalla",
-      "duration": 45, 
-      "rest": 15,
-      "image": "img/maastaveto.png",
-      "description": "Seiso kuulan päällä, jalat lantion leveydellä. Kyykisty ja ota kuulasta kiinni, selkä suorana (lantion sarana). Nosta kuula ylös ojentamalla lonkat ja polvet. Pidä selkä neutraalina koko liikkeen ajan. Laske hallitusti.",
-      "muscleGroups": ["takareidet", "pakarat", "selkä", "reidet", "keskivartalo"]
-    },
-    {
-      "name": "Kahvakuulasoutu", 
-      "duration": 40, 
-      "rest": 15,
+      "id": "bent_over_row",
+      "name": "Kulmasoutu",
       "image": "img/soutu.png",
       "description": "Nojaa eteenpäin tuki kädellä polveen tai penkkiin, selkä suorana. Vedä kahvakuulaa kohti kylkeä/lantiota, purista lapaa taakse. Laske hallitusti alas.",
       "muscleGroups": ["yläselkä", "lavanlähentäjät", "hauikset", "epäkäs"]
     },
     {
-      "name": "Keskivartalon kierto", 
-      "duration": 30,
-      "rest": 15,
-      "image": "img/kierto.png",
-      "description": "Istu lattialla, polvet koukussa. Kallista ylävartaloa taakse suoralla selällä. Kierrä kahvakuulaa (kevyttä!) hallitusti puolelta toiselle. Pidä lantio paikallaan.",
-      "muscleGroups": ["keskivartalo", "vinot vatsalihakset"]
+        "id": "one_hand_swing",
+        "name": "Yhden käden etuheilautus",
+        "image": "img/one-hand-swing.png",
+        "description": "Sama periaate kuin kahden käden heilautuksessa, mutta kuula yhdessä kädessä. Keskity estämään vartalon kiertymistä – pidä hartiat ja lantio suorassa linjassa. Vapaa käsi voi seurata mukana tai olla 'kilpenä' edessä.",
+        "muscleGroups": ["pakarat", "takareidet", "keskivartalo", "selkä", "hartiat", "puristusvoima"]
     },
     {
-      "name": "Askelkyykky ja kahvakuula", 
-      "duration": 45, 
-      "rest": 15,
-      "image": "img/askelkyykky.png",
-      "description": "Pidä kuulaa rinnalla (Goblet) tai sivuilla. Astu pitkä askel eteen tai taakse ja laskeudu kunnes molemmat polvet ovat n. 90 asteen kulmassa. Pidä etummainen polvi linjassa varpaiden kanssa ja ylävartalo pystyssä. Ponnista takaisin alkuasentoon.",
-      "muscleGroups": ["reidet", "pakarat", "keskivartalo", "tasapaino"]
+        "id": "clean",
+        "name": "Rinnalleveto",
+        "image": "img/clean.png",
+        "description": "Nosta kahvakuula maasta tai heilautuksesta rinnalle 'rack'-asentoon. Käytä lantion voimaa. Pidä kuula lähellä vartaloa ja kyynärpää lähellä kylkeä ylös tullessa. 'Taltuta kaari' ja vaimenna kuulan tulo ranteelle.",
+        "muscleGroups": ["pakarat", "reidet", "keskivartalo", "selkä", "hartiat", "käsivarret"]
     },
     {
-      "name": "Kahvakuula ympäri vartaloa", 
-      "duration": 30,
-      "rest": 15,
-      "image": "img/ympari-vartaloa.png",  
-      "description": "Seiso hyvässä ryhdissä. Pyöritä kahvakuulaa vartalon ympäri vaihtaen sitä kädestä toiseen edessä ja takana. Pidä keskivartalo tiukkana, älä anna lantion heilua.",
-      "muscleGroups": ["keskivartalo", "käsivarret", "hartiat", "koordinaatio"]
+        "id": "overhead_press",
+        "name": "Pystypunnerrus",
+        "image": "img/pystypunnerrus.png",
+        "description": "Seisten, kuula rinnalle vedettynä (rack position). Punnerra kuula suoralle kädelle pään yläpuolelle pitäen keskivartalo tiukkana ja ranne suorana. Laske hallitusti takaisin rinnalle.",
+        "muscleGroups": ["hartiat", "ojentajat", "yläselkä", "keskivartalo"]
     },
     {
-      "name": "Turkkilainen ylösnousu", 
-      "duration": 90, 
-      "rest": 30,
-      "image": "img/turkish-getup.png",
-      "description": "Monivaiheinen liike lattialta seisoma-asentoon ja takaisin, kuula koko ajan suoralla kädellä ylhäällä. Kehittää voimaa, liikkuvuutta, koordinaatiota ja keskivartalon hallintaa. Katse kuulassa! Etene rauhallisesti vaihe kerrallaan.",
-      "muscleGroups": ["koko keho", "keskivartalo", "hartiat", "lonkat", "tasapaino", "liikkuvuus"]
+        "id": "reverse_lunge",
+        "name": "Askelkyykky taakse",
+        "image": "img/askelkyykky.png",
+        "description": "Pidä kuulaa rinnalla (Goblet) tai sivuilla. Astu pitkä askel taakse ja laskeudu kunnes molemmat polvet ovat n. 90 asteen kulmassa. Pidä etummainen polvi linjassa varpaiden kanssa ja ylävartalo pystyssä. Ponnista takaisin alkuasentoon.",
+        "muscleGroups": ["reidet", "pakarat", "keskivartalo", "tasapaino"]
     },
     {
-      "name": "Kahvakuula rinnalle", 
-      "duration": 40, 
-      "rest": 15,
-      "image": "img/clean.png",
-      "description": "Nosta kahvakuula maasta tai heilautuksesta rinnalle 'rack'-asentoon. Käytä lantion voimaa. Pidä kuula lähellä vartaloa ja kyynärpää lähellä kylkeä ylös tullessa. 'Taltuta kaari' ja vaimenna kuulan tulo ranteelle.",
-      "muscleGroups": ["pakarat", "reidet", "keskivartalo", "selkä", "hartiat", "käsivarret"]
+        "id": "farmers_carry",
+        "name": "Farmarikävely",
+        "image": "img/farmers-walk.png",
+        "description": "Ota kuula (tai kaksi) käteen/käsiin. Seiso ryhdikkäästi, vedä lavat taakse ja alas. Kävele määrätty matka pitäen keskivartalo tiukkana ja ryhti hyvänä. Vahvistaa puristusvoimaa, keskivartaloa, ryhtiä ja kestävyyttä.",
+        "muscleGroups": ["koko keho", "puristusvoima", "kyynärvarret", "epäkäs", "keskivartalo", "ryhti"]
     },
     {
-      "name": "Kahvakuula rinnalle ja työntö", 
-      "duration": 45, 
-      "rest": 20,
-      "image": "img/clean-press.png",
-      "description": "Yhdistä sujuvasti rinnalleveto (Clean) ja pystypunnerrus (Press). Tee ensin Clean, vakauta asento ja punnerra kuula ylös. Laske hallitusti ensin rinnalle, sitten alas.",
-      "muscleGroups": ["koko keho", "reidet", "pakarat", "hartiat", "keskivartalo", "ojentajat"]
-    },
-
-    
-    {
-      "name": "Halo",
-      "duration": 40, 
-      "rest": 15,
-      "image": "img/halo.png", 
-      "description": "Seiso ryhdikkäästi, kuula rinnalla sarvista kiinni (pohja ylöspäin). Pyöritä kuulaa hitaasti pään ympäri pitäen kuula mahdollisimman lähellä. Aktivoi keskivartalo, pidä lantio paikallaan. Tee molempiin suuntiin. Avaa hartiarenkaan liikkuvuutta.",
-      "muscleGroups": ["hartiat", "keskivartalo", "liikkuvuus", "yläselkä"]
+        "id": "snatch",
+        "name": "Tempaus",
+        "image": "img/snatch.png",
+        "description": "Räjähtävä liike, jossa kuula heilautetaan yhdellä kädellä suoraan pään päälle lukittuun asentoon. Käytä voimakkaasti lantiota. Pidä kuula lähellä vartaloa nousuvaiheessa (kuin vetoketju). Ylhäällä 'lyö' käsi kuulan läpi pehmeästi, vältä kolahdus. Laske hallitusti.",
+        "muscleGroups": ["koko keho", "pakarat", "reidet", "selkä", "hartiat", "keskivartalo", "voimantuotto"]
     },
     {
-      "name": "Lattipunnerrus", 
-      "duration": 45, 
-      "rest": 15,
-      "image": "img/floor-press.png", 
-      "description": "Makaa selälläsi, polvet koukussa, jalkapohjat lattiassa. Ota kuula yhdellä kädellä rinnalle. Punnerra kuula suoraan ylös kohti kattoa. Kyynärpää n. 45 asteen kulmassa vartaloon lattiaa vasten. Laske hallitusti, kunnes olkavarsi koskettaa lattiaa.",
-      "muscleGroups": ["rinta", "ojentajat", "hartiat"]
-    },
-     {
-      "name": "Yhden käden heilautus", 
-      "duration": 30, 
-      "rest": 15,
-      "image": "img/one-hand-swing.png", 
-      "description": "Sama periaate kuin kahden käden heilautuksessa, mutta kuula yhdessä kädessä. Keskity estämään vartalon kiertymistä – pidä hartiat ja lantio suorassa linjassa. Vapaa käsi voi seurata mukana tai olla 'kilpenä' edessä. Vaihda kättä turvallisesti ylhäällä tai alhaalla.",
-      "muscleGroups": ["pakarat", "takareidet", "keskivartalo", "selkä", "hartiat", "puristusvoima"]
+        "id": "clean_and_press",
+        "name": "Rinnalleveto ja Työntö",
+        "image": "img/clean-press.png",
+        "description": "Yhdistä sujuvasti rinnalleveto (Clean) ja pystypunnerrus (Press). Tee ensin Clean, vakauta asento ja punnerra kuula ylös. Laske hallitusti ensin rinnalle, sitten alas.",
+        "muscleGroups": ["koko keho", "reidet", "pakarat", "hartiat", "keskivartalo", "ojentajat"]
     },
     {
-      "name": "Farmarikävely", 
-      "duration": 60, 
-      "rest": 30,
-      "image": "img/farmers-walk.png", 
-      "description": "Ota kuula (tai kaksi) käteen/käsiin. Seiso ryhdikkäästi, vedä lavat taakse ja alas. Kävele määrätty matka pitäen keskivartalo tiukkana ja ryhti hyvänä. Vahvistaa puristusvoimaa, keskivartaloa, ryhtiä ja kestävyyttä.",
-      "muscleGroups": ["koko keho", "puristusvoima", "kyynärvarret", "epäkäs", "keskivartalo", "ryhti"]
+        "id": "front_squat",
+        "name": "Etukyykky",
+        "image": "img/etukyykky.png",
+        "description": "Kuula(t) rinnalle vedettynä (rack position). Laskeudu kyykkyyn pitäen selkä pystyssä ja kyynärpäät ylhäällä. Yhdellä kuulalla keskivartalo joutuu työskentelemään enemmän.",
+        "muscleGroups": ["reidet", "pakarat", "keskivartalo", "ryhti", "hartiat"]
     },
     {
-      "name": "Rinnallevedossa kanto", 
-      "duration": 60, 
-      "rest": 30,
-      "image": "img/rack-carry.png", 
-      "description": "Vedä kuula/t rinnalle 'rack'-asentoon (kyynärpää lähellä kylkeä, ranne suorana). Kävele määrätty matka pitäen asento vakaana ja keskivartalo tiukkana. Haastaa keskivartalon ja hartianseudun pitoa.",
-      "muscleGroups": ["keskivartalo", "hartiat", "selkä", "reidet", "pakarat", "ryhti"]
-    },
-     {
-      "name": "Tuulimylly", 
-      "duration": 60, 
-      "rest": 20,
-      "image": "img/windmill.png", 
-      "description": "Seiso jalat leveällä, kuula toisessa kädessä suorana ylhäällä, katse kuulassa. Työnnä lantiota sivulle ja taakse (kuulaa vastakkaiselle puolelle). Liu'uta vapaa käsi reittä/säärtä pitkin alas pitäen kuulaa kantava käsi ja jalka suorana. Nouse hallitusti takaisin. Vaatii hyvää liikkuvuutta ja hallintaa.",
-      "muscleGroups": ["keskivartalo", "vinot vatsalihakset", "takareidet", "pakarat", "hartiat", "liikkuvuus"]
+        "id": "turkish_get_up",
+        "name": "Turkkilainen Ylösnousu",
+        "image": "img/turkish-getup.png",
+        "description": "Monivaiheinen liike lattialta seisoma-asentoon ja takaisin, kuula koko ajan suoralla kädellä ylhäällä. Kehittää voimaa, liikkuvuutta, koordinaatiota ja keskivartalon hallintaa. Katse kuulassa! Etene rauhallisesti vaihe kerrallaan.",
+        "muscleGroups": ["koko keho", "keskivartalo", "hartiat", "lonkat", "tasapaino", "liikkuvuus"]
     },
     {
-      "name": "Korkea veto",
-      "duration": 30, 
-      "rest": 15,
-      "image": "img/high-pull.png", 
-      "description": "Aloita kuten yhden käden heilautus. Kun kuula nousee, vedä kyynärpää korkealle ja taakse, pitäen kuula lähellä vartaloa. Käsi jää koukkuun, kuula nousee rinnan korkeudelle. Palauta hallitusti alas heilautukseen. Esiharjoite tempaukselle.",
-      "muscleGroups": ["pakarat", "takareidet", "selkä", "hartiat", "epäkäs", "hauis"]
+        "id": "windmill",
+        "name": "Tuulimylly",
+        "image": "img/windmill.png",
+        "description": "Seiso jalat leveällä, kuula toisessa kädessä suorana ylhäällä, katse kuulassa. Työnnä lantiota sivulle ja taakse (kuulaa vastakkaiselle puolelle). Liu'uta vapaa käsi reittä/säärtä pitkin alas pitäen kuulaa kantava käsi ja jalka suorana. Nouse hallitusti takaisin. Vaatii hyvää liikkuvuutta ja hallintaa.",
+        "muscleGroups": ["keskivartalo", "vinot vatsalihakset", "takareidet", "pakarat", "hartiat", "liikkuvuus"]
     },
     {
-      "name": "Tempaus", 
-      "duration": 40, 
-      "rest": 20,
-      "image": "img/snatch.png", 
-      "description": "Räjähtävä liike, jossa kuula heilautetaan yhdellä kädellä suoraan pään päälle lukittuun asentoon. Käytä voimakkaasti lantiota. Pidä kuula lähellä vartaloa nousuvaiheessa (kuin vetoketju). Ylhäällä 'lyö' käsi kuulan läpi pehmeästi, vältä kolahdus. Laske hallitusti.",
-      "muscleGroups": ["koko keho", "pakarat", "reidet", "selkä", "hartiat", "keskivartalo", "voimantuotto"]
+        "id": "rack_carry",
+        "name": "Räkkikanto",
+        "image": "img/rack-carry.png",
+        "description": "Vedä kuula/t rinnalle 'rack'-asentoon (kyynärpää lähellä kylkeä, ranne suorana). Kävele määrätty matka pitäen asento vakaana ja keskivartalo tiukkana. Haastaa keskivartalon ja hartianseudun pitoa.",
+        "muscleGroups": ["keskivartalo", "hartiat", "selkä", "reidet", "pakarat", "ryhti"]
+    },
+    {
+        "id": "waiters_carry",
+        "name": "Tarjoilijankanto",
+        "image": "img/waiters-carry.png",
+        "description": "Pidä kuula suoralla kädellä pään päällä, kyynärvarsi pystysuorassa ja olkapää aktiivisena (ei lysähdä). Kävele määrätty matka pitäen asento vakaana ja keskivartalo tiukkana. Erittäin haastava tasapainolle ja hartian vakaudelle.",
+        "muscleGroups": ["hartiat", "keskivartalo", "tasapaino", "ryhti", "ojentajat"]
     }
   ],
-
-  
-  "presetWorkouts": [
-    {
-      "name": "Pikatreeni A: Nopea koko keho",
-      "exercises": ["Goblet-kyykky", "Kahvakuulaheilautus", "Pystypunnerrus", "Kahvakuula ympäri vartaloa"],
-       "notes": "Nopea peruskuntoa ja voimaa ylläpitävä treeni. Tee 3-4 kierrosta, esim. 40s työtä / 20s lepoa per liike."
+  "kettlebellProgram11Weeks": {
+    "programInfo": {
+        "programName": "11 Viikon Kahvakuulaohjelma (4 Tasoa)",
+        "frequency": "1 kerta / viikko",
+        "estimatedTotalDurationMinutes": 45,
+        "workoutDurationMinutes": 30,
+        "levels": [
+            { "level": 1, "description": "Vasta-alkaja: Perusteiden turvallinen oppiminen, kevyet painot, pidemmät tauot." },
+            { "level": 2, "description": "Harrastelija: Perusliikkeet hallussa, intensiteetin ja volyymin nosto, keskipainot." },
+            { "level": 3, "description": "Kokenut: Hyvä tekniikka, voiman ja kestävyyden haastaminen, raskaammat painot, lyhyemmät tauot." },
+            { "level": 4, "description": "Expertti: Erinomainen tekniikka ja voimataso, maksimaalinen teho ja kestävyys, haastavat painot/yhdistelmät." }
+        ]
     },
-    {
-      "name": "Pikatreeni B: Voimapainotteinen",
-      "exercises": ["Maastaveto kahvakuulalla", "Askelkyykky ja kahvakuula", "Pystypunnerrus", "Kahvakuulasoutu"],
-      "notes": "Keskity voimaan ja hyvään tekniikkaan. Tee 3-5 sarjaa, 6-10 toistoa per liike. Pidä riittävät tauot sarjojen välissä."
-    },
-    {
-      "name": "Pikatreeni C: Keskivartalo",
-      "exercises": ["Keskivartalon kierto", "Kahvakuula ympäri vartaloa", "Halo", "Rinnallevedossa kanto"],
-      "notes": "Vahvista keskivartalon pitoa ja hallintaa. Tee 3 kierrosta, esim. 45s työtä / 15s lepoa. Kantoliikkeessä kävele 30-60s."
-    }
-   
-  ],
-
-
-  "weeklyWorkouts": [
-    {
-      "week": "Viikko 1: Perusteet",
-      "exercises": ["Maastaveto kahvakuulalla", "Halo", "Goblet-kyykky"],
-      "notes": "LÄMMITTELY: 5-10min dynaamisia liikkeitä (lonkat, selkä, olkapäät). TREENI: Keskity tekniikkaan ja turvallisuuteen. Opettele perusliikemallit. Tee n. 3 sarjaa x 8-10 toistoa per liike rauhallisesti. Ajastin voi toimia sarjan ohjeellisena aikana. Pidä taukoja tarpeen mukaan. JÄÄHDYTTELY: 5min kevyttä venyttelyä."
-    },
-    {
-      "week": "Viikko 2: Heilautuksen perusteet",
-      "exercises": ["Maastaveto kahvakuulalla", "Kahvakuulaheilautus", "Goblet-kyykky"],
-      "notes": "LÄMMITTELY: Kuten vko 1, painota lantion ojennusta. TREENI: Opettele kahden käden heilautuksen (Kahvakuulaheilautus) tekniikka lantion voimalla. Tee heilautusta 5 sarjaa x 10-12 toistoa (ajastin voi ohjata sarjan pituutta). Tee maastavetoa ja kyykkyä 2-3 sarjaa x 8-10 toistoa. JÄÄHDYTTELY: Venytä takareidet ja pakarat."
-    },
-    {
-      "week": "Viikko 3: Heilautus & Ylävartalo",
-      "exercises": ["Kahvakuulaheilautus", "Goblet-kyykky", "Lattipunnerrus", "Kahvakuulasoutu"],
-      "notes": "LÄMMITTELY: Painota olkapäitä ja selkää. TREENI: Vahvistetaan heilautusta ja lisätään ylävartalon perusliikkeet. Tee esim. kiertoharjoitteluna: Kierto 1 (Heilautus 15, Kyykky 10) x 3 kierrosta. Kierto 2 (Lattipunnerrus 8-10/käsi, Soutu 8-10/käsi) x 3 kierrosta. Käytä ajastinta ohjaamaan työ- ja lepoaikoja kierrosten sisällä. JÄÄHDYTTELY: Rinta, selkä, takareidet."
-    },
-    {
-      "week": "Viikko 4: Yhden käden heilautus & Kanto",
-      "exercises": ["Yhden käden heilautus", "Goblet-kyykky", "Farmarikävely"],
-      "notes": "LÄMMITTELY: Keskivartalon aktivointi. TREENI: Opettele yhden käden heilautus (4 x 8+8 per käsi). Keskity vartalon hallintaan. Tee kyykkyjä (3x12) ja farmarikävelyä (3 x 20-30m tai 60s kävelyä). Ajastin rytmittää sarjoja. JÄÄHDYTTELY: Kyljet, kyynärvarret."
-    },
-    {
-      "week": "Viikko 5: Rinnalleveto (Clean)",
-      "exercises": ["Maastaveto kahvakuulalla", "Kahvakuula rinnalle", "Kahvakuulaheilautus"],
-      "notes": "LÄMMITTELY: Ranteet, kyynärpäät, olkapäät. TREENI: Opettele rinnallevedon (Clean = Kahvakuula rinnalle) tekniikka. Tee ensin maastavedosta (Dead Clean) 3 x 5+5. Harjoittele sitten heilautuksesta (Swing Clean) 3 x 3+3. Lopuksi kahden käden heilautuksia 3 x 15. Keskity tekniikkaan, älä kolauta rannetta! Ajastin auttaa rytmityksessä. JÄÄHDYTTELY: Ranteet, kyynärvarret."
-    },
-    {
-      "week": "Viikko 6: Clean & Press",
-      "exercises": ["Kahvakuula rinnalle", "Pystypunnerrus", "Kahvakuula rinnalle ja työntö", "Farmarikävely"],
-      "notes": "LÄMMITTELY: Olkapäät, rintaranka. TREENI: Yhdistetään rinnalleveto ja pystypunnerrus. Harjoittele erikseen (Clean 2x5+5, Press 2x5+5). Tee yhdistelmä Clean & Press (Kahvakuula rinnalle ja työntö) 4 x 5+5. Lopuksi Farmarikävely 2 x 30m (tai 60s). Käytä ajastinta sarjojen ja lepojen rytmitykseen. JÄÄHDYTTELY: Olkapäät, ojentajat."
-    },
-    {
-      "week": "Viikko 7: Askelkyykky & Rack Carry",
-      "exercises": ["Askelkyykky ja kahvakuula", "Rinnallevedossa kanto", "Yhden käden heilautus"],
-      "notes": "LÄMMITTELY: Lonkat ja jalat. TREENI: Jalkapainotteinen viikko. Tee askelkyykkyjä kuula rinnalla (Goblet Lunge) 3 x 8+8 per jalka. Tee Rinnallevedossa kantoa (Rack Carry) 3 x 20-30m per puoli (tai 60s per puoli). Lisäksi yhden käden heilautuksia 4 x 10+10 per käsi. Ajastin tukee sarjoja. JÄÄHDYTTELY: Lonkankoukistajat, reidet, pakarat."
-    },
-    {
-      "week": "Viikko 8: TGU Osa 1",
-      "exercises": ["Turkkilainen ylösnousu", "Kahvakuulasoutu", "Kahvakuulaheilautus"],
-      "notes": "LÄMMITTELY: Erittäin huolellinen olkapään ja rintarangan liikkuvuus. TREENI: Aloitetaan Turkkilainen ylösnousu (TGU). Keskity ensimmäiseen puoliskoon (makuulta käden varaan). Tee hitaasti ja kontrolloidusti 3-4 x 2+2 per puoli (käytä ajastinta ohjaamaan rauhallista suoritusta, esim. 90s per toisto/puoli). Tee lisäksi soutua 3 x 10+10 ja kahden käden heilautuksia 3 x 15. JÄÄHDYTTELY: Olkapäät, rinta, selkä."
-    },
-    {
-      "week": "Viikko 9: TGU Osa 2 & Windmill",
-      "exercises": ["Turkkilainen ylösnousu", "Tuulimylly", "Goblet-kyykky"],
-      "notes": "LÄMMITTELY: Kuten vko 8 + lonkat, takareidet. TREENI: Jatketaan TGU:ta koko liikkeeksi asti (3 x 1+1 tai 2+2 per puoli) hitaasti ja kontrolloidusti. Käytä ajastinta (esim. 90-120s per toisto). Opettele Tuulimylly (Windmill) kevyellä kuulalla 3 x 5+5 per puoli (hitaasti, ajastin tukee). Lisäksi kyykkyjä 3 x 12. JÄÄHDYTTELY: Takareidet, lonkat, kyljet, olkapäät."
-    },
-    {
-      "week": "Viikko 10: Tempaus (Snatch)",
-      "exercises": ["Korkea veto", "Tempaus", "Farmarikävely"],
-      "notes": "LÄMMITTELY: Räjähtävyys, olkapään vakaus. TREENI: Opettele tempauksen (Snatch) perusteet. Harjoittele ensin Korkeaa vetoa (High Pull) 2-3 x 5+5. Tee sitten Tempauksia kevyellä kuulalla 5 x 5+5 per käsi, keskity tekniikkaan! Ajastin voi rytmittää sarjat. Lopuksi palauttava Farmarikävely 2 x 30m (tai 60s). JÄÄHDYTTELY: Olkapäät, kyynärvarret, selkä."
-    },
-    {
-      "week": "Viikko 11: Yhdistelmätreeni",
-      "exercises": ["Kahvakuulaheilautus", "Goblet-kyykky", "Kahvakuulasoutu", "Kahvakuula rinnalle ja työntö"], 
-      "notes": "LÄMMITTELY: Kertaa tärkeimmät liikemallit. TREENI: Kertausviikko! Tee esim. AMRAP 15-20 min: Heilautus x 10, Kyykky x 8, Soutu 6+6 (tai Clean & Press x 4+4). Käytä ajastinta koko AMRAP-ajan mittaamiseen. TAI Kiertoharjoittelu 3-4 kierrosta listan liikkeillä (esim. 40s työ / 20s lepo). JÄÄHDYTTELY: Koko kehon venyttely, kurssin kertaus."
-    }
-  ]
+    "phases": [
+      { // VAIHE 1: Viikot 1-3
+        "phaseInfo": {
+            "name": "Perusteiden Vahvistaminen",
+            "weeks": [1, 2, 3],
+            "focus": "Liikeratojen opettelu, keskivartalon tuki, perusliikkeiden hallinta."
+        },
+        "workoutPlan": {
+          "rounds": "3-4 (aloita 3:sta, lisää 4. viikolla 3 jos sopii)",
+          "restBetweenRoundsSeconds": "60-90"
+        },
+        "levels": {
+          "1": {
+            "timeBased": { "workSeconds": 30, "restSeconds": 30 },
+            "repBased": { "repsDescription": "8 toistoa (Halo 4/suunta)", "restBetweenExercisesSeconds": "15-20" }
+          },
+          "2": {
+            "timeBased": { "workSeconds": 35, "restSeconds": 25 },
+            "repBased": { "repsDescription": "10 toistoa (Halo 5/suunta)", "restBetweenExercisesSeconds": "15-20" }
+          },
+          "3": {
+            "timeBased": { "workSeconds": 40, "restSeconds": 20 },
+            "repBased": { "repsDescription": "12 toistoa (Halo 6/suunta)", "restBetweenExercisesSeconds": "15-20" }
+          },
+          "4": {
+            "timeBased": { "workSeconds": 45, "restSeconds": 15 },
+            "repBased": { "repsDescription": "15 toistoa (Halo 8/suunta)", "restBetweenExercisesSeconds": "15-20" }
+          }
+        },
+        "weeklyExercises": [
+          { "exerciseId": "two_hand_swing", "displayTitle": "Kahden käden etuheilautus" },
+          { "exerciseId": "goblet_squat", "displayTitle": "Pokaalikyykky" },
+          { "exerciseId": "halo", "displayTitle": "Halo", "notes": "Vaihda kiertosuuntaa joka kierroksella tai puolivälissä."},
+          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Vasen)" },
+          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Oikea)" }
+        ]
+      },
+      { // VAIHE 2: Viikot 4-7
+        "phaseInfo": {
+            "name": "Kehitys & Yhden Käden Liikkeet",
+            "weeks": [4, 5, 6, 7],
+            "focus": "Työkapasiteetin nosto, yhden käden liikkeiden ja koordinaation kehittäminen."
+        },
+        "workoutPlan": {
+          "rounds": "4",
+          "restBetweenRoundsSeconds": "60"
+        },
+        "levels": {
+          "1": {
+            "timeBased": { "workSeconds": 35, "restSeconds": 25 },
+            "repBased": { "repsDescription": "6-8 per puoli (Farmarikävely ~20m)", "restBetweenExercisesSeconds": "10-15" }
+          },
+          "2": {
+            "timeBased": { "workSeconds": 40, "restSeconds": 20 },
+            "repBased": { "repsDescription": "8-10 per puoli (Farmarikävely ~30m)", "restBetweenExercisesSeconds": "10-15" }
+          },
+          "3": {
+            "timeBased": { "workSeconds": 45, "restSeconds": 15 },
+            "repBased": { "repsDescription": "10-12 per puoli (Farmarikävely ~40m)", "restBetweenExercisesSeconds": "10-15" }
+          },
+          "4": {
+            "timeBased": { "workSeconds": 50, "restSeconds": 10 },
+            "repBased": { "repsDescription": "12-15 per puoli (Farmarikävely ~50m)", "restBetweenExercisesSeconds": "10-15" }
+          }
+        },
+        "weeklyExercises": [
+          { "exerciseId": "one_hand_swing", "displayTitle": "Yhden käden etuheilautus (Vasen)", "notes": "Taso 1 voi tehdä kahden käden heilautuksen."},
+          { "exerciseId": "one_hand_swing", "displayTitle": "Yhden käden etuheilautus (Oikea)", "notes": "Taso 1 voi tehdä kahden käden heilautuksen."},
+          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Vasen)", "notes": "Taso 1 voi tehdä kevyellä kuulalla tai pokaalikyykyn."},
+          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Oikea)", "notes": "Taso 1 voi tehdä kevyellä kuulalla tai pokaalikyykyn."},
+          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Vasen)"},
+          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Oikea)"},
+          { "exerciseId": "reverse_lunge", "displayTitle": "Askelkyykky taakse (Vasen jalka taakse)", "notes": "Kuula vasemmassa kädessä tai pokaaliotteella edessä."},
+          { "exerciseId": "reverse_lunge", "displayTitle": "Askelkyykky taakse (Oikea jalka taakse)", "notes": "Kuula oikeassa kädessä tai pokaaliotteella edessä."},
+          { "exerciseId": "farmers_carry", "displayTitle": "Farmarikävely", "notes": "Yhdellä kuulalla: vaihda puolta joka kierros. Kahdella kuulalla: tee molemmilla."}
+        ]
+      },
+      { // VAIHE 3: Viikot 8-11
+        "phaseInfo": {
+            "name": "Huippu & Haastavammat Liikkeet",
+            "weeks": [8, 9, 10, 11],
+            "focus": "Voimakestävyys, teho, haastavammat liikkeet ja liikeyhdistelmät. Valitse 4-5 liikeparia/liikettä viikoittain."
+        },
+        "workoutPlan": {
+          "rounds": "4-5 (Pyri 5:een vko 10-11)",
+          "restBetweenRoundsSeconds": "45-60"
+        },
+        "levels": {
+          "1": {
+            "timeBased": { "workSeconds": 40, "restSeconds": 20 },
+            "repBased": { "repsDescription": "5-6 per puoli (TGU 1/puoli, Kanto ~20m)", "restBetweenExercisesSeconds": "10" }
+          },
+          "2": {
+            "timeBased": { "workSeconds": 45, "restSeconds": 15 },
+            "repBased": { "repsDescription": "6-8 per puoli (TGU 1/puoli, Kanto ~30m)", "restBetweenExercisesSeconds": "10" }
+          },
+          "3": {
+            "timeBased": { "workSeconds": 50, "restSeconds": 10 },
+            "repBased": { "repsDescription": "8-10 per puoli (TGU 1-2/puoli, Kanto ~40m)", "restBetweenExercisesSeconds": "10" }
+          },
+          "4": {
+            "timeBased": { "workSeconds": 50, "restSeconds": 10, "notes": "Tai AMRAP-osioita" },
+            "repBased": { "repsDescription": "10+ per puoli (TGU 1-2/puoli, Kanto ~50m+)", "restBetweenExercisesSeconds": "0-10" }
+          }
+        },
+        "exerciseOptions": [ // Sovellus voi valita näistä TAI esittää käyttäjälle valittavaksi 4-5 liikeparia
+           { "optionId": "snatch_pair", "exercises": [
+               { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
+               { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."}
+           ]},
+           { "optionId": "cleanpress_pair", "exercises": [
+               { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (Vasen)"},
+               { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (Oikea)"}
+           ]},
+           { "optionId": "frontsquat_pair", "exercises": [
+               { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula vas.)", "notes": "Tai kaksi kuulaa."},
+               { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula oik.)", "notes": "Tai kaksi kuulaa."}
+           ]},
+           { "optionId": "tgu_pair", "exercises": [
+                { "exerciseId": "turkish_get_up", "displayTitle": "Turkkilainen Ylösnousu (Vasen)", "notes": "Taso 1-2 voi tehdä puolikkaan. Varaa riittävästi aikaa."},
+                { "exerciseId": "turkish_get_up", "displayTitle": "Turkkilainen Ylösnousu (Oikea)", "notes": "Taso 1-2 voi tehdä puolikkaan."}
+           ]},
+           { "optionId": "windmill_pair", "exercises": [
+               { "exerciseId": "windmill", "displayTitle": "Tuulimylly (Vasen kuula ylhäällä)"},
+               { "exerciseId": "windmill", "displayTitle": "Tuulimylly (Oikea kuula ylhäällä)"}
+           ]},
+           { "optionId": "rackcarry_pair", "exercises": [
+               { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (Vasen kuula)", "notes": "Tai kaksi kuulaa."},
+               { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (Oikea kuula)", "notes": "Tai kaksi kuulaa."}
+           ]},
+           { "optionId": "waiterscarry_pair", "exercises": [
+               { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (Vasen käsi)"},
+               { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (Oikea käsi)"}
+           ]}
+        ],
+         "exampleWeeklyExercises": [ // Esimerkki miten valitut optiot muodostavat kierroksen
+              // Valittu esim. Snatch, Front Squat, TGU, Rack Carry
+              { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
+              { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
+              { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula vas.)", "notes": "Tai kaksi kuulaa."},
+              { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula oik.)", "notes": "Tai kaksi kuulaa."},
+              { "exerciseId": "turkish_get_up", "displayTitle": "Turkkilainen Ylösnousu (Vasen)", "notes": "Taso 1-2 voi tehdä puolikkaan. Varaa riittävästi aikaa."},
+              { "exerciseId": "turkish_get_up", "displayTitle": "Turkkilainen Ylösnousu (Oikea)", "notes": "Taso 1-2 voi tehdä puolikkaan."},
+              { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (Vasen kuula)", "notes": "Tai kaksi kuulaa."},
+              { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (Oikea kuula)", "notes": "Tai kaksi kuulaa."}
+        ]
+      }
+    ]
+  }
 }
