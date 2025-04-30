@@ -1,18 +1,20 @@
-// app.js (Muutokset merkitty // MUUTOS tai // UUSI)
+// app.js (Muutokset merkitty // UUSI, // MUUTOS)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elementit ---
     const trainingSelectSection = document.getElementById('training-select');
     const toggleTrainingSelectBtn = document.getElementById('toggle-training-select');
     const weekButtonsContainer = document.getElementById('week-buttons-container');
+    const levelButtonsContainer = document.getElementById('level-buttons-container'); // UUSI
     const exerciseListUl = document.getElementById('exercise-items');
     const exerciseNameH2 = document.getElementById('exercise-name');
     const exerciseImageImg = document.getElementById('exercise-image');
     const exerciseDescriptionP = document.getElementById('exercise-description');
     const workoutNotesP = document.getElementById('workout-notes');
-    const timerDiv = document.getElementById('timer'); // MUUTOS: Haetaan koko div tyylittelyä varten
+    const timerDiv = document.getElementById('timer');
     const timeRemainingSpan = document.getElementById('time-remaining');
     const timerLabelP = document.getElementById('timer-label');
+    const roundInfoP = document.getElementById('round-info'); // UUSI
     const startBtn = document.getElementById('start-btn');
     const prevBtn = document.getElementById('prev-btn');
     const pauseBtn = document.getElementById('pause-btn');
@@ -25,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentWorkoutInfo = {
         week: null,
         phaseIndex: null,
-        level: '2', // <-- HARDCODED LEVEL!
+        level: '2', // Oletustaso
         rounds: 0,
         restBetweenRounds: 0,
         notes: '',
@@ -35,41 +37,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRound = 1;
     let timerInterval = null;
     let remainingTime = 0;
-    const TimerState = {
-        IDLE: 'idle',
-        RUNNING_EXERCISE: 'running_exercise',
-        RUNNING_REST: 'running_rest',
-        RUNNING_ROUND_REST: 'running_round_rest',
-        PAUSED: 'paused',
-        FINISHED: 'finished'
-    };
+    const TimerState = { IDLE: 'idle', RUNNING_EXERCISE: 'running_exercise', RUNNING_REST: 'running_rest', RUNNING_ROUND_REST: 'running_round_rest', PAUSED: 'paused', FINISHED: 'finished' };
     let timerState = TimerState.IDLE;
-    let pausedState = null; // UUSI: Tallentaa tilan ennen pausausta
+    let pausedState = null;
 
     // --- Datan alustus ---
     async function loadAppData() {
         console.log("Attempting to load program data...");
         try {
-            // Varmista että polku on oikea!
-            const response = await fetch('data/exercises.json'); // TAI data/kettlebell_program.json
+            const response = await fetch('data/exercises.json'); // Varmista polku!
             console.log("Fetch response status:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}, statusText: ${response.statusText}`);
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
             fullProgramData = await response.json();
-            console.log("Program data loaded and parsed successfully.");
+            console.log("Program data loaded.");
 
-            // Tarkista rakenteen avainelementit (esim. uusi JSON)
-             if (!fullProgramData || !fullProgramData.exercises || !fullProgramData.kettlebellProgram11Weeks || !fullProgramData.kettlebellProgram11Weeks.phases) {
-                 console.warn("Loaded data might not be the new program structure. Trying to adapt...");
-                 // Tähän voisi lisätä logiikkaa vanhan rakenteen käsittelyyn, jos tarpeen
-                 // Mutta oletetaan nyt, että uusi JSON on käytössä. Jos ei, tulee virheitä myöhemmin.
-                 // Jos käytät VANHAA exercises.jsonia, tämän uuden app.js:n kanssa tulee virheitä.
+            if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks) { // Tarkista uuden rakenteen olemassaolo
+                 console.error("Loaded data does not seem to contain the 11-week program structure.");
+                 // Voit näyttää virheilmoituksen käyttäjälle tässä
+                 return; // Keskeytä, jos data on väärä
              }
 
 
             populateWeekSelectors();
+            addLevelButtonListeners(); // UUSI: Lisää kuuntelijat taso-napeille
             resetWorkoutState();
 
         } catch (error) {
@@ -79,20 +69,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- Luo viikkonapit ---
+    // --- UI Populointi ja Kuuntelijat ---
     function populateWeekSelectors() {
-        console.log("Populating week selectors...");
-        // Varmistetaan, että data on ladattu ja sisältää odotetun rakenteen
-        if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks || !fullProgramData.kettlebellProgram11Weeks.phases) {
-             console.error("Cannot populate week selectors, kettlebellProgram11Weeks data is missing or invalid.");
-             weekButtonsContainer.innerHTML = '<p>Ohjelmadataa ei voitu ladata.</p>';
-             return;
-         }
-
-
+        if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks) return;
         weekButtonsContainer.innerHTML = '';
-        const totalWeeks = 11; // Oletus
-
+        const totalWeeks = 11;
         for (let i = 1; i <= totalWeeks; i++) {
             const button = document.createElement('button');
             button.textContent = `Viikko ${i}`;
@@ -101,62 +82,85 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', () => handleWeekSelect(i));
             weekButtonsContainer.appendChild(button);
         }
-        console.log(`${totalWeeks} week buttons created.`);
     }
 
-    // --- Käsittelee viikon valinnan ---
+    // UUSI: Lisää kuuntelijat taso-napeille
+    function addLevelButtonListeners() {
+        const buttons = levelButtonsContainer.querySelectorAll('.level-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => handleLevelSelect(button.dataset.level));
+        });
+    }
+
+    // UUSI: Käsittelee tason valinnan
+    function handleLevelSelect(selectedLevel) {
+        if (selectedLevel === currentWorkoutInfo.level) return; // Älä tee mitään jos taso on jo valittu
+
+        console.log(`Level selected: ${selectedLevel}`);
+        currentWorkoutInfo.level = selectedLevel; // Päivitä tila
+
+        // Päivitä nappien korostus
+        levelButtonsContainer.querySelectorAll('.level-button').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.level === selectedLevel);
+        });
+
+        // Jos jokin viikko on JO valittuna, lataa sen tiedot uudelleen uudella tasolla
+        if (currentWorkoutInfo.week !== null) {
+            console.log(`Reloading week ${currentWorkoutInfo.week} data for new level ${selectedLevel}`);
+            handleWeekSelect(currentWorkoutInfo.week); // Kutsu viikon käsittelijää uudelleen
+        } else {
+            // Jos viikkoa ei ole valittu, päivitä vain muistiinpanot näyttämään uusi taso (jos halutaan)
+             updateWorkoutNotesDisplay(); // Päivittää tason muistiinpanoihin
+        }
+    }
+
+
+    // MUUTOS: Käyttää globaalia currentWorkoutInfo.level -tasoa
     function handleWeekSelect(weekNumber) {
         console.log(`Handling selection for Week: ${weekNumber}`);
-        resetWorkoutState();
+        resetWorkoutState(false); // MUUTOS: Nollaa, mutta älä resetoi tasovalintaa
 
         if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks || !fullProgramData.exercises) {
             console.error("Cannot handle week select, essential data missing.");
-            resetWorkoutState();
-            return;
+            resetWorkoutState(); return; // Täysi nollaus jos data puuttuu
         }
 
         const selectedPhaseIndex = fullProgramData.kettlebellProgram11Weeks.phases.findIndex(phase =>
-            phase.phaseInfo && phase.phaseInfo.weeks && phase.phaseInfo.weeks.includes(weekNumber)
+            phase.phaseInfo?.weeks?.includes(weekNumber) // Turvallisemmat tarkistukset
         );
 
         if (selectedPhaseIndex === -1) {
             console.error(`Could not find phase for week ${weekNumber}.`);
-            resetWorkoutState();
-            exerciseNameH2.textContent = `Vaihetta viikolle ${weekNumber} ei löytynyt.`;
-            return;
+            resetWorkoutState(); exerciseNameH2.textContent = `Vaihetta viikolle ${weekNumber} ei löytynyt.`; return;
         }
 
         const selectedPhase = fullProgramData.kettlebellProgram11Weeks.phases[selectedPhaseIndex];
-        console.log(`Found phase: ${selectedPhase.phaseInfo.name} (Index: ${selectedPhaseIndex})`);
+        console.log(`Found phase: ${selectedPhase.phaseInfo.name}`);
 
-        const levelData = selectedPhase.levels ? selectedPhase.levels[currentWorkoutInfo.level] : null;
+        // *** MUUTOS: Käytä valittua tasoa tilasta ***
+        const currentLevel = currentWorkoutInfo.level;
+        const levelData = selectedPhase.levels?.[currentLevel]; // Turvallinen haku
+
         if (!levelData || !levelData.timeBased) {
-            console.error(`Could not find level data for Level ${currentWorkoutInfo.level} in phase ${selectedPhase.phaseInfo.name}.`);
-            resetWorkoutState();
-            exerciseNameH2.textContent = `Tason ${currentWorkoutInfo.level} tietoja ei löytynyt.`;
-            return;
+            console.error(`Could not find level data for Level ${currentLevel} in phase ${selectedPhase.phaseInfo.name}.`);
+            resetWorkoutState(); exerciseNameH2.textContent = `Tason ${currentLevel} tietoja ei löytynyt.`; return;
         }
         const workTime = levelData.timeBased.workSeconds;
         const restTime = levelData.timeBased.restSeconds;
-        console.log(`Using Level ${currentWorkoutInfo.level} times: Work=${workTime}s, Rest=${restTime}s`);
+        console.log(`Using Level ${currentLevel} times: Work=${workTime}s, Rest=${restTime}s`);
 
         let phaseExercisesList = [];
-        // Tässä pitäisi olla logiikka Vaihe 3 exerciseOptionsin valintaan tai arpomiseen.
-        // Nyt käytetään exampleWeeklyExercises tai weeklyExercises.
         if (selectedPhaseIndex === 2 && selectedPhase.exampleWeeklyExercises) {
-            console.log("Using exampleWeeklyExercises for Phase 3.");
             phaseExercisesList = selectedPhase.exampleWeeklyExercises;
         } else if (selectedPhase.weeklyExercises) {
             phaseExercisesList = selectedPhase.weeklyExercises;
         } else {
-            console.error(`No exercise list found for phase ${selectedPhase.phaseInfo.name}.`);
-            resetWorkoutState();
-            exerciseNameH2.textContent = "Harjoituslistaa ei löytynyt.";
-            return;
+             console.error(`No exercise list found for phase ${selectedPhase.phaseInfo.name}.`);
+             resetWorkoutState(); exerciseNameH2.textContent = "Harjoituslistaa ei löytynyt."; return;
         }
 
         const mappedExercises = phaseExercisesList.map(phaseEx => {
-            if (!phaseEx || !phaseEx.exerciseId) return null;
+            if (!phaseEx?.exerciseId) return null;
             const fullExerciseDetails = fullProgramData.exercises.find(ex => ex.id === phaseEx.exerciseId);
             if (!fullExerciseDetails) return null;
             return {
@@ -170,38 +174,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (mappedExercises.length === 0) {
             console.error(`No valid exercises found or mapped for week ${weekNumber}.`);
-            resetWorkoutState();
-            exerciseNameH2.textContent = "Kelvollisia harjoituksia ei löytynyt.";
-            return;
+            resetWorkoutState(); exerciseNameH2.textContent = "Kelvollisia harjoituksia ei löytynyt."; return;
         }
 
         // Tallenna tiedot
         currentWorkoutExercises = mappedExercises;
         currentExerciseIndex = 0;
         currentRound = 1;
+        // Päivitä vain treenin tiedot, SÄILYTÄ TASO
         currentWorkoutInfo = {
+            ...currentWorkoutInfo, // Säilytä vanhat (sis. level)
             week: weekNumber,
             phaseIndex: selectedPhaseIndex,
-            level: currentWorkoutInfo.level,
-             // Haetaan kierrosmäärä ja varmistetaan että se on numero, oletus 1
             rounds: parseInt(selectedPhase.workoutPlan?.rounds?.match(/\d+/)?.[0] || '1', 10) || 1,
             restBetweenRounds: parseInt(selectedPhase.workoutPlan?.restBetweenRoundsSeconds?.match(/\d+/)?.[0] || '0', 10) || 0,
             notes: selectedPhase.phaseInfo.focus || '',
             focus: selectedPhase.phaseInfo.focus || ''
         };
 
-         console.log(`Workout for Week ${weekNumber} loaded: ${currentWorkoutExercises.length} exercises, ${currentWorkoutInfo.rounds} rounds. Round Rest: ${currentWorkoutInfo.restBetweenRounds}s`);
-
+        console.log(`Workout for Week ${weekNumber} loaded: ${currentWorkoutExercises.length} exercises, ${currentWorkoutInfo.rounds} rounds. Round Rest: ${currentWorkoutInfo.restBetweenRounds}s`);
 
         // Päivitä UI
         populateExerciseList();
-        const levelDesc = fullProgramData.kettlebellProgram11Weeks.programInfo.levels.find(l => l.level == currentWorkoutInfo.level)?.description || '';
-        workoutNotesP.textContent = `Taso: ${currentWorkoutInfo.level} (${levelDesc})\nFokus: ${currentWorkoutInfo.focus}`;
+        updateWorkoutNotesDisplay(); // UUSI: Funktio näyttää tason ja fokuksen
         displayExercise(currentExerciseIndex);
         updateButtonStates();
         highlightWeekButton(weekNumber);
-
+        updateRoundDisplay(); // UUSI: Näytä kierrosinfo heti
     }
+
+    // UUSI: Päivittää muistiinpanoalueen (taso + fokus)
+    function updateWorkoutNotesDisplay() {
+         const levelDesc = fullProgramData?.kettlebellProgram11Weeks?.programInfo?.levels?.find(l => l.level == currentWorkoutInfo.level)?.description || '';
+         const focusText = currentWorkoutInfo.focus ? `\nFokus: ${currentWorkoutInfo.focus}` : '';
+         workoutNotesP.textContent = `Taso: ${currentWorkoutInfo.level} (${levelDesc})${focusText}`;
+         // Varmista että teksti tulee näkyviin vaikka olisi tyhjä (tai näytä placeholder)
+         if (!workoutNotesP.textContent.trim()){
+             workoutNotesP.textContent = "Valitse viikko nähdäksesi tiedot.";
+         }
+    }
+
 
     function highlightWeekButton(weekNumber) {
         document.querySelectorAll('.week-button').forEach(btn => {
@@ -209,12 +221,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     function populateExerciseList() {
         exerciseListUl.innerHTML = '';
         if (currentWorkoutExercises.length === 0) {
-             exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>';
-             return;
+             exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>'; return;
         }
         currentWorkoutExercises.forEach((exercise, index) => {
             const li = document.createElement('li');
@@ -222,9 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             li.dataset.index = index;
             li.classList.add('exercise-item');
             li.addEventListener('click', () => {
-                 if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
-                    jumpToExercise(index);
-                 }
+                 if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) jumpToExercise(index);
             });
             exerciseListUl.appendChild(li);
         });
@@ -232,28 +240,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
      function jumpToExercise(index) {
         if (index >= 0 && index < currentWorkoutExercises.length) {
-            stopTimer();
-            currentExerciseIndex = index;
-            currentRound = 1; // Oletetaan että hypätessä aloitetaan alusta kierrosten suhteen? Tai lasketaan? Nyt nollataan.
+            stopTimer(); currentExerciseIndex = index; currentRound = 1;
             timerState = TimerState.IDLE;
-            displayExercise(currentExerciseIndex);
-            updateButtonStates();
-            clearNextUpHighlight();
-             removeBodyLock(); // UUSI: Varmista, että lukitus poistuu
+            displayExercise(currentExerciseIndex); updateButtonStates(); clearNextUpHighlight(); removeBodyLock();
+            updateRoundDisplay(); // UUSI: Päivitä kierrosnäyttö
         }
     }
 
-    // --- MUUTOS: Näyttää pyydetyn liikkeen ---
+
     function displayExercise(index) {
+        // ... (sisältö pysyy samana kuin edellisessä versiossa) ...
         console.log(`Attempting to display exercise at index: ${index}.`);
-        // clearNextUpHighlight(); // Poistettu täältä, hoidetaan muualla
 
         if (index < 0 || index >= currentWorkoutExercises.length || !currentWorkoutExercises[index]) {
             console.error(`Invalid exercise index or data! Index: ${index}`);
-            resetWorkoutState();
-            exerciseNameH2.textContent = "Virhe harjoituksen näyttämisessä";
-            exerciseDescriptionP.textContent = `Harjoitusta ei löytynyt indeksillä ${index}.`;
-            return;
+            resetWorkoutState(); exerciseNameH2.textContent = "Virhe harjoituksen näyttämisessä";
+            exerciseDescriptionP.textContent = `Harjoitusta ei löytynyt indeksillä ${index}.`; return;
         }
 
         const exercise = currentWorkoutExercises[index];
@@ -262,23 +264,17 @@ document.addEventListener('DOMContentLoaded', () => {
         exerciseDescriptionP.textContent = `${exercise.description || ''}${exercise.notes ? `\n\nHuom: ${exercise.notes}` : ''}`;
 
         if (exercise.image) {
-            exerciseImageImg.src = exercise.image;
-            exerciseImageImg.alt = exercise.displayTitle;
+            exerciseImageImg.src = exercise.image; exerciseImageImg.alt = exercise.displayTitle;
             exerciseImageImg.style.display = 'block';
         } else {
-            exerciseImageImg.style.display = 'none';
-            exerciseImageImg.src = '';
-            exerciseImageImg.alt = '';
+            exerciseImageImg.style.display = 'none'; exerciseImageImg.src = ''; exerciseImageImg.alt = '';
         }
 
-        // Aseta ajastin valmiiksi työaikaan VAIN JOS ollaan IDLE/FINISHED
-        // MUUTOS: Ei aseteta ajastinta tässä, jos tullaan levosta
         if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
              remainingTime = exercise.workTime || 0;
-             updateTimerDisplay(remainingTime, "Työaika");
+             updateTimerDisplay(remainingTime); // MUUTOS: Label päivitetään muualla
         }
-
-        highlightCurrentExercise(); // Korostetaan AINA pyydetty liike listassa
+        highlightCurrentExercise();
     }
 
 
@@ -286,286 +282,202 @@ document.addEventListener('DOMContentLoaded', () => {
     function startWorkout() {
         if (currentWorkoutExercises.length === 0 || timerState !== TimerState.IDLE) return;
         console.log("Starting workout from beginning...");
-        currentExerciseIndex = 0;
-        currentRound = 1;
-        displayExercise(currentExerciseIndex); // Näytä eka liike
-        addBodyLock(); // UUSI: Lukitse sivun scrollaus
+        currentExerciseIndex = 0; currentRound = 1;
+        updateRoundDisplay(); // UUSI: Näytä kierros
+        displayExercise(currentExerciseIndex);
+        addBodyLock();
         startTimerForPhase(TimerState.RUNNING_EXERCISE, currentWorkoutExercises[currentExerciseIndex].workTime);
     }
 
     function pauseResumeTimer() {
         if (timerState === TimerState.RUNNING_EXERCISE || timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST) {
-            pausedState = timerState; // UUSI: Tallenna tila ennen pausausta
-            stopTimerInterval();
-            timerState = TimerState.PAUSED;
-            console.log("Timer Paused");
-            pauseBtn.textContent = "▶ Jatka";
-            pauseBtn.classList.add('paused');
-            timerDiv.classList.add('timer-paused'); // UUSI: Lisää luokka tauolle
-
+            pausedState = timerState; stopTimerInterval(); timerState = TimerState.PAUSED;
+            console.log("Timer Paused"); pauseBtn.textContent = "▶ Jatka"; pauseBtn.classList.add('paused');
+            timerDiv.classList.add('timer-paused');
         } else if (timerState === TimerState.PAUSED) {
-             console.log("Timer Resumed");
-             timerState = pausedState || TimerState.RUNNING_EXERCISE; // UUSI: Palauta tallennettu tila
-             pausedState = null; // Nollaa tallennettu tila
-             runTimerInterval();
-             pauseBtn.textContent = "⏸ Tauko";
-             pauseBtn.classList.remove('paused');
-             timerDiv.classList.remove('timer-paused'); // UUSI: Poista luokka
-
-             // Varmista lepokorostukset, jos jatketaan levosta
+             console.log("Timer Resumed"); timerState = pausedState || TimerState.RUNNING_EXERCISE;
+             pausedState = null; runTimerInterval(); pauseBtn.textContent = "⏸ Tauko"; pauseBtn.classList.remove('paused');
+             timerDiv.classList.remove('timer-paused');
              if(timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST){
-                 timerDiv.classList.add('timer-resting');
-                 highlightNextExercise();
+                 timerDiv.classList.add('timer-resting'); highlightNextExercise();
              } else {
-                  timerDiv.classList.remove('timer-resting');
-                  clearNextUpHighlight();
+                  timerDiv.classList.remove('timer-resting'); clearNextUpHighlight();
              }
         }
         updateButtonStates();
     }
 
     function stopWorkout() {
-        stopTimer();
-        console.log("Workout Stopped by user.");
-        clearNextUpHighlight();
-        removeBodyLock(); // UUSI: Poista lukitus
-        currentRound = 1;
-        pausedState = null; // UUSI: Nollaa pausetila
+        stopTimer(); console.log("Workout Stopped by user."); clearNextUpHighlight(); removeBodyLock();
+        currentRound = 1; pausedState = null;
         if (currentWorkoutExercises.length > 0 && currentWorkoutExercises[currentExerciseIndex]) {
             const currentExercise = currentWorkoutExercises[currentExerciseIndex];
-            updateTimerDisplay(currentExercise.workTime, "Työaika");
-            displayExercise(currentExerciseIndex); // Näytä nykyinen liike
+            updateTimerDisplay(currentExercise.workTime); // MUUTOS: Label pois
+            displayExercise(currentExerciseIndex);
         } else {
              resetWorkoutState();
         }
+         updateRoundDisplay(); // UUSI: Päivitä/nollaa kierrosnäyttö
          updateButtonStates();
     }
 
     function stopTimer() {
-        stopTimerInterval();
-        timerState = TimerState.IDLE;
-        pausedState = null; // UUSI: Nollaa pausetila
-        timerDiv.classList.remove('timer-resting', 'timer-paused'); // UUSI: Poista tilaluokat
+        stopTimerInterval(); timerState = TimerState.IDLE; pausedState = null;
+        timerDiv.classList.remove('timer-resting', 'timer-paused');
         console.log("Timer stopped, state set to IDLE.");
     }
 
-    function stopTimerInterval() {
-        if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-    }
+    function stopTimerInterval() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
 
-     // --- MUUTOS: Käynnistää vaiheen, lisää lepokorostuksen ---
      function startTimerForPhase(phaseState, duration) {
-        stopTimerInterval();
-        timerState = phaseState;
-        remainingTime = duration;
-        let label = "Odottamassa...";
-
-        timerDiv.classList.remove('timer-resting', 'timer-paused'); // Poista vanhat tilat
-        clearNextUpHighlight(); // Poista next-up varmuuden vuoksi
+        stopTimerInterval(); timerState = phaseState; remainingTime = duration;
+        timerDiv.classList.remove('timer-resting', 'timer-paused'); clearNextUpHighlight();
 
         if (phaseState === TimerState.RUNNING_EXERCISE) {
-            label = `Työaika (Kierros ${currentRound}/${currentWorkoutInfo.rounds})`;
-            // Näytä NYKYINEN liike (pitäisi olla jo näkyvissä)
-             displayExercise(currentExerciseIndex); // Varmistetaan näyttö
-             highlightCurrentExercise(); // Varmista oikean korostus listassa
+             displayExercise(currentExerciseIndex); highlightCurrentExercise();
         } else if (phaseState === TimerState.RUNNING_REST) {
-            label = `Lepo liikkeiden välillä (Kierros ${currentRound})`;
-            timerDiv.classList.add('timer-resting'); // UUSI: Lisää lepoluokka
-            // Näytä SEURAAVA liike
+            timerDiv.classList.add('timer-resting');
             const nextIndex = currentExerciseIndex + 1;
-            if (nextIndex < currentWorkoutExercises.length) {
-                displayExercise(nextIndex); // Näytä seuraavan tiedot
-                highlightNextExercise();    // Korosta seuraava listassa
-            } else {
-                 console.warn("Trying to start exercise rest but no next exercise exists?");
-                 // Näytä silti nykyinen, jos seuraavaa ei ole (vika logiikassa?)
-                 displayExercise(currentExerciseIndex);
-                 highlightCurrentExercise();
-            }
+            if (nextIndex < currentWorkoutExercises.length) { displayExercise(nextIndex); highlightNextExercise(); }
+            else { displayExercise(currentExerciseIndex); highlightCurrentExercise(); }
         } else if (phaseState === TimerState.RUNNING_ROUND_REST) {
-             label = `Lepo kierrosten välillä (Valmistaudu kierrokseen ${currentRound + 1})`;
-             timerDiv.classList.add('timer-resting'); // UUSI: Lisää lepoluokka
-             // Näytä SEURAAVA (eli kierroksen eka) liike
-             if (currentWorkoutExercises.length > 0) {
-                 displayExercise(0);          // Näytä ekan tiedot
-                 highlightNextExercise(0);    // Korosta eka listassa
-             } else {
-                 console.warn("Trying to start round rest but no exercises loaded?");
-             }
+             timerDiv.classList.add('timer-resting');
+             if (currentWorkoutExercises.length > 0) { displayExercise(0); highlightNextExercise(0); }
         }
 
-        console.log(`Starting phase: ${phaseState}, Duration: ${duration}, Label: ${label}`);
-        updateTimerDisplay(remainingTime, label);
-        updateButtonStates();
+        console.log(`Starting phase: ${phaseState}, Duration: ${duration}`);
+        updateTimerDisplay(remainingTime); // MUUTOS: Label päivitetään intervallissa
+        updateButtonStates(); updateRoundDisplay(); // UUSI: Varmista kierrosnäyttö
 
-        if (remainingTime > 0) {
-            runTimerInterval();
-        } else {
-            console.log("Phase duration is 0 or less, handling timer end immediately.");
-            handleTimerEnd();
-        }
+        if (remainingTime > 0) { runTimerInterval(); }
+        else { handleTimerEnd(); }
     }
 
     function runTimerInterval() {
-        if (timerInterval) return; // Vältä tuplia
-        console.log("Starting timer interval (1000ms)");
+        if (timerInterval) return;
+        // console.log("Starting timer interval (1000ms)");
         timerInterval = setInterval(() => {
             if (timerState === TimerState.PAUSED) return;
 
             remainingTime--;
-            let label = timerLabelP.textContent; // Oletuslabel = edellinen
-             if (timerState === TimerState.RUNNING_EXERCISE) {
-                 label = `Työaika (Kierros ${currentRound}/${currentWorkoutInfo.rounds})`;
-             } else if (timerState === TimerState.RUNNING_REST) {
-                 label = `Lepo liikkeiden välillä (Kierros ${currentRound})`;
-             } else if (timerState === TimerState.RUNNING_ROUND_REST) {
-                  label = `Lepo kierrosten välillä (Valmistaudu kierrokseen ${currentRound + 1})`;
-             }
-            updateTimerDisplay(remainingTime, label);
+            updateTimerDisplay(remainingTime); // MUUTOS: Label päivitetään tässä
 
-            if (remainingTime <= 0) {
-                handleTimerEnd();
-            }
+            if (remainingTime <= 0) { handleTimerEnd(); }
         }, 1000);
     }
 
-    // --- MUUTOS: Logiikka pysyy, mutta huomioi että displayExercise on jo kutsuttu levolle ---
-    function handleTimerEnd() {
-         stopTimerInterval();
-         timerDiv.classList.remove('timer-resting'); // Poista lepotyyli AINA kun vaihe päättyy
 
-         if (timerState === TimerState.IDLE || timerState === TimerState.PAUSED || timerState === TimerState.FINISHED) {
-             console.warn(`handleTimerEnd called unexpectedly from state: ${timerState}`);
-             return; // Älä tee mitään jos ei oltu käynnissä
-         }
+    function handleTimerEnd() {
+         stopTimerInterval(); timerDiv.classList.remove('timer-resting');
+         if (timerState === TimerState.IDLE || timerState === TimerState.PAUSED || timerState === TimerState.FINISHED) return;
 
          const wasResting = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
 
-         // Jos TYÖAIKA päättyi:
          if (timerState === TimerState.RUNNING_EXERCISE) {
-            console.log(`Exercise phase ended.`);
             const currentExercise = currentWorkoutExercises[currentExerciseIndex];
-            if (!currentExercise) { resetWorkoutState(); return; } // Varmistus
-
+            if (!currentExercise) { resetWorkoutState(); return; }
             const isLastExerciseInRound = currentExerciseIndex === currentWorkoutExercises.length - 1;
             const isLastRound = currentRound >= currentWorkoutInfo.rounds;
             const restDuration = currentExercise.restTime || 0;
 
             if (isLastExerciseInRound) {
-                if (isLastRound) {
-                     moveToNextPhase(); // Siirry lopetustilaan
-                } else {
+                if (isLastRound) { moveToNextPhase(); } // Lopetus
+                else {
                     const roundRestDuration = currentWorkoutInfo.restBetweenRounds || 0;
-                    if (roundRestDuration > 0) {
-                         startTimerForPhase(TimerState.RUNNING_ROUND_REST, roundRestDuration); // Lepo alkaa, näyttää jo seuraavan (ekan) liikkeen
-                    } else {
-                          moveToNextPhase(); // Siirry heti seuraavaan kierrokseen
-                    }
+                    if (roundRestDuration > 0) { startTimerForPhase(TimerState.RUNNING_ROUND_REST, roundRestDuration); }
+                    else { moveToNextPhase(); } // Suoraan seuraava kierros
                 }
             } else {
-                 if (restDuration > 0) {
-                     startTimerForPhase(TimerState.RUNNING_REST, restDuration); // Lepo alkaa, näyttää jo seuraavan liikkeen
-                 } else {
-                    moveToNextPhase(); // Siirry heti seuraavaan liikkeeseen
-                 }
+                 if (restDuration > 0) { startTimerForPhase(TimerState.RUNNING_REST, restDuration); }
+                 else { moveToNextPhase(); } // Suoraan seuraava liike
             }
-         // Jos LEPO (liike tai kierros) päättyi:
          } else if (wasResting) {
-            console.log("Rest phase ended.");
-            clearNextUpHighlight(); // Poista next-up korostus kun lepo loppuu
-            moveToNextPhase(); // Siirry seuraavaan vaiheeseen (työhön)
+            clearNextUpHighlight(); moveToNextPhase(); // Siirry työhön
          }
     }
 
-     // --- MUUTOS: Kun siirrytään leposta työhön, älä kutsu displayExercise ---
+
      function moveToNextPhase() {
         const comingFromRest = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
-        const comingFromLastExercise = timerState === TimerState.RUNNING_EXERCISE && currentExerciseIndex === currentWorkoutExercises.length - 1 && currentRound < currentWorkoutInfo.rounds;
+        const comingFromLastExerciseNoRest = timerState === TimerState.RUNNING_EXERCISE && currentExerciseIndex === currentWorkoutExercises.length - 1 && currentRound < currentWorkoutInfo.rounds && currentWorkoutInfo.restBetweenRounds <= 0;
+        const comingFromLastExerciseBeforeRest = timerState === TimerState.RUNNING_EXERCISE && currentExerciseIndex === currentWorkoutExercises.length - 1 && currentRound < currentWorkoutInfo.rounds && currentWorkoutInfo.restBetweenRounds > 0;
 
         // Päivitä indeksi ja kierros
-        if (comingFromRest && timerState === TimerState.RUNNING_ROUND_REST) {
-             // Kierroslevon jälkeen
-             currentRound++;
-             currentExerciseIndex = 0;
-             console.log(`Starting Round ${currentRound}`);
-        } else if (comingFromLastExercise && currentWorkoutInfo.restBetweenRounds <= 0) {
-             // Viimeisen liikkeen jälkeen ILMAN kierroslepoa
-             currentRound++;
-             currentExerciseIndex = 0;
-             console.log(`Starting Round ${currentRound} (no round rest)`);
-        }
-        else if (comingFromRest && timerState === TimerState.RUNNING_REST) {
-             // Liikelevon jälkeen
+        if ((comingFromRest && timerState === TimerState.RUNNING_ROUND_REST) || comingFromLastExerciseNoRest ) {
+            currentRound++; currentExerciseIndex = 0;
+        } else if (comingFromRest && timerState === TimerState.RUNNING_REST) {
              currentExerciseIndex++;
-        } else if (timerState === TimerState.RUNNING_EXERCISE) {
-             // Työajan jälkeen ILMAN lepoa (ei viimeinen liike)
-             currentExerciseIndex++;
+        } else if (timerState === TimerState.RUNNING_EXERCISE && !comingFromLastExerciseNoRest && !comingFromLastExerciseBeforeRest) {
+             // Tavallinen siirtymä työstä (joko lepoon tai seuraavaan työhön)
+              // Indeksi päivittyy handleTimerEnd -> startTimerForPhase TAI tässä jos ei lepoa
+             if(!comingFromRest && currentWorkoutExercises[currentExerciseIndex]?.restTime <= 0) {
+                 currentExerciseIndex++; // Siirry seuraavaan jos ei ollut lepoa
+             }
         } else if (timerState === TimerState.RUNNING_EXERCISE && currentExerciseIndex === currentWorkoutExercises.length - 1 && currentRound >= currentWorkoutInfo.rounds){
-             // Viimeisen kierroksen viimeinen liike
-             // Siirrytään FINISHED-tilaan alla
-        }
-        else {
-             console.warn("moveToNextPhase: Unhandled previous state:", timerState, "Index:", currentExerciseIndex, "Round:", currentRound);
+             // Treenin loppu
         }
 
 
         // Tarkista onko treeni valmis
-        if (currentRound > currentWorkoutInfo.rounds || currentExerciseIndex >= currentWorkoutExercises.length) {
-            console.log("Workout Finished");
-            timerState = TimerState.FINISHED;
-            exerciseNameH2.textContent = "Treeni Valmis!";
-            exerciseDescriptionP.textContent = "Hyvää työtä!";
-            exerciseImageImg.style.display = 'none';
-            workoutNotesP.textContent = `Kaikki ${currentWorkoutInfo.rounds} kierrosta tehty! Valitse uusi treeni.`;
-            updateTimerDisplay(0, "Valmis");
-            updateButtonStates();
-            highlightCurrentExercise(); // Poista korostus
-            removeBodyLock(); // UUSI: Salli scrollaus
-            clearNextUpHighlight();
+        if (currentRound > currentWorkoutInfo.rounds) {
+             timerState = TimerState.FINISHED; updateButtonStates(); removeBodyLock(); clearNextUpHighlight();
+             exerciseNameH2.textContent = "Treeni Valmis!"; exerciseDescriptionP.textContent = "Hyvää työtä!";
+             exerciseImageImg.style.display = 'none'; updateTimerDisplay(0); // Label poistettu
+             updateRoundDisplay(); // Näytä lopullinen kierrosmäärä
+             workoutNotesP.textContent = `Kaikki ${currentWorkoutInfo.rounds} kierrosta tehty! Valitse uusi treeni.`;
         }
         // Jos treeni jatkuu:
-        else {
-            console.log(`Moving to exercise index: ${currentExerciseIndex} in round ${currentRound}`);
-            const nextExercise = currentWorkoutExercises[currentExerciseIndex];
-             // !!! MUUTOS: Kutsu displayExercise vain jos EI tultu levosta !!!
+        else if (currentExerciseIndex < currentWorkoutExercises.length) {
+             updateRoundDisplay(); // UUSI: Päivitä kierrosnäyttö
+             const nextExercise = currentWorkoutExercises[currentExerciseIndex];
              if (!comingFromRest) {
-                 displayExercise(currentExerciseIndex);
+                 displayExercise(currentExerciseIndex); // Näytä vain jos ei tultu levosta
              } else {
-                 // Varmista että oikea liike on korostettu listassa
-                 highlightCurrentExercise();
+                 highlightCurrentExercise(); // Varmista korostus jos tultiin levosta
              }
-             startTimerForPhase(TimerState.RUNNING_EXERCISE, nextExercise.workTime); // Käynnistä työaika
+             startTimerForPhase(TimerState.RUNNING_EXERCISE, nextExercise.workTime);
+        } else {
+             // Turvatarkistus, jos jotenkin päädytään outoon tilaan
+             console.error("Error in moveToNextPhase logic: Index out of bounds or round mismatch.");
+             resetWorkoutState();
         }
     }
 
-
-    function updateTimerDisplay(timeInSeconds, label) {
+    // MUUTOS: Päivittää ajastimen ja labelin
+    function updateTimerDisplay(timeInSeconds) {
         const minutes = Math.floor(timeInSeconds / 60).toString().padStart(2, "0");
         const seconds = (timeInSeconds % 60).toString().padStart(2, "0");
         timeRemainingSpan.textContent = `${minutes}:${seconds}`;
+
+        // Päivitä label tilan mukaan
+        let label = "Odottamassa...";
+        if (timerState === TimerState.RUNNING_EXERCISE) {
+            label = "Työaika"; // Lyhyempi label
+        } else if (timerState === TimerState.RUNNING_REST) {
+            label = "Lepo"; // Lyhyempi label
+        } else if (timerState === TimerState.RUNNING_ROUND_REST) {
+             label = "Kierroslepo"; // Lyhyempi label
+        } else if (timerState === TimerState.PAUSED) {
+            label = "Tauko";
+        } else if (timerState === TimerState.FINISHED) {
+            label = "Valmis";
+        }
         timerLabelP.textContent = label;
     }
 
-
-    function prevExercise() {
-        if (timerState !== TimerState.IDLE && timerState !== TimerState.FINISHED) return;
-        if (currentExerciseIndex > 0) {
-            jumpToExercise(currentExerciseIndex - 1);
-        }
-    }
-
-    function nextExercise() {
-         if (timerState !== TimerState.IDLE && timerState !== TimerState.FINISHED) return;
-        if (currentExerciseIndex < currentWorkoutExercises.length - 1) {
-             jumpToExercise(currentExerciseIndex + 1);
+    // UUSI: Päivittää kierrosinfon
+    function updateRoundDisplay() {
+        if (timerState !== TimerState.IDLE && timerState !== TimerState.FINISHED && currentWorkoutInfo.rounds > 0) {
+            roundInfoP.textContent = `Kierros ${currentRound} / ${currentWorkoutInfo.rounds}`;
+        } else {
+            roundInfoP.textContent = ''; // Tyhjennä jos ei käynnissä tai ei kierroksia
         }
     }
 
 
-    function updateButtonStates() {
+    function prevExercise() { if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) { if (currentExerciseIndex > 0) jumpToExercise(currentExerciseIndex - 1); } }
+    function nextExercise() { if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) { if (currentExerciseIndex < currentWorkoutExercises.length - 1) jumpToExercise(currentExerciseIndex + 1); } }
+    function updateButtonStates() { /* ... (ei muutoksia tähän funktioon)... */
         const hasWorkout = currentWorkoutExercises.length > 0;
         const isIdle = timerState === TimerState.IDLE;
         const isRunning = timerState === TimerState.RUNNING_EXERCISE || timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
@@ -580,48 +492,39 @@ document.addEventListener('DOMContentLoaded', () => {
         nextBtn.disabled = !canNavigate || currentExerciseIndex >= currentWorkoutExercises.length - 1;
 
         if (isPaused) {
-            pauseBtn.textContent = "▶ Jatka";
-            pauseBtn.classList.add('paused');
+            pauseBtn.textContent = "▶ Jatka"; pauseBtn.classList.add('paused');
         } else {
-            pauseBtn.textContent = "⏸ Tauko";
-            pauseBtn.classList.remove('paused');
+            pauseBtn.textContent = "⏸ Tauko"; pauseBtn.classList.remove('paused');
         }
     }
 
-
-     function resetWorkoutState() {
+     // MUUTOS: resetoi myös kierrosnäytön ja tasovalinnan korostuksen (mutta ei valittua tasoa)
+     function resetWorkoutState(resetLevelSelectionHighlight = true) { // Lisätty parametri
         console.log("Resetting workout state...");
-        stopTimerInterval();
-        removeBodyLock(); // UUSI: Poista lukitus
-        currentWorkoutExercises = [];
-        currentExerciseIndex = 0;
-        currentRound = 1;
-        remainingTime = 0;
-        timerState = TimerState.IDLE;
-        pausedState = null; // UUSI: Nollaa
-        currentWorkoutInfo = {
-            week: null, phaseIndex: null, level: currentWorkoutInfo.level,
-            rounds: 0, restBetweenRounds: 0, notes: '', focus: ''
-         };
+        stopTimerInterval(); removeBodyLock(); currentWorkoutExercises = [];
+        currentExerciseIndex = 0; currentRound = 1; remainingTime = 0; timerState = TimerState.IDLE;
+        pausedState = null;
+        currentWorkoutInfo = { ...currentWorkoutInfo, // Säilytä taso
+            week: null, phaseIndex: null, rounds: 0, restBetweenRounds: 0, notes: '', focus: '' };
 
-        exerciseNameH2.textContent = "Valitse treeni";
-        exerciseDescriptionP.textContent = "";
-        workoutNotesP.textContent = "";
-        exerciseImageImg.style.display = 'none';
-        exerciseImageImg.src = '';
-        exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>';
-        updateTimerDisplay(0, "Odottamassa...");
-        timerDiv.classList.remove('timer-resting', 'timer-paused'); // UUSI: Poista tilat
-        highlightCurrentExercise();
-        clearNextUpHighlight();
+        exerciseNameH2.textContent = "Valitse treeni"; exerciseDescriptionP.textContent = "";
+        updateWorkoutNotesDisplay(); // UUSI: Päivitä näyttämään vain taso
+        exerciseImageImg.style.display = 'none'; exerciseImageImg.src = '';
+        exerciseListUl.innerHTML = '<li>Valitse treeni ensin.</li>'; updateTimerDisplay(0); // Label pois
+        timerDiv.classList.remove('timer-resting', 'timer-paused'); highlightCurrentExercise(); clearNextUpHighlight();
+        updateRoundDisplay(); // UUSI: Tyhjennä kierrosinfo
         updateButtonStates();
 
         document.querySelectorAll('.week-button').forEach(btn => btn.classList.remove('active'));
+        if (resetLevelSelectionHighlight) { // Nollaa tasokorostus vain jos pyydetty
+             levelButtonsContainer.querySelectorAll('.level-button').forEach(btn => {
+                 btn.classList.toggle('active', btn.dataset.level === currentWorkoutInfo.level); // Jätä valittu taso aktiiviseksi
+             });
+        }
         console.log("Workout state reset complete.");
     }
 
-
-    function highlightCurrentExercise() {
+    function highlightCurrentExercise() { /* ... (ei muutoksia tähän funktioon)... */
         const items = exerciseListUl.querySelectorAll('li.exercise-item');
         items.forEach((item) => {
             const itemIndex = parseInt(item.dataset.index, 10);
@@ -630,59 +533,29 @@ document.addEventListener('DOMContentLoaded', () => {
                  if (item.offsetTop < exerciseListUl.scrollTop || item.offsetTop + item.offsetHeight > exerciseListUl.scrollTop + exerciseListUl.clientHeight) {
                       item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                  }
-            } else {
-                item.classList.remove('active');
-            }
+            } else { item.classList.remove('active'); }
         });
-         if (currentWorkoutExercises.length === 0) {
-              exerciseListUl.querySelectorAll('li').forEach(item => item.classList.remove('active'));
-         }
+         if (currentWorkoutExercises.length === 0) { exerciseListUl.querySelectorAll('li').forEach(item => item.classList.remove('active')); }
     }
-
-    // --- MUUTOS: Voi ottaa vastaan indeksin jota korostaa ---
-    function highlightNextExercise(forceIndex = -1) {
-        clearNextUpHighlight();
-         let nextIndexToShow = -1;
-
-        if (forceIndex !== -1) {
-             nextIndexToShow = forceIndex; // Käytä annettua indeksiä (kierroslevolle)
-        } else if (timerState === TimerState.RUNNING_REST) {
-             nextIndexToShow = currentExerciseIndex + 1; // Liikelevolla seuraava
-        }
-        // Kierroslevon indeksi (0) hoidetaan nyt startTimerForPhase-kutsussa
-
+    function highlightNextExercise(forceIndex = -1) { /* ... (ei muutoksia tähän funktioon)... */
+        clearNextUpHighlight(); let nextIndexToShow = -1;
+        if (forceIndex !== -1) { nextIndexToShow = forceIndex; }
+        else if (timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST) { // MUUTOS: Korosta myös kierroslevolla
+            nextIndexToShow = (timerState === TimerState.RUNNING_ROUND_REST) ? 0 : currentExerciseIndex + 1;
+         }
         if (nextIndexToShow >= 0 && nextIndexToShow < currentWorkoutExercises.length) {
              const nextItem = exerciseListUl.querySelector(`li[data-index="${nextIndexToShow}"]`);
-             if (nextItem) {
-                 nextItem.classList.add('next-up');
-             }
+             if (nextItem) { nextItem.classList.add('next-up'); }
         }
     }
-
-    function clearNextUpHighlight() {
-        const highlightedItem = exerciseListUl.querySelector('li.next-up');
-        if (highlightedItem) {
-            highlightedItem.classList.remove('next-up');
-        }
+    function clearNextUpHighlight() { /* ... (ei muutoksia tähän funktioon)... */
+        const item = exerciseListUl.querySelector('li.next-up'); if (item) item.classList.remove('next-up');
     }
-
-    // --- UUDET: Funktiot body-lukitukselle ---
-    function addBodyLock() {
-        document.body.classList.add('timer-active');
-        console.log("Body scroll locked.");
-    }
-
-    function removeBodyLock() {
-         document.body.classList.remove('timer-active');
-         console.log("Body scroll unlocked.");
-    }
-
-
-    function toggleTrainingSelectionVisibility() {
-         trainingSelectSection.classList.toggle('hidden');
-         toggleTrainingSelectBtn.textContent = trainingSelectSection.classList.contains('hidden')
-             ? "Valitse treeni ⯆"
-             : "Piilota valikko ⯅";
+    function addBodyLock() { document.body.classList.add('timer-active'); }
+    function removeBodyLock() { document.body.classList.remove('timer-active'); }
+    function toggleTrainingSelectionVisibility() { /* ... (ei muutoksia tähän funktioon)... */
+        trainingSelectSection.classList.toggle('hidden');
+        toggleTrainingSelectBtn.textContent = trainingSelectSection.classList.contains('hidden') ? "Valitse treeni ⯆" : "Piilota valikko ⯅";
     }
 
     // --- Event Listeners ---
@@ -695,5 +568,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Sovelluksen käynnistys ---
     loadAppData();
-
 });
