@@ -1,113 +1,94 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kahvakuulakurssi – Ohjaajan Työkalu</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu</title>
+    <link rel="stylesheet" href="style.css"> <!-- MUISTA PÄIVITTÄÄ CSS VASTAAMAAN UUTTA RAKENNETTA -->
 </head>
 <body>
-  <div id="app">
+    <div id="app">
 
-    <!-- Header -->
-    <header>
-      <img src="img/logo_small_valkoinen.png"></img>
-      <button id="toggle-training-select">Valitse treeni ⯆ / ⯅</button>
-    </header>
+        <!-- Header (Pysyy samana) -->
+        <header>
+             <!-- Poistin h1:n koska logossa teksti-->
+            <img src="img/logo_small_valkoinen.png" alt="Kuntokompassi Logo"> <!-- Lisätty alt-teksti -->
+            <button id="toggle-training-select">Valitse treeni ⯆</button> <!-- Poistettu toinen nuoli -->
+        </header>
 
-    <!-- Treenin valinta -->
-    <section id="training-select" class="collapsible hidden">
-      <h2>Valitse treeni</h2>
+        <!-- Treenin valinta (Pysyy pääosin samana, ehkä poistetaan käyttämättömät osat?) -->
+        <section id="training-select" class="collapsible hidden">
+            <h2>Valitse treeni</h2>
 
-      <!-- Viikkotreenien napit tulevat tähän JS:llä -->
-      <div id="week-buttons-container" class="button-container">
-          <!-- Nappeja lisätään tähän dynaamisesti -->
-          <p>Ladataan viikkotreenejä...</p>
-      </div>
-
-      <!-- Oletusaikojen asetukset -->
-      <div class="default-time-settings">
-        <h3>Oletusajat (valinnainen)</h3>
-        <div class="time-input-group">
-            <label for="default-duration">Työaika (s):</label>
-            <input type="number" id="default-duration" min="5" placeholder="Harjoituksen oletus">
-        </div>
-        <div class="time-input-group">
-            <label for="default-rest">Lepoaika (s):</label>
-            <input type="number" id="default-rest" min="0" placeholder="Harjoituksen oletus">
-        </div>
-         <small>Syötä numero (esim. 45) yliajaaksesi kaikki harjoituskohtaiset ajat tälle sessiolle.</small>
-      </div>
-
-      <!-- Pikatreenien pudotusvalikko (JS täyttää tämän) -->
-       <div class="preset-select-container">
-          <h3>Tai valitse Pikatreeni:</h3>
-          <select id="training-dropdown">
-            <option value="">-- Valitse Pikatreeni --</option>
-            <!-- Vaihtoehdot lisätään dynaamisesti JS:llä -->
-          </select>
-       </div>
-
-    </section>
-
-    <main>
-     
-      <!-- Viikon Ohjeet (Notes) -->
-      <aside id="workout-instructions">
-          <h2>Viikon Ohjeet</h2>
-          <div id="workout-notes-container">
-              <p id="workout-notes">Valitse ensin viikkotreeni nähdäksesi ohjeet.</p>
-          </div>
-      </aside>
-      
-      <!-- Treenilista -->
-            <aside id="exercise-list">
-        <h2>Harjoitukset</h2>
-        <ul id="exercise-items">
-          <!-- Harjoitteet listataan tänne JS:llä -->
-          <li>Valitse ensin treeni yläpuolelta.</li>
-        </ul>
-      </aside>
-
-      <!-- Harjoitusnäkymä -->
-      <section id="exercise-display">
-
-        <!-- Otsikkoalue napeilla -->
-        <div id="title-area">
-          <button id="prev-btn" class="title-nav-btn" disabled>⏮</button>
-          <h2 id="exercise-name">Valitse treeni</h2>
-          <button id="next-btn" class="title-nav-btn" disabled>⏭</button>
-        </div>
-
-        <!-- Sisällön jakaminen kahteen osaan -->
-        <div id="content-split">
-
-          <!-- Vasen puoli (Kuva ja kuvaus) -->
-          <div id="exercise-details">
-            <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
-            <!-- Yksittäisen harjoituksen kuvaus -->
-            <p id="exercise-description"></p>
-          </div>
-
-          <!-- Oikea puoli (Ajastin ja kontrollit) -->
-          <div id="timer-and-controls">
-            <div id="timer">
-              <span id="time-remaining">00:00</span>
-              <p id="timer-label">Odottamassa...</p>
+            <!-- Viikkotreenien napit -->
+            <div id="week-buttons-container" class="button-container">
+                <p>Ladataan viikkotreenejä...</p>
             </div>
-            <button id="start-btn" class="control-button" disabled>▶ Aloita Treeni</button>
-            <button id="pause-btn" class="control-button" disabled>⏸ Tauko</button>
-            <button id="stop-btn" class="control-button" disabled>⏹ Lopeta</button>
-          </div>
 
-        </div> <!-- #content-split loppuu -->
+            <!-- POISTETTU TAI KOMMENTOITU: Oletusajat ja Pikatreenit, koska uusi JS ei käytä niitä suoraan -->
+            <!--
+            <div class="default-time-settings"> ... </div>
+            <div class="preset-select-container"> ... </div>
+            -->
 
-      </section> <!-- #exercise-display loppuu -->
+        </section>
 
-    </main>
+        <!-- Pääsisältöalue (Uusi rakenne) -->
+        <main class="main-layout"> <!-- Lisätty luokka helpottamaan CSS-kohdennusta -->
 
-  </div>
+            <!-- Sivupalkki: Ohjeet ja Treenilista -->
+            <aside id="sidebar">
+                <!-- Viikon Ohjeet -->
+                <div id="workout-instructions"> <!-- Käytetään diviä, jotta aside voi sisältää useampia osioita -->
+                    <h2>Viikon Ohjeet</h2>
+                    <div id="workout-notes-container">
+                        <p id="workout-notes">Valitse ensin viikkotreeni nähdäksesi ohjeet.</p>
+                    </div>
+                </div>
 
-  <script src="app.js"></script>
+                <!-- Treenilista -->
+                <div id="exercise-list"> <!-- Käytetään diviä -->
+                    <h2>Harjoitukset</h2>
+                    <ul id="exercise-items">
+                        <li>Valitse ensin treeni yläpuolelta.</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Harjoitusnäkymä (Pysyy ennallaan sisäisesti) -->
+            <section id="exercise-display">
+                <!-- Otsikkoalue napeilla -->
+                <div id="title-area">
+                    <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen harjoitus">⏮</button> <!-- Lisätty title -->
+                    <h2 id="exercise-name">Valitse treeni</h2>
+                    <button id="next-btn" class="title-nav-btn" disabled title="Seuraava harjoitus">⏭</button> <!-- Lisätty title -->
+                </div>
+
+                <!-- Sisällön jakaminen kahteen osaan -->
+                <div id="content-split">
+                    <!-- Vasen puoli (Kuva ja kuvaus) -->
+                    <div id="exercise-details">
+                        <img id="exercise-image" src="" alt="Harjoituskuva" style="display: none;">
+                        <p id="exercise-description"></p>
+                    </div>
+
+                    <!-- Oikea puoli (Ajastin ja kontrollit) -->
+                    <div id="timer-and-controls">
+                        <div id="timer">
+                            <span id="time-remaining">00:00</span>
+                            <p id="timer-label">Odottamassa...</p>
+                        </div>
+                        <button id="start-btn" class="control-button" disabled>▶ Aloita Treeni</button>
+                        <button id="pause-btn" class="control-button" disabled>⏸ Tauko</button>
+                        <button id="stop-btn" class="control-button" disabled>⏹ Lopeta</button>
+                    </div>
+                </div> <!-- #content-split loppuu -->
+            </section> <!-- #exercise-display loppuu -->
+
+        </main> <!-- .main-layout loppuu -->
+
+    </div> <!-- #app loppuu -->
+
+    <script src="app.js"></script>
 </body>
 </html>
