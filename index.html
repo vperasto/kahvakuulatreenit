@@ -4,19 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kahvakuulakurssi – Ohjaajan Työkalu</title>
-    <link rel="stylesheet" href="style.css"> <!-- MUISTA PÄIVITTÄÄ CSS VASTAAMAAN UUTTA RAKENNETTA -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
 
-        <!-- Header (Pysyy samana) -->
+        <!-- Header -->
         <header>
-             <!-- Poistin h1:n koska logossa teksti-->
-            <img src="img/logo_small_valkoinen.png" alt="Kuntokompassi Logo"> <!-- Lisätty alt-teksti -->
-            <button id="toggle-training-select">Valitse treeni ⯆</button> <!-- Poistettu toinen nuoli -->
+            <img src="img/logo_small_valkoinen.png" alt="Kuntokompassi Logo">
+            <button id="toggle-training-select">Valitse treeni ⯆</button>
         </header>
 
-        <!-- Treenin valinta (Pysyy pääosin samana, ehkä poistetaan käyttämättömät osat?) -->
+        <!-- Treenin valinta -->
         <section id="training-select" class="collapsible hidden">
             <h2>Valitse treeni</h2>
 
@@ -25,29 +24,33 @@
                 <p>Ladataan viikkotreenejä...</p>
             </div>
 
-            <!-- POISTETTU TAI KOMMENTOITU: Oletusajat ja Pikatreenit, koska uusi JS ei käytä niitä suoraan -->
-            <!--
-            <div class="default-time-settings"> ... </div>
-            <div class="preset-select-container"> ... </div>
-            -->
+            <!-- UUSI: Tason valinta -->
+            <div id="level-selection" class="level-container">
+                <h3>Valitse Taso</h3>
+                <div id="level-buttons-container" class="button-container">
+                    <button class="level-button" data-level="1">Taso 1 (Aloittelija)</button>
+                    <button class="level-button active" data-level="2">Taso 2 (Harrastelija)</button> <!-- Oletus aktiivinen -->
+                    <button class="level-button" data-level="3">Taso 3 (Kokenut)</button>
+                    <button class="level-button" data-level="4">Taso 4 (Expertti)</button>
+                </div>
+            </div>
 
         </section>
 
-        <!-- Pääsisältöalue (Uusi rakenne) -->
-        <main class="main-layout"> <!-- Lisätty luokka helpottamaan CSS-kohdennusta -->
+        <!-- Pääsisältöalue -->
+        <main class="main-layout">
 
             <!-- Sivupalkki: Ohjeet ja Treenilista -->
             <aside id="sidebar">
                 <!-- Viikon Ohjeet -->
-                <div id="workout-instructions"> <!-- Käytetään diviä, jotta aside voi sisältää useampia osioita -->
-                    <h2>Viikon Ohjeet</h2>
+                <div id="workout-instructions">
+                    <h2>Viikon Tiedot</h2> <!-- Otsikko muutettu yleisemmäksi -->
                     <div id="workout-notes-container">
-                        <p id="workout-notes">Valitse ensin viikkotreeni nähdäksesi ohjeet.</p>
+                        <p id="workout-notes">Valitse ensin viikkotreeni nähdäksesi tiedot.</p>
                     </div>
                 </div>
-
                 <!-- Treenilista -->
-                <div id="exercise-list"> <!-- Käytetään diviä -->
+                <div id="exercise-list">
                     <h2>Harjoitukset</h2>
                     <ul id="exercise-items">
                         <li>Valitse ensin treeni yläpuolelta.</li>
@@ -55,13 +58,13 @@
                 </div>
             </aside>
 
-            <!-- Harjoitusnäkymä (Pysyy ennallaan sisäisesti) -->
+            <!-- Harjoitusnäkymä -->
             <section id="exercise-display">
                 <!-- Otsikkoalue napeilla -->
                 <div id="title-area">
-                    <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen harjoitus">⏮</button> <!-- Lisätty title -->
+                    <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen harjoitus">⏮</button>
                     <h2 id="exercise-name">Valitse treeni</h2>
-                    <button id="next-btn" class="title-nav-btn" disabled title="Seuraava harjoitus">⏭</button> <!-- Lisätty title -->
+                    <button id="next-btn" class="title-nav-btn" disabled title="Seuraava harjoitus">⏭</button>
                 </div>
 
                 <!-- Sisällön jakaminen kahteen osaan -->
@@ -74,6 +77,9 @@
 
                     <!-- Oikea puoli (Ajastin ja kontrollit) -->
                     <div id="timer-and-controls">
+                        <!-- UUSI: Kierrosinfo -->
+                        <p id="round-info" class="round-display"></p>
+
                         <div id="timer">
                             <span id="time-remaining">00:00</span>
                             <p id="timer-label">Odottamassa...</p>
