@@ -537,3 +537,45 @@ section#exercise-display {
     #time-remaining { font-size: 2.8rem; }
     .control-button { font-size: 1rem; padding: 0.7rem 0.9rem; }
 }
+/* --- Lisäykset tyyleihin --- */
+
+/* Lepoajan korostus */
+#timer.timer-resting #time-remaining {
+  color: var(--accent-orange); /* Oranssi väri levolle */
+  /* Voit kokeilla myös fonttikoon suurentamista: */
+  /* font-size: clamp(3.2rem, 11vw, 5.5rem); */
+
+  /* Hienovarainen pulssianimaatio */
+  animation: pulse-orange 1.5s infinite ease-in-out;
+}
+
+/* Tauon aikainen himmennys (valinnainen) */
+#timer.timer-paused {
+    opacity: 0.7;
+}
+
+@keyframes pulse-orange {
+  0%, 100% {
+    /* transform: scale(1); */
+    opacity: 1;
+  }
+  50% {
+    /* transform: scale(1.03); */
+    opacity: 0.85;
+  }
+}
+
+/* Estä sivun scrollaus kun ajastin aktiivinen */
+body.timer-active {
+  overflow: hidden;
+}
+
+/* Varmista, että sisäiset scrollbarit toimivat edelleen */
+body.timer-active aside#sidebar,
+body.timer-active #exercise-details,
+body.timer-active #exercise-items,
+body.timer-active #workout-notes-container {
+  /* Näiden pitäisi edelleen olla scrollattavissa `overflow-y: auto` sääntöjen ansiosta */
+  /* Lisätään varmuuden vuoksi -webkit-overflow-scrolling mobiililaitteille */
+   -webkit-overflow-scrolling: touch;
+}
