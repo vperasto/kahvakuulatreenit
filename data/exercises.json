@@ -152,7 +152,7 @@
         ]
     },
     "phases": [
-      { // VAIHE 1: Viikot 1-3
+      { 
         "phaseInfo": {
             "name": "Perusteiden Vahvistaminen",
             "weeks": [1, 2, 3],
@@ -188,7 +188,7 @@
           { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Oikea)" }
         ]
       },
-      { // VAIHE 2: Viikot 4-7
+      { 
         "phaseInfo": {
             "name": "Kehitys & Yhden Käden Liikkeet",
             "weeks": [4, 5, 6, 7],
@@ -228,7 +228,7 @@
           { "exerciseId": "farmers_carry", "displayTitle": "Farmarikävely", "notes": "Yhdellä kuulalla: vaihda puolta joka kierros. Kahdella kuulalla: tee molemmilla."}
         ]
       },
-      { // VAIHE 3: Viikot 8-11
+      { 
         "phaseInfo": {
             "name": "Huippu & Haastavammat Liikkeet",
             "weeks": [8, 9, 10, 11],
@@ -256,7 +256,7 @@
             "repBased": { "repsDescription": "10+ per puoli (TGU 1-2/puoli, Kanto ~50m+)", "restBetweenExercisesSeconds": "0-10" }
           }
         },
-        "exerciseOptions": [ // Sovellus voi valita näistä TAI esittää käyttäjälle valittavaksi 4-5 liikeparia
+        "exerciseOptions": [ 
            { "optionId": "snatch_pair", "exercises": [
                { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
                { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."}
@@ -286,8 +286,8 @@
                { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (Oikea käsi)"}
            ]}
         ],
-         "exampleWeeklyExercises": [ // Esimerkki miten valitut optiot muodostavat kierroksen
-              // Valittu esim. Snatch, Front Squat, TGU, Rack Carry
+         "exampleWeeklyExercises": [ 
+              
               { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
               { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
               { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula vas.)", "notes": "Tai kaksi kuulaa."},
