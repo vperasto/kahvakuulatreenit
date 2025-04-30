@@ -579,3 +579,88 @@ body.timer-active #workout-notes-container {
   /* Lisätään varmuuden vuoksi -webkit-overflow-scrolling mobiililaitteille */
    -webkit-overflow-scrolling: touch;
 }
+
+/* Lisää nämä tiedoston loppuun tai sopiviin kohtiin */
+
+/* --- Tason valinnan tyylit --- */
+.level-container {
+    margin-top: 1.5rem; /* Väliä viikkonappeihin */
+    padding-top: 1rem;
+    border-top: 1px solid #333; /* Hienovarainen erotin */
+}
+
+.level-container h3 {
+    text-align: center;
+    margin-bottom: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--text-subtle);
+}
+
+#level-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem; /* Pienempi väli taso-napeille */
+    justify-content: center;
+}
+
+.level-button {
+    background-color: #444; /* Neutraalimpi oletusväri */
+    color: var(--text-subtle);
+    border: 1px solid #666;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: var(--font-main);
+    font-weight: 400;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.1s;
+    flex-grow: 1; /* Jakaa tilaa */
+    text-align: center;
+}
+
+.level-button:hover {
+    background-color: #555;
+    color: var(--text-main);
+}
+
+.level-button.active {
+    background-color: var(--accent-orange); /* Aktiivinen taso korostuu */
+    color: var(--text-main);
+    border-color: var(--accent-orange);
+    font-weight: 600;
+    transform: scale(1.03);
+    box-shadow: 0 0 6px rgba(255, 152, 0, 0.4);
+}
+
+/* --- Kierrosinfon tyylit --- */
+.round-display {
+    font-size: 1rem;
+    color: var(--text-subtle);
+    margin-bottom: -0.5rem; /* Tuo lähemmäs ajastinta */
+    text-align: center;
+    height: 1.5em; /* Varaa tilaa, ettei leiska hyppele */
+    font-weight: 600;
+}
+
+/* --- Ajastimen värimuutos ja lepokorostus --- */
+#time-remaining {
+    /* Lisätään transition väreille */
+    transition: color 0.4s ease-in-out;
+    /* Oletusväri (työaika) */
+    color: var(--accent-blue);
+}
+
+/* Korostus lepoajalle */
+#timer.timer-resting #time-remaining {
+    color: var(--accent-orange);
+    /* Pulssianimaatio säilyy aiemmasta */
+    animation: pulse-orange 1.5s infinite ease-in-out;
+}
+
+/* Muut aiemmin lisätyt tyylit (esim. body.timer-active, pulse-orange) pysyvät ennallaan */
+
+/* Varmistetaan, että header pysyy paikallaan body-lukituksesta huolimatta */
+body.timer-active header {
+    /* Tarvitaanko tähän jotain? Riippuu yleisestä layoutista. */
+    /* Jos header "katoaa" lukituksen aikana, sille voi tarvita position: sticky tai vastaavaa */
+}
