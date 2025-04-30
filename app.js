@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Attempting to load program data...");
         try {
             // MUUTA TIEDOSTONIMI TARVITTAESSA
-            const response = await fetch('data/kettlebell_program.json');
+            const response = await fetch('data/exercises.json');
             console.log("Fetch response status:", response.status);
 
             if (!response.ok) {
