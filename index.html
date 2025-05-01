@@ -12,104 +12,95 @@
         <!-- Header -->
         <header>
             <img src="img/logo_small_valkoinen.png" alt="Kuntokompassi Logo">
-            <!-- MUUTOS: Nappi avaa nyt kaikki valinnat -->
             <button id="toggle-selection-area">Valinnat ⯆</button>
         </header>
 
-        <!-- MUUTOS: Koko valinta-alue (sis. treeni, taso, lämmittelyt) -->
+        <!-- Valinta-alue -->
         <section id="selection-area" class="collapsible hidden">
 
-            <!-- Treenin valinta (Viikot & Taso) -->
+            <!-- Lämmittelyn valinta -->
+            <div id="warmup-selection" class="routine-selection">
+                 <h2>Lämmittely (valinnainen)</h2>
+                 <div id="warmup-buttons-container" class="button-container routine-buttons">
+                     <p>Ladataan...</p> <!-- Yksi nappi tulee tähän JS:llä -->
+                 </div>
+                 <button id="start-warmup-btn" class="control-button routine-start-btn" disabled>Aloita Lämmittely</button>
+            </div>
+
+            <!-- Treenin valinta -->
             <div id="training-selection">
-                <h2>1. Valitse Treeni ja Taso</h2>
+                <h2>Varsinainen Treeni</h2>
+                <p style="text-align: center; color: var(--text-subtle); margin-bottom: 0.5rem;">Valitse viikko ja taso:</p>
                 <div id="week-buttons-container" class="button-container">
-                    <p>Ladataan viikkotreenejä...</p>
+                    <p>Ladataan...</p>
                 </div>
                 <div id="level-selection" class="level-container">
-                    <h3>Valitse Taso</h3>
+                     <!-- H3 poistettu, napit riittää -->
                     <div id="level-buttons-container" class="button-container">
-                        <button class="level-button" data-level="1">Taso 1</button> <!-- Teksti lyhennetty -->
+                        <button class="level-button" data-level="1">Taso 1</button>
                         <button class="level-button active" data-level="2">Taso 2</button>
                         <button class="level-button" data-level="3">Taso 3</button>
                         <button class="level-button" data-level="4">Taso 4</button>
                     </div>
                 </div>
-            </div> <!-- #training-selection loppuu -->
-
-            <!-- UUSI: Lämmittelyn valinta -->
-            <div id="warmup-selection" class="routine-selection">
-                 <h2>2. Valitse Lämmittely (valinnainen)</h2>
-                 <div id="warmup-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan lämmittelyjä...</p>
-                 </div>
-                 <button id="start-warmup-btn" class="control-button routine-start-btn" disabled>Aloita Lämmittely</button>
+                 <!-- Treenin oma start-nappi tulee näkyviin kun valinta tehty -->
+                 <button id="start-workout-btn" class="control-button routine-start-btn" style="display: none; margin-top: 1rem;">Aloita Treeni</button>
             </div>
 
-             <!-- UUSI: Jäähdyttelyn valinta -->
+             <!-- Jäähdyttelyn valinta -->
              <div id="cooldown-selection" class="routine-selection">
-                 <h2>3. Valitse Jäähdyttely (valinnainen)</h2>
+                 <h2>Jäähdyttely (valinnainen)</h2>
                  <div id="cooldown-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan jäähdyttelyjä...</p>
+                     <p>Ladataan...</p> <!-- Yksi nappi tulee tähän JS:llä -->
                  </div>
                  <button id="start-cooldown-btn" class="control-button routine-start-btn" disabled>Aloita Jäähdyttely</button>
              </div>
 
-        </section> <!-- #selection-area loppuu -->
-
+        </section>
 
         <!-- Pääsisältöalue -->
         <main class="main-layout">
 
-            <!-- Sivupalkki: Ohjeet/Vaiheet ja Lista/Status -->
+            <!-- Sivupalkki -->
             <aside id="sidebar">
-                 <!-- MUUTOS: Tämä näyttää nyt joko treenin tiedot TAI lämmittelyn/jäähdyttelyn tiedot -->
                 <div id="info-area">
-                    <h2 id="info-area-title">Tiedot</h2> <!-- Dynaaminen otsikko -->
-                    <div id="info-area-notes-container"> <!-- Muutettu ID:tä -->
-                        <p id="info-area-notes">Valitse ensin toiminto yläpuolelta.</p> <!-- Muutettu ID:tä -->
+                    <h2 id="info-area-title">Tiedot</h2>
+                    <div id="info-area-notes-container">
+                        <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
                     </div>
                 </div>
-
-                <!-- MUUTOS: Tämä näyttää nyt joko treenilistan TAI lämmittelyn/jäähdyttelyn vaiheet -->
-                <div id="steps-list-area"> <!-- Muutettu ID:tä -->
-                    <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2> <!-- Dynaaminen otsikko -->
-                    <ul id="steps-items"> <!-- Muutettu ID:tä -->
-                        <li>Valitse ensin toiminto yläpuolelta.</li>
+                <div id="steps-list-area">
+                    <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
+                    <ul id="steps-items">
+                        <li>Valitse toiminto yläpuolelta.</li>
                     </ul>
                 </div>
             </aside>
 
-            <!-- Harjoitus/Vaihe-näkymä -->
-            <!-- MUUTOS: Tätä käytetään nyt sekä treenille että lämmittelylle/jäähdyttelylle -->
-            <section id="active-display"> <!-- Muutettu ID:tä -->
-                <!-- Otsikkoalue napeilla -->
+            <!-- Aktiivinen Näyttö -->
+            <section id="active-display">
                 <div id="title-area">
-                    <!-- Nappeja voidaan näyttää/piilottaa tarpeen mukaan -->
                     <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen">⏮</button>
-                    <h2 id="item-name">Valitse toiminto</h2> <!-- Muutettu ID:tä -->
+                    <h2 id="item-name">Valitse toiminto</h2>
                     <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
                 </div>
-
-                <!-- Sisällön jakaminen (kuva/kuvaus ja ajastin/kontrollit) -->
                 <div id="content-split">
-                    <!-- Vasen puoli (Kuva ja kuvaus / Vaiheen nimi) -->
-                    <div id="item-details"> <!-- Muutettu ID:tä -->
-                        <img id="item-image" src="" alt="Kuva" style="display: none;"> <!-- Muutettu ID:tä -->
-                        <p id="item-description"></p> <!-- Muutettu ID:tä -->
+                    <div id="item-details">
+                        <img id="item-image" src="" alt="Kuva" style="display: none;">
+                        <p id="item-description"></p>
                     </div>
-
-                    <!-- Oikea puoli (Ajastin ja kontrollit) -->
                     <div id="timer-and-controls">
                         <p id="round-info" class="round-display"></p>
                         <div id="timer">
                             <span id="time-remaining">00:00</span>
                             <p id="timer-label">Odottamassa...</p>
                         </div>
-                        <!-- MUUTOS: Napit ovat nyt yleisempiä -->
-                        <button id="start-pause-resume-btn" class="control-button">▶ Aloita</button>
-                        <button id="stop-btn" class="control-button" disabled>⏹ Lopeta</button>
-                         <!-- Lisätään "Valmis"-nappi lämmittely/jäähdyttely askelille -->
-                        <button id="mark-step-done-btn" class="control-button" style="display: none;">✅ Vaihe Valmis</button>
+                        <!-- YKSI YLEINEN Pause/Resume/Jatka nappi -->
+                        <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
+                        <!-- YKSI YLEINEN Stop nappi -->
+                        <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
+                        <!-- YKSI YLEINEN "Seuraava/Valmis" nappi rutiineille -->
+                        <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
                     </div>
                 </div>
             </section>
