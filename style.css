@@ -1,282 +1,128 @@
-/* === Kahvakuula Pro - Light Mode === */
-
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600&family=Roboto:wght@400;500&display=swap'); /* Lisätty Roboto luettavuutta varten */
 
 :root {
-  /* Colors - Light Theme */
-  --bg-main: #f7f9fc;          /* Very light grey-blue background */
-  --bg-panel: #ffffff;          /* White panels/cards */
-  --bg-panel-secondary: #f0f3f7; /* Slightly off-white for subtle contrast */
-  --text-primary: #2c3e50;      /* Dark grey-blue for main text */
-  --text-secondary: #5a6a7a;    /* Lighter grey for secondary text */
-  --text-on-accent: #ffffff;     /* Text on bright accent buttons */
-  --text-on-accent-dark: #1a1a1a; /* Text on lighter accent buttons (e.g., orange) */
-  --border-color: #e1e8f0;     /* Light grey border */
-  --border-color-strong: #c8d4e0;/* Stronger border for emphasis */
-
-  /* Accents */
-  --accent-blue: #007aff;       /* Standard iOS Blue */
-  --accent-blue-hover: #005ecb;
-  --accent-orange: #ff9500;      /* Standard iOS Orange */
-  --accent-orange-hover: #d97e00;
-  --accent-green: #34c759;      /* Standard iOS Green */
-  --accent-green-hover: #29a347;
-  --accent-red: #ff3b30;        /* Standard iOS Red */
-  --accent-red-hover: #d92f23;
-  --accent-yellow: #ffcc00;     /* For resting state timer */
-  --accent-yellow-hover: #d9ad00;
-
-  /* Fonts */
-  --font-body: 'Roboto', sans-serif;
-  --font-display: 'Rajdhani', sans-serif; /* For headings, timer, impactful elements */
-
-  /* Spacing & Sizing */
-  --spacing-xs: 0.25rem;  /* 4px */
-  --spacing-sm: 0.5rem;   /* 8px */
-  --spacing-md: 1rem;     /* 16px */
-  --spacing-lg: 1.5rem;   /* 24px */
-  --spacing-xl: 2rem;     /* 32px */
-  --spacing-xxl: 3rem;    /* 48px */
-  --header-height: 65px; /* Adjusted header height */
-
-  /* Borders & Shadows */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-full: 999px; /* For pills */
-  --shadow-xs: 0 1px 2px rgba(44, 62, 80, 0.05);
-  --shadow-sm: 0 2px 4px rgba(44, 62, 80, 0.08);
-  --shadow-md: 0 4px 8px rgba(44, 62, 80, 0.1);
-  --shadow-lg: 0 8px 16px rgba(44, 62, 80, 0.12);
-  --focus-ring-color: rgba(0, 122, 255, 0.3); /* --accent-blue with alpha */
-
-  /* Transitions & Animations */
-  --transition-fast: 0.15s ease-out;
-  --transition-base: 0.25s ease-out;
-  --transition-slow: 0.4s ease-out;
+  --bg-dark: #101214; /* Hieman sinertävämpi tumma */
+  --bg-panel: #1a1d21; /* Selkeämpi paneelin tausta */
+  --bg-panel-light: #25292e; /* Vaaleampi korostus paneeleille */
+  --text-main: #e0e0e0; /* Hieman pehmeämpi valkoinen */
+  --text-subtle: #a0a0a0;
+  --accent-blue: #3a9efd; /* Kirkkaampi sininen */
+  --accent-orange: #ffab40; /* Eläväisempi oranssi */
+  --accent-green: #69f0ae; /* Kirkas vihreä */
+  --accent-red: #ff5252; /* Selkeä punainen */
+  --border-color: #333840; /* Selkeämpi reunaväri */
+  --font-display: 'Rajdhani', sans-serif; /* Rajdhani näytöille */
+  --font-body: 'Roboto', sans-serif; /* Roboto leipätekstille */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
 }
 
-/* === Basic Reset & Body === */
-*, *::before, *::after {
+/* Basic Reset & Body */
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit */
-    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
-}
-
-html {
-    font-size: 16px;
+    /* Lisätään pehmeä skrollaus */
     scroll-behavior: smooth;
 }
 
+html {
+    font-size: 16px; /* Base font size */
+}
+
 body {
-  font-family: var(--font-body);
-  background-color: var(--bg-main);
-  color: var(--text-primary);
+  font-family: var(--font-body); /* Roboto oletuksena */
+  background-color: var(--bg-dark);
+  color: var(--text-main);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  line-height: 1.6;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  line-height: 1.6; /* Parannettu riviväli */
+  overflow-x: hidden; /* Estä vaakavieritys */
 }
 
 #app {
   display: flex;
   flex-direction: column;
   flex: 1;
-  /* Margin top compensates for fixed header */
-  margin-top: var(--header-height);
+  overflow: hidden; /* Prevent body scrollbars from layout shifts */
 }
 
-/* === Scrollbar Styling === */
+/* Scrollbar Styles (hienovarainen) */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-panel-secondary);
+  background: var(--bg-panel);
 }
 ::-webkit-scrollbar-thumb {
-  background-color: var(--border-color-strong);
-  border-radius: var(--radius-full);
-  border: 2px solid var(--bg-panel-secondary);
+  background-color: var(--border-color);
+  border-radius: 4px;
+  border: 2px solid var(--bg-panel);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--text-secondary);
+  background-color: var(--accent-blue);
 }
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--border-color-strong) var(--bg-panel-secondary);
+  scrollbar-color: var(--border-color) var(--bg-panel);
 }
 
-/* === Accessibility Focus Ring === */
-*:focus-visible {
-  outline: 3px solid var(--focus-ring-color);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px var(--focus-ring-color); /* Fallback/Enhancement */
-}
-/* Remove default outline when focus-visible is supported */
-*:focus:not(:focus-visible) {
-  outline: none;
-  box-shadow: none;
-}
 
-/* === Reusable Animations === */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s var(--transition-base) backwards;
-}
-
-/* === Unified Button System === */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-lg); /* Base padding */
-  font-family: var(--font-display); /* Buttons use display font */
-  font-size: 1rem;
-  font-weight: 700; /* Bold */
-  border-radius: var(--radius-md);
-  border: 1px solid transparent; /* Base border */
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: all var(--transition-fast);
-  user-select: none; /* Prevent text selection */
-}
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  box-shadow: none !important; /* Remove shadow on disabled */
-  transform: none !important; /* Remove transform on disabled */
-}
-.btn:not(:disabled):hover {
-  transform: translateY(-2px); /* Subtle lift */
-  box-shadow: var(--shadow-sm);
-}
-.btn:not(:disabled):active {
-  transform: translateY(0px); /* Press down */
-  box-shadow: none;
-}
-
-/* Button Modifiers */
-.btn-primary {
-  background-color: var(--accent-blue);
-  color: var(--text-on-accent);
-  border-color: var(--accent-blue);
-}
-.btn-primary:not(:disabled):hover { background-color: var(--accent-blue-hover); border-color: var(--accent-blue-hover); }
-
-.btn-secondary {
-  background-color: var(--bg-panel-secondary);
-  color: var(--text-primary);
-  border-color: var(--border-color);
-}
-.btn-secondary:not(:disabled):hover { background-color: var(--border-color); border-color: var(--border-color-strong); }
-
-.btn-accent-green {
-  background-color: var(--accent-green);
-  color: var(--text-on-accent);
-  border-color: var(--accent-green);
-}
-.btn-accent-green:not(:disabled):hover { background-color: var(--accent-green-hover); border-color: var(--accent-green-hover); }
-
-.btn-accent-orange {
-  background-color: var(--accent-orange);
-  color: var(--text-on-accent-dark); /* Dark text for contrast */
-  border-color: var(--accent-orange);
-}
-.btn-accent-orange:not(:disabled):hover { background-color: var(--accent-orange-hover); border-color: var(--accent-orange-hover); }
-
-.btn-accent-red {
-  background-color: var(--accent-red);
-  color: var(--text-on-accent);
-  border-color: var(--accent-red);
-}
-.btn-accent-red:not(:disabled):hover { background-color: var(--accent-red-hover); border-color: var(--accent-red-hover); }
-
-.btn-accent-yellow { /* For Pause button when active */
-  background-color: var(--accent-yellow);
-  color: var(--text-on-accent-dark);
-  border-color: var(--accent-yellow);
-}
-.btn-accent-yellow:not(:disabled):hover { background-color: var(--accent-yellow-hover); border-color: var(--accent-yellow-hover); }
-
-
-.btn-level {
-  background-color: transparent;
-  color: var(--text-secondary);
-  border: 2px solid var(--border-color);
-  border-radius: var(--radius-full); /* Pill shape */
-  padding: var(--spacing-xs) var(--spacing-md);
-  font-size: 0.9rem;
-  font-weight: 500; /* Medium weight for levels */
-  font-family: var(--font-body); /* Body font for levels */
-}
-.btn-level:not(:disabled):hover { background-color: var(--bg-panel-secondary); color: var(--text-primary); border-color: var(--border-color-strong); }
-.btn-level.active {
-  background-color: var(--accent-orange);
-  color: var(--text-on-accent-dark);
-  border-color: var(--accent-orange);
-  font-weight: 700;
-  transform: scale(1.05);
-}
-
-.btn-nav { /* For prev/next buttons */
-  background-color: transparent;
-  color: var(--accent-blue);
-  border: 2px solid var(--accent-blue);
-  border-radius: 50%;
-  width: 42px; height: 42px;
-  padding: 0;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
-.btn-nav:not(:disabled):hover { background-color: var(--accent-blue); color: var(--text-on-accent); }
-.btn-nav:disabled { border-color: var(--border-color-strong); color: var(--border-color-strong); }
-
-.btn-block { /* Utility for full-width buttons on mobile */
-   display: flex;
-   width: 100%;
-}
-
-/* === Header (Sticky) === */
+/* Header */
 header {
-  position: fixed; /* Stick to top */
-  top: 0; left: 0; right: 0;
-  height: var(--header-height);
   background-color: var(--bg-panel);
-  padding: 0 var(--spacing-lg);
-  font-weight: 700;
-  border-bottom: 1px solid var(--border-color);
-  z-index: 1000; /* Ensure it's above other content */
+  padding: 0.75rem 1.5rem; /* Hieman lisää tilaa */
+  font-family: var(--font-display); /* Rajdhani headeriin */
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 3px solid var(--accent-blue); /* Selkeämpi rajaus */
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: var(--shadow-sm);
 }
 header img {
-    height: calc(var(--header-height) * 0.6); /* Scale logo with header height */
+    height: 40px; /* Hieman pienempi logo */
     width: auto;
 }
-#toggle-selection-area { /* Applying button styles */
-    /* Inherits from .btn, specific style below */
+header h1 { /* Lisätty otsikolle tyyli, jos sellainen tulee */
+    font-size: 1.5rem;
+    color: var(--text-main);
 }
 
-/* === Selection Area === */
+#toggle-selection-area {
+  background-color: var(--accent-orange);
+  color: #000; /* Parempi kontrasti oranssilla */
+  border: none;
+  padding: 0.6rem 1.2rem; /* Yhtenäinen koko */
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+#toggle-selection-area:hover {
+  background-color: #ffc947; /* Vaaleampi hover */
+  transform: translateY(-1px);
+}
+
+/* Koko valinta-alue */
 #selection-area {
-    background-color: var(--bg-panel-secondary);
-    padding: var(--spacing-xl);
+    background-color: var(--bg-panel-light); /* Hieman vaaleampi kuin header */
+    padding: 1.5rem;
     border-bottom: 1px solid var(--border-color);
-    transition: max-height var(--transition-slow), padding var(--transition-slow), opacity var(--transition-base), border-color var(--transition-slow);
-    max-height: 80vh;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.3s ease-out, border-color 0.4s ease-out;
+    max-height: 80vh; /* Riittävä korkeus */
     overflow-y: auto;
     opacity: 1;
     flex-shrink: 0;
@@ -290,371 +136,393 @@ header img {
     overflow: hidden;
 }
 
-/* Selection Area Sections */
+/* Valinta-alueen sisäosat */
 #training-selection,
 #warmup-selection,
 #cooldown-selection {
-    margin-bottom: var(--spacing-xl);
-    padding-bottom: var(--spacing-xl);
+    margin-bottom: 2rem; /* Lisää tilaa osioiden väliin */
+    padding-bottom: 1.5rem;
     border-bottom: 1px dashed var(--border-color);
-    position: relative;
+    position: relative; /* Animaatioita varten */
 }
 #cooldown-selection {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
 }
+
 #training-selection h2,
 .routine-selection h2 {
     margin-top: 0;
-    margin-bottom: var(--spacing-lg);
-    font-size: 1.6rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.6rem; /* Suurempi otsikko */
     color: var(--accent-orange);
     text-align: center;
     font-family: var(--font-display);
-    font-weight: 700;
+    font-weight: 600;
 }
 
-/* Selection Area Button Containers */
-#week-buttons-container,
-#level-buttons-container,
-.routine-buttons {
-    display: flex; flex-wrap: wrap; gap: var(--spacing-sm);
-    justify-content: center;
-    margin-bottom: var(--spacing-lg);
+/* Week Buttons */
+#week-buttons-container {
+  display: flex; flex-wrap: wrap; gap: 0.75rem;
+  margin-bottom: 1.75rem; justify-content: center;
 }
-#week-buttons-container { gap: var(--spacing-md); }
-.level-container { margin-top: var(--spacing-lg); }
-.routine-buttons { gap: var(--spacing-md); margin-bottom: var(--spacing-lg);}
-
-/* Applying Button Styles to Selection Elements */
-.week-button { /* Inherits .btn, specific overrides if needed */
-    min-width: 170px;
-}
-.week-button.active { /* Active state uses green */
-  background-color: var(--accent-green);
-  color: var(--text-on-accent);
-  border-color: var(--accent-green);
-  transform: scale(1.03);
-  box-shadow: 0 0 10px rgba(52, 199, 89, 0.3); /* Green shadow */
-}
-.level-button { /* Uses .btn-level */
-    min-width: 90px;
-}
-.routine-button { /* Uses .btn-secondary as base */
-    min-width: 200px;
-}
-.routine-button.active { /* Active state uses blue */
-   background-color: var(--accent-blue);
-   color: var(--text-on-accent);
-   border-color: var(--accent-blue);
-   transform: scale(1.03);
-}
-
-/* Start Buttons within Selection Area */
-.routine-start-btn, #start-workout-btn {
-   /* Uses .btn and .btn-accent-green */
-   margin: var(--spacing-md) auto 0 auto; /* Center button */
-   display: block; /* Ensure it takes its own line if needed */
-}
-#start-workout-btn { display: none; /* JS controls visibility */ }
-
-
-/* === Main Layout Grid === */
-main.main-layout {
-  display: grid;
-  grid-template-columns: minmax(300px, 1.2fr) 3fr; /* Sidebar | Display */
-  gap: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  flex: 1; /* Take remaining height */
-  overflow: hidden; /* Prevent layout scroll, children handle scroll */
-  min-height: 0; /* Important for grid children overflow */
-}
-
-/* === Sidebar === */
-aside#sidebar {
-  background-color: var(--bg-panel);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xl);
-  overflow: hidden; /* Parent hides overflow, children scroll */
+.week-button {
+  background-color: var(--accent-blue); color: var(--bg-dark); /* Parempi kontrasti */
+  border: none; padding: 0.7rem 1.4rem; /* Suurempi painike */
+  border-radius: var(--border-radius-sm); cursor: pointer; font-size: 1rem;
+  font-family: var(--font-display); font-weight: 600;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+  flex-grow: 1; text-align: center; min-width: 160px;
   box-shadow: var(--shadow-sm);
 }
+.week-button:hover { background-color: #69b4ff; transform: translateY(-2px); box-shadow: 0 3px 6px rgba(58, 158, 253, 0.3); }
+.week-button.active { background-color: var(--accent-green); color: var(--bg-dark); transform: scale(1.03); box-shadow: 0 0 10px rgba(105, 240, 174, 0.5); }
 
-/* Sidebar Scrollable Content */
+/* Tason valinta */
+.level-container { margin-top: 1.5rem; text-align: center; }
+#level-buttons-container { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 0.75rem; }
+.level-button {
+    background-color: transparent; color: var(--text-subtle); border: 2px solid var(--border-color);
+    padding: 0.5rem 1rem; border-radius: 20px; /* Pyöristetyt reunat */
+    cursor: pointer; font-size: 0.9rem;
+    font-family: var(--font-body); font-weight: 500; /* Roboto Medium */
+    transition: all 0.2s ease;
+    min-width: 80px; text-align: center;
+}
+.level-button:hover { background-color: var(--bg-panel); color: var(--text-main); border-color: var(--accent-blue); }
+.level-button.active { background-color: var(--accent-orange); color: #000; border-color: var(--accent-orange); font-weight: 600; transform: scale(1.05); box-shadow: 0 0 8px rgba(255, 171, 64, 0.4); }
+
+/* Rutiinin valinta */
+.routine-selection { text-align: center; }
+.routine-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; margin-bottom: 1.25rem; }
+.routine-button {
+    background-color: var(--bg-panel); color: var(--text-subtle); border: 1px solid var(--border-color);
+    padding: 0.7rem 1.4rem; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 1rem;
+    font-family: var(--font-display); font-weight: 400;
+    transition: all 0.2s ease;
+    flex-grow: 1; text-align: center; min-width: 200px;
+    box-shadow: var(--shadow-sm);
+}
+.routine-button:hover { background-color: var(--bg-panel-light); color: var(--text-main); border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow-md);}
+.routine-button.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); font-weight: 600; transform: scale(1.03); box-shadow: 0 0 8px rgba(58, 158, 253, 0.4); }
+
+/* Lämmittelyn/Jäähdyttelyn ja Pääharjoituksen starttinapit (yleistetty) */
+.start-button {
+    background-color: var(--accent-green); color: #000; border: none;
+    border-radius: var(--border-radius-md); /* Pyöreämpi */
+    padding: 0.8rem 2rem; font-size: 1.15rem; cursor: pointer;
+    transition: background-color 0.2s, opacity 0.2s, transform 0.1s, box-shadow 0.2s;
+    font-weight: 600; margin-top: 1rem; font-family: var(--font-display);
+    display: block; /* Varmistaa, että on omalla rivillään jos tarpeen */
+    margin-left: auto; margin-right: auto; /* Keskitys */
+    box-shadow: 0 2px 5px rgba(105, 240, 174, 0.3);
+}
+.start-button:disabled { background-color: #555; opacity: 0.6; cursor: not-allowed; box-shadow: none; color: var(--text-subtle); }
+.start-button:hover:not(:disabled) { background-color: #8affc2; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(105, 240, 174, 0.4); }
+
+/* Erityiset ID:t */
+#start-warmup-btn, #start-cooldown-btn { /* Nämä ovat .routine-start-btn HTML:ssä, mutta käytetään tätä jos yleistä luokkaa .start-button käytetään */ }
+#start-workout-btn {
+    display: none; /* JS näyttää tämän */
+    /* Yleiset start-button tyylit periytyvät */
+}
+
+
+/* --- PÄÄSISÄLLÖN ASETTELU --- */
+main.main-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 1.2fr) 3fr; /* Leveämpi sidebar oletuksena */
+  gap: 1.5rem; /* Suurempi väli */
+  padding: 1.5rem;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; /* Tärkeä gridin lapsien skrollaukselle */
+}
+
+/* Sidebar (Info & Lista) */
+aside#sidebar {
+  background-color: var(--bg-panel); border-radius: var(--border-radius-md); padding: 1.5rem;
+  display: flex; flex-direction: column; gap: 1.75rem; /* Enemmän tilaa */
+  overflow: hidden; /* Estää tämän skrollaamisen, lapset skrollaa */
+  box-shadow: var(--shadow-md);
+}
+/* Sidebarin sisäinen skrollaus */
 .sidebar-scroll-content {
     flex-grow: 1;
     overflow-y: auto;
-    padding-right: var(--spacing-sm); /* Space for scrollbar */
-    margin-right: calc(-1 * var(--spacing-sm)); /* Offset padding */
+    padding-right: 0.5rem; /* Tilaa scrollbarille */
+    margin-right: -0.5rem; /* Kompensoi padding */
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl);
+    gap: 1.75rem;
 }
-#info-area { flex-shrink: 0; }
-#steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
 
-/* Sidebar Titles */
-#info-area h2#info-area-title,
-#steps-list-area h2#steps-list-title {
-  margin: 0 0 var(--spacing-md) 0; /* Remove top margin */
-  padding-bottom: var(--spacing-sm);
-  font-size: 1.4rem; text-align: center;
-  font-family: var(--font-display); font-weight: 700;
-  border-bottom: 1px solid var(--border-color);
-  /* Sticky behavior (Optional - can be complex with nested scroll) */
-  /* position: sticky; top: 0; background: var(--bg-panel); z-index: 1; */
+#info-area h2#info-area-title, #steps-list-area h2#steps-list-title {
+  margin-top: 0; margin-bottom: 1rem; font-size: 1.4rem; text-align: center;
+  font-family: var(--font-display); font-weight: 600; position: sticky; top: 0; background: var(--bg-panel); padding-bottom: 0.5rem; z-index: 1; /* Sticky otsikko */
 }
 #info-area h2#info-area-title { color: var(--accent-orange); }
 #steps-list-area h2#steps-list-title { color: var(--accent-blue); }
 
 /* Info Area Notes */
+#info-area { flex-shrink: 0; } /* Estää kutistumisen liikaa */
 #info-area-notes-container {
-    width: 100%; padding: var(--spacing-md);
-    background-color: var(--bg-panel-secondary);
-    border-left: 4px solid var(--accent-orange);
-    border-radius: var(--radius-sm);
-    overflow-y: auto; max-height: 280px;
+    width: 100%; padding: 1rem; background-color: rgba(0, 0, 0, 0.25); border-left: 5px solid var(--accent-orange);
+    border-radius: var(--border-radius-sm); overflow-y: auto; max-height: 280px;
 }
-#info-area-notes { color: var(--text-primary); font-size: 1rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
+#info-area-notes { color: var(--accent-orange); font-size: 1rem; line-height: 1.5; white-space: pre-wrap; margin: 0; }
 
-/* Steps List */
+/* Steps List Area */
+#steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
 ul#steps-items {
     list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1;
-    padding-right: var(--spacing-sm); /* Space for scrollbar */
+    padding-right: 0.5rem; /* Tilaa scrollbarille */
 }
 li.step-item {
-    margin-bottom: var(--spacing-sm); padding: var(--spacing-md);
-    background-color: var(--bg-panel-secondary);
-    border-left: 4px solid var(--accent-blue); border-radius: var(--radius-sm);
-    cursor: pointer; transition: all var(--transition-fast);
-    font-size: 1.1rem; font-weight: 500; /* Medium */
+    margin-bottom: 0.6rem; padding: 0.85rem 1.1rem; background-color: var(--bg-panel-light);
+    border-left: 5px solid var(--accent-blue); border-radius: var(--border-radius-sm);
+    cursor: pointer; transition: all 0.2s ease;
+    font-size: 1.1rem; font-weight: 500; /* Roboto Medium */
     overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-    position: relative;
+    position: relative; /* Animaatioille */
 }
-li.step-item:hover { background-color: var(--border-color); border-left-color: var(--accent-blue-hover); transform: translateX(3px); }
+li.step-item:hover { background-color: #363b43; border-left-color: #69b4ff; transform: translateX(3px); }
 li.step-item.active {
-    background-color: rgba(52, 199, 89, 0.1); /* Light green background */
-    border-left-color: var(--accent-green); border-left-width: 5px;
-    font-weight: 700; color: var(--accent-green);
+    background-color: rgba(105, 240, 174, 0.15); /* Vihreä pohja */
+    border-left-color: var(--accent-green); border-left-width: 6px;
+    font-weight: 600; color: var(--accent-green);
 }
-@keyframes pulse-border-light {
-  0%, 100% { border-left-color: var(--accent-orange); }
-  50% { border-left-color: var(--accent-blue); }
-}
-li.step-item.next-up { border-left-width: 5px; animation: pulse-border-light 1.5s infinite ease-in-out; }
+@keyframes pulse-border { 0%, 100% { border-left-color: var(--accent-orange); } 50% { border-left-color: var(--accent-blue); } }
+li.step-item.next-up { border-left-width: 6px; animation: pulse-border 1.5s infinite ease-in-out; }
 
 
-/* === Active Display Section === */
+/* Päänäkymä (Aktiivinen näyttö) */
 section#active-display {
-  background-color: var(--bg-panel);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-lg) var(--spacing-xl);
+  background-color: var(--bg-panel); border-radius: var(--border-radius-md); padding: 1.5rem 2rem;
   overflow: hidden; display: flex; flex-direction: column; min-height: 0;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
-
-/* Title Area */
 #title-area {
     display: flex; align-items: center; justify-content: space-between; width: 100%;
-    margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-lg);
+    margin-bottom: 1.75rem; flex-shrink: 0; padding-bottom: 1rem;
     border-bottom: 1px solid var(--border-color);
-    flex-shrink: 0;
 }
 #active-display h2#item-name {
-    margin: 0 var(--spacing-lg); font-size: clamp(1.8rem, 4vw, 2.5rem); /* Larger */
-    font-weight: 700; color: var(--text-primary); flex-grow: 1; text-align: center;
+    margin: 0 1.5rem; font-size: clamp(1.7rem, 4vw, 2.4rem); /* Suurempi */
+    font-weight: 600; color: var(--text-main); flex-grow: 1; text-align: center;
     font-family: var(--font-display);
 }
-/* Prev/Next buttons use .btn and .btn-nav */
+.title-nav-btn {
+    background: transparent; border: 2px solid var(--accent-blue); color: var(--accent-blue);
+    border-radius: 50%; width: 45px; height: 45px; /* Suurempi */
+    font-size: 1.4rem; padding: 0; cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.title-nav-btn:hover:not(:disabled) { background-color: var(--accent-blue); color: var(--bg-dark); transform: scale(1.05); }
+.title-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; border-color: #555; color: #555; background: transparent; transform: none; }
 
-/* Content Split */
+/* Päänäkymän sisällön jako */
 #content-split {
-    display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-xl);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; /* Enemmän väliä */
     width: 100%; flex: 1; align-items: start; overflow: hidden; min-height: 0;
 }
 
-/* Item Details (Image & Description) */
+/* Kuva ja kuvaus */
 #active-display div#item-details {
     display: flex; flex-direction: column; align-items: center; text-align: center;
-    overflow-y: auto; max-height: 100%; /* Allows scrolling */
-    padding-right: var(--spacing-md); /* Scrollbar space */
+    overflow-y: auto; max-height: 100%; /* Anna tämän skrollata */
+    padding-right: 1rem; /* Tilaa scrollbarille */
 }
 #active-display img#item-image {
-    display: block; width: 100%; max-width: 450px; /* Limit max width */
-    height: auto; max-height: 40vh; /* Limit max height relative to viewport */
-    object-fit: contain; border-radius: var(--radius-md);
-    margin-bottom: var(--spacing-lg); background-color: var(--bg-panel-secondary);
-    border: 1px solid var(--border-color);
+    display: block; max-width: 100%; width: auto; max-height: 450px; /* Hieman suurempi max */
+    height: auto; object-fit: contain; border-radius: var(--border-radius-md);
+    margin-bottom: 1.5rem; background-color: var(--bg-panel-light);
+    box-shadow: var(--shadow-sm);
 }
 #active-display p#item-description {
-    color: var(--text-secondary); font-size: 1.1rem;
-    line-height: 1.7; max-width: 100%; text-align: left; margin-top: 0;
+    color: var(--text-subtle); font-size: 1.15rem; /* Selkeämpi fonttikoko */
+    line-height: 1.7; /* Parempi luettavuus */
+    max-width: 100%; text-align: left; margin-top: 0.5rem;
 }
 
-/* Timer & Controls */
+/* Ajastin ja kontrollit */
 #timer-and-controls {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: center; /* Vertically center content */
-  height: 100%; gap: var(--spacing-lg);
-  min-height: 0; padding: var(--spacing-md) 0;
-  text-align: center;
+  justify-content: center; /* Keskittää pystysuunnassa */
+  height: 100%; gap: 1.5rem; /* Enemmän tilaa */
+  min-height: 0; padding: 1rem 0; /* Lisää vertikaalista tilaa */
 }
 .round-display {
-    font-size: 1rem; color: var(--text-secondary); margin-bottom: var(--spacing-xs);
-    font-weight: 500; background: var(--bg-panel-secondary);
-    padding: var(--spacing-xs) var(--spacing-md); border-radius: var(--radius-full);
-    border: 1px solid var(--border-color);
+    font-size: 1.1rem; color: var(--text-subtle); margin-bottom: 0.5rem; /* Vähemmän marginaalia */
+    text-align: center; height: auto; font-weight: 500; /* Roboto Medium */
+    background: var(--bg-panel-light); padding: 0.3rem 0.8rem; border-radius: 15px;
 }
-#timer { margin-top: 0; }
+#timer { text-align: center; margin-top: 0; /* Ei tarvita ylämarginaalia */ }
 #time-remaining {
-    font-size: clamp(4rem, 10vw, 6.5rem); /* Even Larger */
-    font-weight: 700; display: block; line-height: 1;
-    transition: color var(--transition-base), text-shadow var(--transition-base);
+    font-size: clamp(4rem, 10vw, 6rem); /* Vielä suurempi */
+    font-weight: 600; display: block; line-height: 1;
+    transition: color 0.4s ease-in-out, text-shadow 0.4s ease;
     color: var(--accent-blue);
     font-family: var(--font-display);
-    text-shadow: 0 2px 8px rgba(0, 122, 255, 0.1); /* Subtle blue glow */
+    text-shadow: 0 0 15px rgba(58, 158, 253, 0.3); /* Hienovarainen hehku */
 }
 #timer-label {
-    font-size: clamp(1.1rem, 3vw, 1.5rem);
-    color: var(--text-secondary); margin-top: var(--spacing-xs); font-weight: 500;
+    font-size: clamp(1.1rem, 3vw, 1.5rem); /* Suurempi label */
+    color: var(--text-subtle); margin-top: 0.5rem; font-weight: 500;
 }
-#timer.timer-resting #time-remaining {
-    color: var(--accent-yellow);
-    text-shadow: 0 2px 8px rgba(255, 204, 0, 0.2); /* Yellow glow */
-    animation: pulse-yellow-light 1.5s infinite ease-in-out;
-}
-#timer.timer-paused { opacity: 0.6; text-shadow: none; }
-@keyframes pulse-yellow-light {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
+#timer.timer-resting #time-remaining { color: var(--accent-orange); text-shadow: 0 0 15px rgba(255, 171, 64, 0.4); animation: pulse-orange-glow 1.5s infinite ease-in-out; }
+#timer.timer-paused { opacity: 0.6; }
+@keyframes pulse-orange-glow { 0%, 100% { text-shadow: 0 0 15px rgba(255, 171, 64, 0.4); opacity: 1; } 50% { text-shadow: 0 0 25px rgba(255, 171, 64, 0.6); opacity: 0.85; } }
 
-/* Control Buttons Container */
-.control-button-container {
-    display: flex; flex-direction: column; align-items: center;
-    gap: var(--spacing-md); width: 100%; max-width: 300px; /* Limit width */
-    margin-top: auto; /* Push to bottom */
-    padding-top: var(--spacing-lg);
+/* Yleiset kontrollinapit päänäkymässä */
+.control-button-container { /* Kääritään napit, jotta ne saa keskitettyä helpommin */
+    display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%;
+    margin-top: auto; /* Työntää napit alas kontissa */
+    padding-top: 1rem; /* Tilaa yläpuolelle */
 }
-/* Control buttons use .btn and accent modifiers */
 #pause-resume-btn, #stop-btn, #next-step-btn {
-    display: none; /* JS controls visibility */
-    width: 100%; /* Take full width of container */
-    padding: var(--spacing-md) var(--spacing-lg); /* Slightly larger padding */
-    font-size: 1.1rem;
+    display: none; /* JS hallitsee näkyvyyttä */
+    color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 0.9rem 1.8rem; /* Suurempi */
+    font-size: 1.1rem; font-family: var(--font-display); cursor: pointer;
+    transition: all 0.2s ease; font-weight: 600;
+    width: 85%; max-width: 280px; /* Leveämpi */
+    box-shadow: var(--shadow-sm);
 }
-/* Specific button colors assigned via JS/HTML classes btn-accent-orange, btn-accent-red, btn-primary etc. */
-#pause-resume-btn.paused { /* Special case for when pause button shows 'Resume' */
-   /* Uses .btn-accent-green */
+#pause-resume-btn:disabled, #stop-btn:disabled, #next-step-btn:disabled {
+    opacity: 0.5; cursor: not-allowed; background-color: #555 !important; box-shadow: none; transform: none; color: var(--text-subtle);
 }
+#pause-resume-btn { background-color: var(--accent-orange); color: #000;}
+#pause-resume-btn:hover:not(:disabled) { background-color: #ffc947; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(255, 171, 64, 0.3); }
+#pause-resume-btn.paused { background-color: var(--accent-green); color: #000; }
+#pause-resume-btn.paused:hover:not(:disabled) { background-color: #8affc2; box-shadow: 0 4px 8px rgba(105, 240, 174, 0.3); }
+#stop-btn { background-color: var(--accent-red); color: #000;}
+#stop-btn:hover:not(:disabled) { background-color: #ff8a80; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(255, 82, 82, 0.3); }
+#next-step-btn { background-color: var(--accent-blue); color: #000; }
+#next-step-btn:hover:not(:disabled) { background-color: #69b4ff; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(58, 158, 253, 0.3); }
 
-/* === Responsive Design === */
 
-/* Large Desktops */
+/* --- Responsiivisuus --- */
+
+/* Suuremmat näytöt (Lisätään väliä) */
 @media (min-width: 1400px) {
-    main.main-layout { padding: var(--spacing-xl); gap: var(--spacing-xl); grid-template-columns: minmax(350px, 1.3fr) 3fr; }
-    aside#sidebar, section#active-display { padding: var(--spacing-xl); }
-    #active-display img#item-image { max-height: 50vh; }
+    main.main-layout { padding: 2rem; gap: 2rem; grid-template-columns: minmax(350px, 1.2fr) 3fr; }
+    aside#sidebar, section#active-display { padding: 2rem; }
+    #active-display img#item-image { max-height: 500px; }
 }
 
-/* Smaller Desktops / Large Tablets */
-@media (max-width: 1200px) {
-    main.main-layout { grid-template-columns: minmax(280px, 1fr) 2.5fr; gap: var(--spacing-lg); padding: var(--spacing-lg); }
-    aside#sidebar, section#active-display { padding: var(--spacing-lg); }
-    #active-display h2#item-name { font-size: clamp(1.6rem, 3.5vw, 2.2rem); }
-    #time-remaining { font-size: clamp(3.5rem, 9vw, 5.5rem); }
+/* Tabletti */
+@media (max-width: 1024px) {
+    main.main-layout { grid-template-columns: minmax(260px, 1fr) 2.5fr; gap: 1rem; padding: 1rem; }
+    aside#sidebar, section#active-display { padding: 1rem; }
+    section#active-display { padding: 1rem 1.5rem; } /* Enemmän sivuttaista tilaa */
+    #active-display img#item-image { max-height: 350px; }
+    #active-display h2#item-name { font-size: clamp(1.6rem, 3.5vw, 2rem); margin: 0 1rem; }
+    #time-remaining { font-size: clamp(3.5rem, 9vw, 5rem); }
+    #pause-resume-btn, #stop-btn, #next-step-btn { padding: 0.8rem 1.5rem; font-size: 1.05rem; max-width: 240px; }
+    .start-button { padding: 0.8rem 1.8rem; font-size: 1.1rem; }
+    .week-button { min-width: 140px; flex-basis: calc(33.33% - 1rem); padding: 0.6rem 1.2rem; }
+    .level-button { padding: 0.5rem 0.9rem; font-size: 0.85rem;}
+    .routine-button { min-width: 180px; font-size: 0.95rem; padding: 0.6rem 1.2rem;}
+    #content-split { gap: 1.5rem; }
+    #timer-and-controls { gap: 1rem; }
 }
 
-/* Tablets */
-@media (max-width: 992px) {
-    html { font-size: 15px; } /* Slightly smaller base */
-    main.main-layout { grid-template-columns: minmax(240px, 1fr) 2fr; }
-    #content-split { gap: var(--spacing-lg); }
-    #active-display img#item-image { max-height: 35vh; }
-    .btn { padding: var(--spacing-sm) var(--spacing-md); font-size: 0.95rem; } /* Smaller buttons */
-    .btn-nav { width: 38px; height: 38px; font-size: 1.1rem; }
-    #pause-resume-btn, #stop-btn, #next-step-btn { padding: var(--spacing-md); font-size: 1rem; }
-    .week-button { min-width: 140px; }
-    .routine-button { min-width: 180px; }
-    .level-button { font-size: 0.85rem; }
+/* Pienempi tabletti / Suuri puhelin (Sidebar siirtyy ylös tai alas?)
+   Pidetään vielä vierekkäin, mutta kavennetaan */
+@media (max-width: 880px) {
+    main.main-layout { grid-template-columns: minmax(220px, 1fr) 3fr; }
+     #active-display img#item-image { max-height: 300px; }
+     #time-remaining { font-size: clamp(3rem, 8vw, 4rem); }
 }
 
-/* Mobile Devices */
-@media (max-width: 767px) {
-    body { line-height: 1.55; }
-    #app { margin-top: calc(var(--header-height) - 10px); } /* Adjust for smaller header maybe */
-    header { height: calc(var(--header-height) - 10px); padding: 0 var(--spacing-md); }
-    header img { height: calc((var(--header-height) - 10px) * 0.55); }
-    #toggle-selection-area { font-size: 0.9rem; padding: var(--spacing-xs) var(--spacing-sm); }
 
+/* Puhelin (Sidebar ja Päänäkymä allekkain) */
+@media (max-width: 768px) {
+    body { line-height: 1.5; } /* Tiiviimpi riviväli mobiilissa */
     main.main-layout {
-        grid-template-columns: 1fr; /* Stack */
-        grid-template-rows: auto auto;
-        overflow-y: auto; /* Allow main layout scroll */
-        padding: var(--spacing-md); gap: var(--spacing-lg);
+        grid-template-columns: 1fr; grid-template-rows: auto auto; /* Allekkain */
+        overflow-y: auto; /* Salli päälayoutin skrollaus */
+        padding: 0.75rem; gap: 1rem;
+        overflow-x: hidden; /* Varmista, ettei vaakaskrollausta */
     }
     aside#sidebar {
-        order: 2; /* Sidebar below */
-        overflow: visible; padding: var(--spacing-lg) var(--spacing-md);
-        gap: var(--spacing-lg);
+        order: 2; /* Sidebar tulee alle */
+        overflow-y: visible; /* Ei omaa skrollausta, koko sivu skrollaa */
+        padding: 1rem;
+        max-height: none; /* Poista mahdolliset korkeusrajoitukset */
     }
-    .sidebar-scroll-content { overflow: visible; padding: 0; margin: 0; gap: var(--spacing-lg);} /* No internal scroll */
-    aside#sidebar #info-area-notes-container,
-    aside#sidebar ul#steps-items { max-height: 250px; overflow-y: auto; } /* Allow scroll for these */
+     /* Sidebarin sisäinen skrollaus pois mobiilissa */
+    .sidebar-scroll-content { overflow-y: visible; padding-right: 0; margin-right: 0; }
+    aside#sidebar #info-area-notes-container { max-height: 200px; overflow-y: auto; } /* Salli skrollaus */
+    aside#sidebar ul#steps-items { max-height: 300px; overflow-y: auto; flex-grow: 0; flex-shrink: 0; } /* Salli skrollaus */
+    aside#sidebar #info-area-notes { font-size: 0.95rem; }
+    aside#sidebar li.step-item { font-size: 1.05rem; padding: 0.7rem 1rem; }
+     /* Sticky otsikot pois mobiilissa */
+    #info-area h2#info-area-title, #steps-list-area h2#steps-list-title { position: static; }
 
     section#active-display {
-        order: 1; /* Display on top */
-        overflow: visible; min-height: auto; padding: var(--spacing-lg) var(--spacing-md);
+        order: 1; /* Päänäkymä ylös */
+        overflow: visible; min-height: auto; /* Ei omaa skrollausta */
+        padding: 1rem;
     }
-    #title-area { margin-bottom: var(--spacing-lg); padding-bottom: var(--spacing-md); }
-    #active-display h2#item-name { font-size: clamp(1.5rem, 5vw, 1.9rem); margin: 0 var(--spacing-sm); }
+    #title-area { padding-bottom: 0.75rem; margin-bottom: 1.25rem; }
+    #active-display h2#item-name { font-size: clamp(1.4rem, 5vw, 1.8rem); margin: 0 0.75rem; }
+    .title-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
 
     #content-split {
-        grid-template-columns: 1fr; /* Stack image/timer */
-        gap: var(--spacing-xl); align-items: center;
+        grid-template-columns: 1fr; /* Kuva/kuvaus ja ajastin allekkain */
+        gap: 2rem; align-items: center; overflow: visible;
     }
-    #active-display div#item-details { order: 2; padding-right: 0; max-height: none; overflow: visible; }
-    #active-display img#item-image { max-height: 280px; max-width: 100%; width: auto; margin-left: auto; margin-right: auto;}
-    #active-display p#item-description { text-align: left; font-size: 1rem; }
+    #active-display div#item-details {
+        order: 2; /* Kuva ja kuvaus alle */
+        padding-right: 0; max-height: none; overflow-y: visible; width: 100%;
+    }
+    #active-display img#item-image { max-height: 300px; width: 100%; object-fit: contain; }
+    #active-display p#item-description { text-align: left; font-size: 1.05rem; }
 
-    #timer-and-controls { order: 1; height: auto; gap: var(--spacing-lg); padding: var(--spacing-md) 0; width: 100%;}
-    #time-remaining { font-size: clamp(3.5rem, 12vw, 4.5rem); }
+    #timer-and-controls {
+        order: 1; /* Ajastin ja napit ylös */
+        justify-content: flex-start; height: auto; gap: 1.25rem; padding-bottom: 1rem; width: 100%; padding-top: 0;
+    }
+    #time-remaining { font-size: clamp(3.2rem, 12vw, 4rem); }
     #timer-label { font-size: 1.2rem; }
-    .control-button-container { max-width: 100%; }
-    #pause-resume-btn, #stop-btn, #next-step-btn { font-size: 1.05rem; padding: var(--spacing-md); }
 
-    #selection-area { padding: var(--spacing-lg) var(--spacing-md); }
-    #week-buttons-container, .routine-buttons { flex-direction: column; gap: var(--spacing-sm); align-items: stretch; }
-    .week-button, .routine-button { min-width: unset; width: 100%; }
-    #level-buttons-container { gap: var(--spacing-xs); }
-    .level-button { flex-grow: 1; flex-basis: calc(50% - var(--spacing-xs)); font-size: 0.8rem; } /* Two per row */
+    .control-button-container { margin-top: 1rem; padding-top: 0; gap: 0.8rem;}
+    #pause-resume-btn, #stop-btn, #next-step-btn { width: 95%; padding: 0.9rem 1.2rem; font-size: 1.1rem; max-width: 320px; }
+    .start-button { width: 95%; max-width: 320px; font-size: 1.15rem; padding: 0.9rem 1.5rem; }
+
+    #selection-area { max-height: 75vh; padding: 1rem; }
+    #week-buttons-container { flex-direction: column; gap: 0.6rem; align-items: stretch; }
+    .week-button { flex-basis: auto; min-width: unset; }
+    .level-button { flex-basis: calc(50% - 0.25rem); }
+    .routine-button { min-width: unset; }
 }
 
-/* Very Small Mobile */
-@media (max-width: 380px) {
-    html { font-size: 14px; }
-    #app { margin-top: calc(var(--header-height) - 15px); }
-    header { height: calc(var(--header-height) - 15px); }
-    header img { height: calc((var(--header-height) - 15px) * 0.5); }
-    #toggle-selection-area { font-size: 0.8rem; }
-    main.main-layout { padding: var(--spacing-sm); gap: var(--spacing-md); }
-    aside#sidebar, section#active-display { padding: var(--spacing-md) var(--spacing-sm); }
-    #active-display h2#item-name { font-size: 1.4rem; }
-    #time-remaining { font-size: clamp(3rem, 11vw, 3.8rem); }
-    .btn { font-size: 0.9rem; }
-    .level-button { flex-basis: 100%; } /* Stack level buttons */
+/* Pienin mobiili */
+@media (max-width: 400px) {
+    html { font-size: 15px; } /* Pienennä perusfonttia hieman */
+    header { padding: 0.5rem 1rem; } header img { height: 35px; }
+    #toggle-selection-area { padding: 0.5rem 1rem; font-size: 0.85rem; }
+    main.main-layout { padding: 0.5rem; gap: 0.75rem; }
+    aside#sidebar, section#active-display { padding: 0.75rem; }
+    aside#sidebar ul#steps-items { max-height: 250px; }
+    aside#sidebar #info-area-notes-container { max-height: 150px; }
+    #active-display h2#item-name { font-size: 1.4rem; margin: 0 0.5rem;}
+    #active-display img#item-image { max-height: 250px; }
+    #time-remaining { font-size: clamp(3rem, 11vw, 3.5rem); }
+    #pause-resume-btn, #stop-btn, #next-step-btn { font-size: 1rem; padding: 0.8rem 1rem; }
+    .start-button { font-size: 1rem; padding: 0.8rem 1rem; }
+    .level-button { flex-basis: 100%; font-size: 0.8rem;}
+    #active-display p#item-description { font-size: 1rem; }
+    .round-display { font-size: 1rem; }
+    #timer-label { font-size: 1.1rem;}
 }
 
-
-/* === Timer Active State === */
-/* Prevent body scroll ONLY on desktop when timer is active */
-@media (min-width: 768px) {
-  body.timer-active { overflow: hidden; }
-}
-/* Ensure specific elements remain scrollable when body scroll is locked */
+/* Estä sivun scrollaus kun ajastin/rutiini aktiivinen, MUTTA salli sisäinen scrollaus */
+body.timer-active { overflow: hidden; }
+/* Varmistetaan, että nämä ovat skrollattavissa KUN body.timer-active */
 body.timer-active #selection-area,
 body.timer-active .sidebar-scroll-content,
 body.timer-active #info-area-notes-container,
@@ -663,18 +531,22 @@ body.timer-active div#item-details {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch; /* iOS momentum scrolling */
 }
-/* On mobile, the main layout scrolls, so these don't need forced overflow */
-@media (max-width: 767px) {
-  body.timer-active aside#sidebar,
-  body.timer-active section#active-display,
-  body.timer-active #content-split,
-  body.timer-active div#item-details {
-     /* Ensure no conflicting overflow styles */
+/* Mobiilissa päälayout skrollaa, joten emme estä sitä timerin ollessa aktiivinen */
+@media (max-width: 768px) {
+  body.timer-active {
+    overflow: auto; /* Salli koko body scrollaus mobiilissa */
   }
-   /* But notes/steps might still need internal scroll */
-   body.timer-active aside#sidebar #info-area-notes-container,
-   body.timer-active aside#sidebar ul#steps-items {
-     overflow-y: auto;
-     -webkit-overflow-scrolling: touch;
-   }
+   /* Mobiilissa EI tarvita sisäistä scrollausta näille, koska koko sivu skrollaa */
+    body.timer-active aside#sidebar,
+    body.timer-active section#active-display,
+    body.timer-active #content-split,
+    body.timer-active div#item-details {
+       /* overflow: visible; */ /* Poistetaan mahdolliset overflow: auto */
+    }
+     /* Mutta nämä voivat silti tarvita oman skrollauksensa mobiilissakin */
+     body.timer-active aside#sidebar #info-area-notes-container,
+     body.timer-active aside#sidebar ul#steps-items {
+       overflow-y: auto;
+       -webkit-overflow-scrolling: touch;
+     }
 }
