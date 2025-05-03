@@ -12,7 +12,11 @@
         <!-- Header -->
         <header>
             <img src="img/logo_small_valkoinen.png" alt="Kuntokompassi Logo">
-            <button id="toggle-selection-area">Valinnat ⯆</button>
+            <!-- MUUTETTU: Nappi sisältää nyt spanit tekstille ja ikonille -->
+            <button id="toggle-selection-area">
+                <span class="toggle-text">Valinnat</span>
+                <span class="toggle-icon"></span>
+            </button>
         </header>
 
         <!-- Valinta-alue -->
@@ -22,9 +26,9 @@
             <div id="warmup-selection" class="routine-selection">
                  <h2>Lämmittely (valinnainen)</h2>
                  <div id="warmup-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan...</p> <!-- Yksi nappi tulee tähän JS:llä -->
+                     <p>Ladataan...</p>
                  </div>
-                 <button id="start-warmup-btn" class="control-button routine-start-btn" disabled>Aloita Lämmittely</button>
+                 <button id="start-warmup-btn" class="start-button" disabled>Aloita Lämmittely</button>
             </div>
 
             <!-- Treenin valinta -->
@@ -35,7 +39,6 @@
                     <p>Ladataan...</p>
                 </div>
                 <div id="level-selection" class="level-container">
-                     <!-- H3 poistettu, napit riittää -->
                     <div id="level-buttons-container" class="button-container">
                         <button class="level-button" data-level="1">Taso 1</button>
                         <button class="level-button active" data-level="2">Taso 2</button>
@@ -43,17 +46,16 @@
                         <button class="level-button" data-level="4">Taso 4</button>
                     </div>
                 </div>
-                 <!-- Treenin oma start-nappi tulee näkyviin kun valinta tehty -->
-                 <button id="start-workout-btn" class="control-button routine-start-btn" style="display: none; margin-top: 1rem;">Aloita Treeni</button>
+                 <button id="start-workout-btn" class="start-button" style="display: none;">Aloita Treeni</button>
             </div>
 
              <!-- Jäähdyttelyn valinta -->
              <div id="cooldown-selection" class="routine-selection">
                  <h2>Jäähdyttely (valinnainen)</h2>
                  <div id="cooldown-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan...</p> <!-- Yksi nappi tulee tähän JS:llä -->
+                     <p>Ladataan...</p>
                  </div>
-                 <button id="start-cooldown-btn" class="control-button routine-start-btn" disabled>Aloita Jäähdyttely</button>
+                 <button id="start-cooldown-btn" class="start-button" disabled>Aloita Jäähdyttely</button>
              </div>
 
         </section>
@@ -63,12 +65,23 @@
 
             <!-- Sivupalkki -->
             <aside id="sidebar">
+                <!-- MUUTETTU: Info-alueen rakenne -->
                 <div id="info-area">
-                    <h2 id="info-area-title">Tiedot</h2>
-                    <div id="info-area-notes-container">
-                        <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
+                    <div class="info-header"> {/* Uusi wrapper otsikolle ja napille */}
+                        <h2 id="info-area-title">Tiedot</h2>
+                        <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
+                            <span class="toggle-info-text">Piilota</span> {/* Teksti muuttuu JS:llä */}
+                            <span class="toggle-info-icon"></span> {/* Ikoni CSS:llä */}
+                        </button>
+                    </div>
+                    {/* Uusi wrapper sisällölle, TÄMÄ piilotetaan/näytetään */}
+                    <div id="info-content" class="info-content-wrapper">
+                        <div id="info-area-notes-container">
+                            <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
+                        </div>
                     </div>
                 </div>
+                {/* Steps List Area säilyy ennallaan rakenteeltaan */}
                 <div id="steps-list-area">
                     <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
                     <ul id="steps-items">
@@ -95,12 +108,12 @@
                             <span id="time-remaining">00:00</span>
                             <p id="timer-label">Odottamassa...</p>
                         </div>
-                        <!-- YKSI YLEINEN Pause/Resume/Jatka nappi -->
-                        <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
-                        <!-- YKSI YLEINEN Stop nappi -->
-                        <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
-                        <!-- YKSI YLEINEN "Seuraava/Valmis" nappi rutiineille -->
-                        <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
+                        {/* MUUTETTU: Nämä napit ovat nyt .control-button-containerin sisällä CSS:n kautta */}
+                        <div class="control-button-container">
+                            <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
+                            <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
+                            <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
+                        </div>
                     </div>
                 </div>
             </section>
