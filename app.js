@@ -1,4 +1,4 @@
-// app.js (Versio 10 - Palautettu puuttuvat osat, lisätty round-info parannus)
+// app.js (Versio 12 - Täydellinen koodi + Kulunut aika -laskuri lämm./jäähd.)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elementit ---
@@ -40,10 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemImageImg = document.getElementById('item-image');
     const itemDescriptionP = document.getElementById('item-description');
     const timerAndControlsDiv = document.getElementById('timer-and-controls');
-    const roundInfoP = document.getElementById('round-info'); // TÄTÄ MUOKATAAN
-    const timerDiv = document.getElementById('timer');
-    const timeRemainingSpan = document.getElementById('time-remaining');
-    const timerLabelP = document.getElementById('timer-label');
+    const roundInfoP = document.getElementById('round-info'); // Info (kierros/vaihe)
+    const timerDiv = document.getElementById('timer'); // Ajastimen container
+    const timeRemainingSpan = document.getElementById('time-remaining'); // MM:SS näyttö
+    const timerLabelP = document.getElementById('timer-label'); // Ajastimen selite
     const controlButtonContainer = document.querySelector('.control-button-container');
     const pauseResumeBtn = document.getElementById('pause-resume-btn');
     const stopBtn = document.getElementById('stop-btn');
@@ -51,25 +51,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Ääniobjekti ---
     const beepSound = new Audio('audio/beep.mp3');
-    beepSound.load();
+    beepSound.load(); // Ladataan valmiiksi
     function playSound(audioElement) {
-        // Yritä pysäyttää ja kelata alkuun, jos ääni soi jo
+        // Yritä pysäyttää ja kelata alkuun, jos ääni soi jo (estää päällekkäisyyksiä)
         if (!audioElement.paused) {
              audioElement.pause();
              audioElement.currentTime = 0;
         }
         // Aseta äänenvoimakkuus (jos haluat säätää)
         audioElement.volume = 1.0;
-        // Soita ääni
-        audioElement.play().catch(error => console.warn("Audio playback failed:", error)); // Vaimenna mahdolliset virheet
+        // Soita ääni (catch estää virheet, jos soitto ei onnistu)
+        audioElement.play().catch(error => console.warn("Audio playback failed:", error));
     } // playSound loppuu
 
     // --- Sovelluksen tila ---
     let fullProgramData = null; // Koko ohjelmadata JSONista
     let warmupData = null; // Lämmittelydata
     let cooldownData = null; // Jäähdyttelydata
-    let currentWorkoutExercises = []; // Nykyisen valitun TREENIN harjoitukset (käytetäänkö tätä?)
-    let currentRoutineSteps = []; // Nykyisen aktiivisen rutiinin (lämm., treeni, jää.) vaiheet
+    let currentWorkoutExercises = []; // Nykyisen valitun TREENIN harjoitukset (ei välttämättä tarpeen erikseen?)
+    let currentRoutineSteps = []; // Nykyisen aktiivisen rutiinin (lämm., treeni, jää.) vaiheet/harjoitukset
     let currentStepIndex = 0; // Nykyisen vaiheen indeksi currentRoutineSteps-listassa
     let activeRoutineType = 'none'; // Mikä rutiini on valittuna ('none', 'warmup', 'workout', 'cooldown')
     let currentWorkoutInfo = { // Valitun TREENIN tiedot
@@ -82,58 +82,61 @@ document.addEventListener('DOMContentLoaded', () => {
         focus: ''
     };
     let currentRound = 1; // Nykyinen kierros (treenissä)
-    let timerInterval = null; // Ajastimen setInterval ID
-    let remainingTime = 0; // Jäljellä oleva aika sekunteina
-    // Ajastimen eri tilat
+    let timerInterval = null; // Treenin työ/lepoajastimen setInterval ID
+    let remainingTime = 0; // Treenin jäljellä oleva aika sekunteina
+    let routineTimerInterval = null; // Lämmittelyn/jäähdyttelyn kestoajastimen setInterval ID
+    let elapsedRoutineTime = 0; // Lämmittelyn/jäähdyttelyn kulunut aika sekunteina
+    // Ajastimen eri tilat sovelluksen logiikan ohjaamiseen
     const TimerState = {
-        IDLE: 'idle', // Odottaa aloitusta
+        IDLE: 'idle', // Odottaa aloitusta, mitään ei käynnissä
         RUNNING_EXERCISE: 'running_exercise', // Treenin työaika käynnissä
-        RUNNING_REST: 'running_rest', // Treenin lepoaika käynnissä
+        RUNNING_REST: 'running_rest', // Treenin lepoaika harjoitusten välissä käynnissä
         RUNNING_ROUND_REST: 'running_round_rest', // Treenin kierroslepo käynnissä
         PAUSED: 'paused', // Treeni tauolla
         FINISHED: 'finished', // Rutiini suoritettu loppuun
-        RUNNING_STEP: 'running_step' // Lämmittelyn/Jäähdyttelyn vaihe käynnissä (ei ajastinta)
+        RUNNING_STEP: 'running_step' // Lämmittelyn/Jäähdyttelyn vaihe käynnissä (ei laske aikaa alas)
     };
     let timerState = TimerState.IDLE; // Ajastimen nykyinen tila
-    let pausedState = null; // Mihin tilaan palataan paussilta
-    let isAudioUnlocked = false; // Onko käyttäjäinteraktio sallinut äänet
+    let pausedState = null; // Tila, johon palataan paussilta (esim. RUNNING_EXERCISE)
+    let isAudioUnlocked = false; // Onko käyttäjäinteraktio sallinut äänet selaimessa
 
     // --- Datan alustus ---
     async function loadAppData() {
         console.log("Attempting to load program data...");
         try {
-            // Hae data
+            // Hae data palvelimelta
             const response = await fetch('data/exercises.json');
             console.log("Fetch response status:", response.status);
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`); // Virhe jos haku epäonnistui
-            fullProgramData = await response.json(); // Muunna JSON-teksti objektiksi
+            // Tarkista, onnistuiko haku (HTTP status 200-299)
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            // Muunna vastaus JSON-objektiksi
+            fullProgramData = await response.json();
             console.log("Program data loaded.");
 
-            // Tarkista, että datan perusrakenne on ok
+            // Perustarkistus datan rakenteelle
             if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks || !fullProgramData.warmup || !fullProgramData.cooldown || !fullProgramData.exercises) {
                 console.error("Loaded data structure seems incorrect or incomplete.");
-                itemNameH2.textContent = "Virheellinen ohjelmadata."; // Näytä virhe käyttäjälle
-                return; // Lopeta alustus
+                itemNameH2.textContent = "Virheellinen ohjelmadata."; // Ilmoita käyttäjälle
+                return; // Lopeta alustus, koska data on puutteellista
             }
 
-            // Tallenna osiot omiin muuttujiin
+            // Tallenna datan osat helpommin käytettäviin muuttujiin
             warmupData = fullProgramData.warmup;
             cooldownData = fullProgramData.cooldown;
 
-            // Täytä käyttöliittymän valinnat datalla
+            // Alusta käyttöliittymän osat datan perusteella
             populateWarmupSelector();
             populateCooldownSelector();
             populateWeekSelectors();
             addLevelButtonListeners(); // Lisää kuuntelijat taso-napeille
-
             initializeInfoArea(); // Alusta info-alueen piilotus/näyttö
-            resetAppState(); // Aseta sovellus alkutilaan
+            resetAppState(); // Aseta sovellus alkutilaan (tämä kutsuu updateButtonStates ym.)
 
         } catch (error) {
             // Jos datan haku tai käsittely epäonnistui
             console.error("Could not load or process program data:", error);
-            itemNameH2.textContent = "Virhe ladattaessa ohjelmaa."; // Näytä virhe
-            resetAppState(); // Yritä resetoida tila
+            itemNameH2.textContent = "Virhe ladattaessa ohjelmaa."; // Näytä virhe käyttäjälle
+            resetAppState(); // Yritä resetoida sovellus turvalliseen tilaan
         }
     } // loadAppData loppuu
 
@@ -141,26 +144,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Luo Lämmittely-valintanapin
     function populateWarmupSelector() {
-        warmupButtonsContainer.innerHTML = ''; // Tyhjennä vanhat
-        if (warmupData && warmupData.description) { // Tarkista onko dataa
+        warmupButtonsContainer.innerHTML = ''; // Tyhjennä vanhat napit ensin
+        if (warmupData && warmupData.description) { // Tarkista, että lämmittelydata löytyy
             const button = document.createElement('button');
-            button.textContent = `Lämmittely (${warmupData.durationMinutes} min)`; // Napin teksti
-            button.classList.add('routine-button'); // CSS-luokka
-            button.dataset.routine = 'warmup'; // Tieto napille itselleen
-            button.addEventListener('click', () => selectRoutine('warmup')); // Kuuntelija klikkaukselle
+            button.textContent = `Lämmittely (${warmupData.durationMinutes} min)`; // Aseta napin teksti
+            button.classList.add('routine-button'); // Lisää CSS-luokka
+            button.dataset.routine = 'warmup'; // Tallenna tieto rutiinityypistä nappiin
+            // Lisää tapahtumakuuntelija: kun klikataan, valitse lämmittely
+            button.addEventListener('click', () => selectRoutine('warmup'));
             warmupButtonsContainer.appendChild(button); // Lisää nappi sivulle
-            // Start-nappi otetaan käyttöön vasta kun rutiini on VALITTU, ei tässä
         } else {
-            // Jos dataa ei löytynyt
+            // Jos dataa ei löytynyt, näytä viesti ja disabloi start-nappi
             warmupButtonsContainer.innerHTML = '<p>Lämmittelytietoja ei löytynyt.</p>';
             startWarmupBtn.disabled = true; // Varmistetaan disabled tila
         }
     } // populateWarmupSelector loppuu
 
-    // Luo Jäähdyttely-valintanapin
+    // Luo Jäähdyttely-valintanapin (toimii samoin kuin populateWarmupSelector)
     function populateCooldownSelector() {
-        cooldownButtonsContainer.innerHTML = ''; // Tyhjennä vanhat
-        if (cooldownData && cooldownData.description) { // Tarkista onko dataa
+        cooldownButtonsContainer.innerHTML = '';
+        if (cooldownData && cooldownData.description) {
             const button = document.createElement('button');
             button.textContent = `Jäähdyttely (${cooldownData.durationMinutes} min)`;
             button.classList.add('routine-button');
@@ -173,19 +176,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } // populateCooldownSelector loppuu
 
-    // Luo Viikko-valintanapit
+    // Luo Viikko-valintanapit (1-11)
     function populateWeekSelectors() {
         if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks) return; // Varmista data
-        weekButtonsContainer.innerHTML = ''; // Tyhjennä
-        const totalWeeks = 11; // Ohjelman pituus viikkoina
+        weekButtonsContainer.innerHTML = ''; // Tyhjennä vanhat
+        const totalWeeks = 11; // Ohjelman pituus
         for (let i = 1; i <= totalWeeks; i++) {
             const button = document.createElement('button');
             button.textContent = `Viikko ${i}`;
             button.classList.add('week-button');
             button.dataset.weekNumber = i; // Tallenna viikkonumero nappiin
+            // Lisää kuuntelija: kun klikataan, poista fokus (visuaalinen) ja käsittele valinta
             button.addEventListener('click', (e) => {
-                e.currentTarget.blur(); // Poista fokus napilta klikkauksen jälkeen (visuaalinen siistiminen)
-                handleWeekSelect(i); // Käsittele viikon valinta
+                e.currentTarget.blur();
+                handleWeekSelect(i);
             });
             weekButtonsContainer.appendChild(button);
         }
@@ -200,11 +204,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     } // addLevelButtonListeners loppuu
 
-    // Käsittelee rutiinin (lämm., jää.) valinnan
+    // Käsittelee rutiinin (lämm., jää.) valinnan UI:ssa
     function selectRoutine(routineType) {
         console.log(`Routine selected: ${routineType}`);
         activeRoutineType = routineType; // Aseta aktiivinen tyyppi
-        resetAppState(false); // Resetoi tila, mutta säilytä yläpalkin valinnat (esim. level)
+        resetAppState(false); // Resetoi ajastin ja tila, mutta säilytä yläpalkin valinnat (esim. level)
         currentRoutineSteps = []; // Tyhjennä edellisen rutiinin vaiheet
 
         // Poista 'active'-luokka kaikilta viikko- ja rutiininapeilta
@@ -217,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (routineType === 'warmup' && warmupData) {
             infoAreaTitleH2.textContent = `Lämmittely (${warmupData.durationMinutes} min)`;
             updateInfoAreaNotes(warmupData.description); // Päivitä infoteksti
-            // Luo vaihelista ja lisää indeksi jokaiseen vaiheeseen
+            // Luo vaihelista ja lisää indeksi jokaiseen vaiheeseen jatkokäsittelyä varten
             currentRoutineSteps = warmupData.steps.map((step, index) => ({ ...step, index }));
             populateStepsList(currentRoutineSteps); // Täytä sivupalkin lista
             displayStep(0); // Näytä ensimmäinen vaihe päänäkymässä
@@ -232,11 +236,11 @@ document.addEventListener('DOMContentLoaded', () => {
             updateInfoAreaNotes("Valitse toiminto yläpuolelta.");
             populateStepsList([]);
         }
-        updateButtonStates(); // Päivitä nappien tila (ESIM. NÄYTÄ OIKEA START-NAPPI)
-        updateRoundDisplay(); // Päivitä myös round/vaihe-info heti valinnan jälkeen
+        updateButtonStates(); // Päivitä nappien tila (mm. näyttää oikean Start-napin)
+        updateRoundDisplay(); // Päivitä round/vaihe-info heti valinnan jälkeen
     } // selectRoutine loppuu
 
-    // Käsittelee tason valinnan
+    // Käsittelee tason valinnan UI:ssa
     function handleLevelSelect(selectedLevel) {
         if (selectedLevel === currentWorkoutInfo.level) return; // Älä tee mitään jos taso on sama
         console.log(`Level selected: ${selectedLevel}`);
@@ -247,20 +251,20 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.toggle('active', btn.dataset.level === selectedLevel);
         });
 
-        // Jos viikko on jo valittu, lataa sen tiedot uudelleen tällä uudella tasolla
+        // Jos viikko on jo valittu JA aktiivinen rutiini on treeni, lataa sen tiedot uudelleen tällä uudella tasolla
         if (currentWorkoutInfo.week !== null && activeRoutineType === 'workout') {
             handleWeekSelect(currentWorkoutInfo.week);
         } else {
-            // Jos viikkoa ei ole valittu, päivitä vain infoteksti (jos treeni olisi valittu)
+            // Jos viikkoa ei ole valittu (tai ei olla treenissä), päivitä vain infoteksti (jos treeni olisi valittu)
             updateInfoAreaNotes();
         }
     } // handleLevelSelect loppuu
 
-    // Käsittelee viikon valinnan (lataa treenin)
+    // Käsittelee viikon valinnan UI:ssa (lataa ja valmistelee treenin)
     function handleWeekSelect(weekNumber) {
         console.log(`Handling workout selection for Week: ${weekNumber}`);
         activeRoutineType = 'workout'; // Aseta tyypiksi treeni
-        resetAppState(false); // Resetoi tila, säilytä taso
+        resetAppState(false); // Resetoi ajastin ja tila, säilytä taso
 
         // Varmista, että tarvittava data on ladattu
         if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks || !fullProgramData.exercises) {
@@ -427,10 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function jumpToStep(index) {
         // Tarkista, että indeksi on validi
         if (index >= 0 && index < currentRoutineSteps.length) {
-            stopTimer(); // Pysäytä ajastin jos oli käynnissä (varmuuden vuoksi)
+            stopTimer(); stopRoutineTimer(); // Pysäytä molemmat ajastimet varmuuden vuoksi
             currentStepIndex = index; // Aseta uusi aktiivinen indeksi
             currentRound = 1; // Nollaa kierros aina hypätessä
             timerState = TimerState.IDLE; // Varmista IDLE-tila
+            elapsedRoutineTime = 0; // Nollaa kulunut aika hypätessä (jos oli lämm./jäähd.)
             displayStep(currentStepIndex); // Näytä valittu vaihe päänäkymässä
             updateButtonStates(); // Päivitä napit (navigointi aktiiviseksi)
             clearNextUpHighlight(); // Poista mahdollinen seuraavan korostus
@@ -472,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Ajastin näkyviin treenissä
             timerDiv.style.visibility = 'visible';
+            timerDiv.classList.remove('routine-timer-active'); // Varmista ettei rutiiniajastimen tyyli ole päällä
             // Jos ollaan IDLE/FINISHED -tilassa, näytä työaika ajastimessa
             if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
                  remainingTime = step.workTime || 0; // Aseta työaika
@@ -482,18 +488,25 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') {
             // Lämmittelyn / Jäähdyttelyn näyttö
             itemDescriptionP.textContent = step.description || "Suorita ohjeen mukaan."; // Käytä JSONista lisättyä kuvausta
-            // Piilota kuva ja ajastin
+            // Piilota kuva
             itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
-            timerDiv.style.visibility = 'hidden';
-            // Round display päivitetään erikseen updateRoundDisplay-funktiossa
-            // Nollaa ajastimen tekstit jos IDLE/FINISHED
+
+            // Aseta ajastin näkyviin näyttämään kulunutta aikaa
+            timerDiv.style.visibility = 'visible';
+            timerDiv.classList.add('routine-timer-active'); // Lisää luokka mahdollista erilaista CSS-tyyliä varten
+
+            // Aseta ajastimen aika ja label tilan mukaan
             if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
-                 timeRemainingSpan.textContent = '--:--';
-                 timerLabelP.textContent = '';
-            } else if (timerState === TimerState.RUNNING_STEP){ // Jos käynnissä, näytä ohje
-                  timeRemainingSpan.textContent = '--:--';
-                  timerLabelP.textContent = 'Suorita vaihe';
+                 // IDLE/FINISHED tilassa näytetään 00:00 (tai lopullinen aika finishissä)
+                 updateTimerDisplay(elapsedRoutineTime); // elapsedRoutineTime on 0 IDLEssä, lopullinen FINISHEDissä
+                 timerLabelP.textContent = timerState === TimerState.FINISHED ? "Valmis (Kesto)" : "Valmiina";
+            } else if (timerState === TimerState.RUNNING_STEP){
+                 // Käynnissä olevassa rutiinissa näytetään jo kulunut aika
+                 updateTimerDisplay(elapsedRoutineTime);
+                 timerLabelP.textContent = 'Kulunut aika';
              }
+            // Round display päivitetään erikseen updateRoundDisplay-funktiossa
+
         } else {
             // Oletustila (ei rutiinia valittu)
             itemDescriptionP.textContent = "Valitse toiminto yläpuolelta.";
@@ -564,7 +577,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.warn("Audio context unlock failed (maybe browser policy):", error);
                 beepSound.volume = 1.0; // Palauta volyymi
                 isAudioUnlocked = true; // Merkitään yritetyksi, jottei yritetä joka kerta uudelleen
-                proceedWithWorkoutStart(); // Jatka treenin aloitukseen ilman ääntä
+                proceedWithWorkoutStart(); // Jatka treenin aloitukseen ilman ääntä?
             });
         } else {
             // Lämmittely/Jäähdyttely: aloita suoraan ilman äänitarkistusta
@@ -579,8 +592,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStepIndex = 0; // Aloita ekasta vaiheesta
         currentRound = 1; // Aloita ekalta kierrokselta
 
-        // displayStep ja updateRoundDisplay kutsutaan startTimerForPhase:n kautta
-
         // Piilota yläosan valinta-alue
         selectionArea.classList.add('hidden');
         toggleSelectionAreaBtn.classList.remove('open');
@@ -589,7 +600,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (toggleTextElem) { toggleTextElem.textContent = "Valinnat"; }
 
         timerDiv.style.visibility = 'visible'; // Treenissä ajastin näkyviin
-        // Aloita ajastin ensimmäiselle työvaiheelle
+        timerDiv.classList.remove('routine-timer-active'); // Varmista ettei rutiiniluokka ole päällä
+
+        // Aloita ajastin ensimmäiselle työvaiheelle (tämä kutsuu displayStepin)
         startTimerForPhase(TimerState.RUNNING_EXERCISE, currentRoutineSteps[currentStepIndex].workTime);
     } // proceedWithWorkoutStart loppuu
 
@@ -599,8 +612,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if ((activeRoutineType !== 'warmup' && activeRoutineType !== 'cooldown') || currentRoutineSteps.length === 0 || timerState !== TimerState.IDLE) return;
         console.log(`Starting ${activeRoutineType.toUpperCase()}...`);
         currentStepIndex = 0; currentRound = 1; // Nollaa kierrokset (vaikkei käytetä)
+        elapsedRoutineTime = 0; // **Nollaa kulunut aika**
 
-        displayStep(currentStepIndex); // Näytä ensimmäinen vaihe (ja päivitä round/vaihe-info)
+        displayStep(currentStepIndex); // Näytä ensimmäinen vaihe (ja päivitä round/vaihe-info, aseta ajastin 00:00)
 
         // Piilota yläosan valinta-alue
         selectionArea.classList.add('hidden');
@@ -608,11 +622,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggleTextElem = toggleSelectionAreaBtn.querySelector('.toggle-text');
         if (toggleTextElem) { toggleTextElem.textContent = "Valinnat"; }
 
-        // Aseta tila, piilota ajastin, aseta tekstit
+        // Aseta tila, tee ajastin näkyväksi, aseta label
         timerState = TimerState.RUNNING_STEP;
-        timerDiv.style.visibility = 'hidden';
-        timeRemainingSpan.textContent = '--:--';
-        timerLabelP.textContent = "Suorita vaihe";
+        timerDiv.style.visibility = 'visible'; // **Ajastin näkyviin**
+        timerDiv.classList.add('routine-timer-active'); // **Lisää luokka**
+        timerLabelP.textContent = "Kulunut aika"; // **Aseta label**
+
+        startRoutineTimer(); // **Käynnistä kuluneen ajan laskuri**
 
         updateButtonStates(); // Päivitä napit (Stop, Next Step näkyviin)
         // updateRoundDisplay kutsuttiin jo displayStep:ssä
@@ -658,18 +674,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Käsittelee Lopeta-napin klikkauksen
     function stopActiveRoutine() {
         console.log(`Stopping ${activeRoutineType}...`);
-        stopTimer(); // Pysäytä ajastin ja nollaa sen sisäiset tilat
-        clearNextUpHighlight(); // Poista seuraavan korostus
         const previouslyActiveType = activeRoutineType; // Tallenna tyyppi ennen resetointia
+        stopTimer(); stopRoutineTimer(); // **Pysäytä molemmat ajastimet**
+        clearNextUpHighlight(); // Poista seuraavan korostus
         timerState = TimerState.IDLE; // Aseta sovelluksen tila IDLEksi
+        elapsedRoutineTime = 0; // **Nollaa kulunut aika**
 
         // Jos pysäytettiin kesken rutiinin, näytetään sen hetkinen vaihe IDLE-tilassa
         if (currentRoutineSteps.length > 0 && currentStepIndex < currentRoutineSteps.length) {
              // displayStep näyttää oikean sisällön ja kutsuu updateRoundDisplay
+             // Se myös asettaa ajastimen ajan (treenille työaika, muille 00:00) ja labelin
              displayStep(currentStepIndex);
-             // Jos pysäytettiin treeni, näytä sen työaika ajastimessa IDLE-tilassa
+             // Jos pysäytettiin treeni, varmistetaan että ajastimeen tulee sen työaika
              if(previouslyActiveType === 'workout') {
                  updateTimerDisplay(currentRoutineSteps[currentStepIndex]?.workTime || 0);
+                 timerLabelP.textContent = "Valmiina"; // Päivitetään label IDLE-tilaan
              }
         }
         else {
@@ -692,7 +711,7 @@ document.addEventListener('DOMContentLoaded', () => {
          currentStepIndex++; // Siirry seuraavaan indeksiin
          if (currentStepIndex >= currentRoutineSteps.length) {
               // Jos indeksi meni yli vaiheiden määrän -> rutiini valmis
-              finishRoutine();
+              finishRoutine(); // Tämä pysäyttää myös rutiiniajastimen
          } else {
              // Muuten näytä seuraava vaihe
              displayStep(currentStepIndex); // Tämä kutsuu myös updateRoundDisplay
@@ -705,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function finishRoutine() {
          console.log(`${activeRoutineType} Finished.`);
          const finishedType = activeRoutineType; // Tallenna tyyppi ennen tilan muutosta
-         stopTimerInterval(); // Pysäytä ajastin (jos oli käynnissä treenissä)
+         stopTimer(); stopRoutineTimer(); // **Pysäytä molemmat ajastimet**
          timerState = TimerState.FINISHED; // Aseta tila valmiiksi
          clearNextUpHighlight(); // Poista korostus
 
@@ -713,29 +732,33 @@ document.addEventListener('DOMContentLoaded', () => {
          itemNameH2.textContent = `${finishedType.charAt(0).toUpperCase() + finishedType.slice(1)} Valmis!`; // Otsikko
          itemDescriptionP.textContent = "Hyvää työtä!"; // Kuvaus
          itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = ''; // Piilota kuva
-         updateTimerDisplay(0); timerLabelP.textContent = "Valmis"; // Nollaa ajastin ja aseta label
-         updateRoundDisplay(); // Tyhjentää round/vaihe-infon
 
-         // Päivitä infoteksti
-         updateInfoAreaNotes(`Valmista! Voit aloittaa seuraavan osion tai valita uuden.`);
+         // Päivitä ajastin näyttämään lopullisen kuluneen ajan (lämm./jäähd.) tai 0 (treeni)
+         updateTimerDisplay(finishedType === 'workout' ? 0 : elapsedRoutineTime);
+         timerLabelP.textContent = finishedType === 'workout' ? "Valmis" : "Valmis (Kesto)"; // Eri label
+
+         updateRoundDisplay(); // Tyhjentää round/vaihe-infon
+         updateInfoAreaNotes(`Valmista! Voit aloittaa seuraavan osion tai valita uuden.`); // Päivitä infoteksti
+
          // Soita loppupiippaus (vain jos ääni sallittu ja oli treeni)
          if (isAudioUnlocked && finishedType === 'workout') {
              playSound(beepSound);
          }
          updateButtonStates(); // Päivitä napit (salli Prev/Next navigointi)
+         elapsedRoutineTime = 0; // Nollaa kulunut aika seuraavaa mahdollista rutiinia varten
      } // finishRoutine loppuu
 
     // --- Ajastimen sisäiset toiminnot ---
 
-    // Pysäyttää ajastimen intervallin ja nollaa tilat
+    // Pysäyttää TREENIN ajastimen intervallin ja nollaa tilat
     function stopTimer() {
         stopTimerInterval(); // Pysäytä setInterval
         pausedState = null; // Nollaa paused-tila
         timerDiv.classList.remove('timer-resting', 'timer-paused'); // Poista erikoistyylit
-        console.log("Timer interval stopped.");
+        console.log("Treeni ajastin pysäytetty.");
     } // stopTimer loppuu
 
-    // Pysäyttää setInterval-ajastuksen
+    // Pysäyttää TREENIN setInterval-ajastuksen
     function stopTimerInterval() {
         if (timerInterval) { // Jos intervalli on olemassa
             clearInterval(timerInterval); // Pysäytä se
@@ -743,12 +766,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } // stopTimerInterval loppuu
 
-    // Käynnistää ajastimen tietylle vaiheelle (työ, lepo, kierroslepo)
+    // Käynnistää TREENIN ajastimen tietylle vaiheelle (työ, lepo, kierroslepo)
     function startTimerForPhase(phaseState, duration) {
-        stopTimerInterval(); // Varmista, ettei vanha jää päälle
+        stopTimerInterval(); stopRoutineTimer(); // Varmista että molemmat ovat pois päältä
         timerState = phaseState; // Aseta nykyinen ajastimen tila
         remainingTime = duration; // Aseta kesto
-        timerDiv.classList.remove('timer-resting', 'timer-paused'); // Nollaa visuaaliset tilat
+        timerDiv.classList.remove('timer-resting', 'timer-paused', 'routine-timer-active'); // Nollaa visuaaliset tilat
         clearNextUpHighlight(); // Poista vanha "seuraava"-korostus
 
         // Päivitä päänäyttö sen mukaan, ollaanko aloittamassa työtä vai lepoa
@@ -796,7 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
          }
     } // startTimerForPhase loppuu
 
-    // Sekuntikellon intervalli, joka vähentää aikaa ja soittaa ääniä
+    // TREENIN sekuntikellon intervalli, joka vähentää aikaa ja soittaa ääniä
     function runTimerInterval() {
         if (timerInterval) return; // Estä useampi intervalli samanaikaisesti
         timerInterval = setInterval(() => {
@@ -830,7 +853,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000); // Suorita tämä funktio joka 1000 ms (1 sekunti)
     } // runTimerInterval loppuu
 
-    // Käsittelee ajastimen päättymisen (kun remainingTime < 0)
+    // Käsittelee TREENIN ajastimen päättymisen (kun remainingTime < 0)
     function handleTimerEnd() {
         stopTimerInterval(); // Pysäytä kello
         timerDiv.classList.remove('timer-resting'); // Poista lepotyyli
@@ -883,7 +906,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } // handleTimerEnd loppuu
 
-    // Logiikka seuraavaan vaiheeseen siirtymiseksi (kutsutaan handleTimerEndistä tai 0s lepojen jälkeen)
+    // Logiikka seuraavaan TREENIN vaiheeseen siirtymiseksi (kutsutaan handleTimerEndistä tai 0s lepojen jälkeen)
     function moveToNextPhase() {
         const comingFromRest = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
         const comingFromRoundRest = timerState === TimerState.RUNNING_ROUND_REST;
@@ -929,40 +952,62 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     } // moveToNextPhase loppuu
 
-    // Päivittää ajastimen näyttämän ajan ja labelin
-    function updateTimerDisplay(timeInSeconds) {
-        const displayTime = Math.max(0, timeInSeconds); // Varmista ettei näytetä negatiivista
-        const minutes = Math.floor(displayTime / 60).toString().padStart(2, "0");
-        const seconds = (displayTime % 60).toString().padStart(2, "0");
-        timeRemainingSpan.textContent = `${minutes}:${seconds}`; // Päivitä aika
+    // --- UUDET FUNKTIOT RUTIINIAJASTIMELLE ---
 
-        // Päivitä label tilan mukaan
-        let label = "Odottamassa...";
-        if (timerState === TimerState.RUNNING_EXERCISE) label = "Työaika";
-        else if (timerState === TimerState.RUNNING_REST) label = "Lepo";
-        else if (timerState === TimerState.RUNNING_ROUND_REST) label = "Kierroslepo";
-        else if (timerState === TimerState.RUNNING_STEP) label = "Suorita vaihe";
-        else if (timerState === TimerState.PAUSED) label = "Tauko";
-        else if (timerState === TimerState.FINISHED) label = "Valmis";
-        else if (timerState === TimerState.IDLE) { // IDLE-tilassa eri tekstit
-            if (activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') {
-                 label = ""; timeRemainingSpan.textContent = '--:--'; // Tyhjä lämm./jääh.
-            } else if (activeRoutineType === 'workout' && currentRoutineSteps.length > 0) {
-                 // Näytä tuleva työaika treenille
-                 const step = currentRoutineSteps[currentStepIndex];
-                 const idleTime = step?.workTime ?? 0;
-                 const idleMinutes = Math.floor(idleTime / 60).toString().padStart(2, "0");
-                 const idleSeconds = (idleTime % 60).toString().padStart(2, "0");
-                 timeRemainingSpan.textContent = `${idleMinutes}:${idleSeconds}`;
-                 label = "Valmiina";
-            } else { // Oletus IDLE ilman valintaa
-                timeRemainingSpan.textContent = '00:00'; label = 'Odottamassa...';
+    // Käynnistää lämmittelyn/jäähdyttelyn kuluneen ajan laskurin
+    function startRoutineTimer() {
+        stopRoutineTimer(); // Varmista, ettei vanha jää päälle
+        if(timerState !== TimerState.RUNNING_STEP) return; // Käynnistä vain jos ollaan oikeassa tilassa
+
+        // Päivitä näyttö heti alkuun (näyttää 00:00 tai aiemmin kertyneen ajan)
+        updateTimerDisplay(elapsedRoutineTime);
+        timerLabelP.textContent = "Kulunut aika";
+
+        // Käynnistä intervalli, joka kasvattaa aikaa sekunnin välein
+        routineTimerInterval = setInterval(() => {
+            // Lisäturvatarkistus: jos tila muuttuu jostain syystä, pysäytä tämä
+            if (timerState !== TimerState.RUNNING_STEP) {
+                 stopRoutineTimer();
+                 return;
             }
+            elapsedRoutineTime++; // Kasvata kulunutta aikaa
+            updateTimerDisplay(elapsedRoutineTime); // Päivitä näyttö
+            // Label pysyy samana ("Kulunut aika")
+        }, 1000);
+        console.log("Routine timer started.");
+    } // startRoutineTimer loppuu
+
+    // Pysäyttää lämmittelyn/jäähdyttelyn kuluneen ajan laskurin
+    function stopRoutineTimer() {
+        if (routineTimerInterval) { // Jos intervalli on käynnissä
+            clearInterval(routineTimerInterval); // Pysäytä se
+            routineTimerInterval = null; // Nollaa muuttuja
+            console.log("Routine timer stopped.");
         }
-        timerLabelP.textContent = label; // Aseta label-teksti
+    } // stopRoutineTimer loppuu
+    // --- UUDET FUNKTIOT LOPPUU ---
+
+    // Päivittää ajastimen näyttämän ajan (MM:SS)
+    function updateTimerDisplay(timeInSeconds) {
+        const displayTime = Math.max(0, timeInSeconds); // Varmista ettei näytetä negatiivista aikaa
+        const minutes = Math.floor(displayTime / 60).toString().padStart(2, "0"); // Laske minuutit
+        const seconds = (displayTime % 60).toString().padStart(2, "0"); // Laske sekunnit
+        timeRemainingSpan.textContent = `${minutes}:${seconds}`; // Päivitä aikaelementti
+
+        // Labelin päivitys siirretty pääosin muihin funktioihin selkeyden vuoksi
+        // Tässä voidaan asettaa vain IDLE-oletuslabel, jos mitään ei ole valittu
+         if (timerState === TimerState.IDLE && activeRoutineType === 'none') {
+             timerLabelP.textContent = 'Odottamassa...';
+         }
+         // Muut labelit asetetaan:
+         // - displayStep (IDLE/FINISHED tiloissa)
+         // - proceedWithRoutineStart (RUNNING_STEP alussa)
+         // - startRoutineTimer (RUNNING_STEP)
+         // - startTimerForPhase (RUNNING_EXERCISE/REST/ROUND_REST alussa)
+         // - finishRoutine (FINISHED lopussa)
     } // updateTimerDisplay loppuu
 
-    // Päivittää kierrosinformaation TAI lämmittelyn/jäähdyttelyn vaiheen
+    // Päivittää kierrosinformaation TAI lämmittelyn/jäähdyttelyn vaiheen numeron
     function updateRoundDisplay() {
         if (activeRoutineType === 'workout') {
             // Näytä kierrokset treenille, jos kierroksia > 0 ja vaiheita ladattu, eikä olla FINISHED-tilassa
@@ -1012,12 +1057,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Päivittää kaikkien kontrollinappien tilan (näkyvyys, teksti, disabled)
     function updateButtonStates() {
-        // Piilota aktiivisen rutiinin kontrollit oletuksena
+        // Piilota aktiivisen rutiinin kontrollit (Pause/Stop/Next) oletuksena
         pauseResumeBtn.style.display = 'none';
         stopBtn.style.display = 'none';
         nextStepBtn.style.display = 'none';
 
-        // Piilota start-napit oletuksena
+        // Piilota Start-napit oletuksena
         startWarmupBtn.style.display = 'none';
         startWorkoutBtn.style.display = 'none';
         startCooldownBtn.style.display = 'none';
@@ -1073,12 +1118,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Palauttaa sovelluksen alkutilaan
     function resetAppState(resetSelections = true) {
-        stopTimerInterval(); // Pysäytä ajastin
+        stopTimerInterval(); stopRoutineTimer(); // **Pysäytä molemmat ajastimet**
 
         // Nollaa ydintila
         currentRoutineSteps = []; currentWorkoutExercises = [];
         currentStepIndex = 0; currentRound = 1;
-        remainingTime = 0; timerState = TimerState.IDLE; pausedState = null;
+        remainingTime = 0; elapsedRoutineTime = 0; // **Nollaa molemmat ajat**
+        timerState = TimerState.IDLE; pausedState = null;
         isAudioUnlocked = false; // Nollaa äänilupa
 
         // Nollaa tietorakenne, säilytä taso jos resetSelections = false
@@ -1094,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stepsListUl.innerHTML = '<li>Valitse toiminto yläpuolelta.</li>'; // Tyhjennä lista
         stepsListTitleH2.textContent = "Vaiheet"; // Oletusotsikko listalle
         updateTimerDisplay(0); // Nollaa ajastinnäyttö
-        timerDiv.classList.remove('timer-resting', 'timer-paused'); // Poista tilaluokat
+        timerDiv.classList.remove('timer-resting', 'timer-paused', 'routine-timer-active'); // **Poista kaikki tilaluokat**
         timerDiv.style.visibility = 'hidden'; // Piilota ajastin
         highlightCurrentStep(); // Poistaa korostuksen listasta
         clearNextUpHighlight(); // Poistaa seuraavan korostuksen
