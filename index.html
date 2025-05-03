@@ -15,7 +15,8 @@
             <!-- MUUTETTU: Nappi sisältää nyt spanit tekstille ja ikonille -->
             <button id="toggle-selection-area">
                 <span class="toggle-text">Valinnat</span>
-                <span class="toggle-icon"></span>
+                <!-- KORJATTU KOMMENTTI: JSX -> HTML -->
+                <span class="toggle-icon"></span> <!-- Nuoli tulee CSS:llä tähän -->
             </button>
         </header>
 
@@ -67,21 +68,23 @@
             <aside id="sidebar">
                 <!-- MUUTETTU: Info-alueen rakenne -->
                 <div id="info-area">
-                    <div class="info-header"> {/* Uusi wrapper otsikolle ja napille */}
+                    <div class="info-header"> <!-- Uusi wrapper otsikolle ja napille -->
                         <h2 id="info-area-title">Tiedot</h2>
                         <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
-                            <span class="toggle-info-text">Piilota</span> {/* Teksti muuttuu JS:llä */}
-                            <span class="toggle-info-icon"></span> {/* Ikoni CSS:llä */}
+                            <!-- Teksti muuttuu JS:llä -->
+                            <span class="toggle-info-text">Piilota</span>
+                            <!-- Ikoni CSS:llä -->
+                            <span class="toggle-info-icon"></span>
                         </button>
                     </div>
-                    {/* Uusi wrapper sisällölle, TÄMÄ piilotetaan/näytetään */}
+                    <!-- Uusi wrapper sisällölle, TÄMÄ piilotetaan/näytetään -->
                     <div id="info-content" class="info-content-wrapper">
                         <div id="info-area-notes-container">
                             <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
                         </div>
                     </div>
                 </div>
-                {/* Steps List Area säilyy ennallaan rakenteeltaan */}
+                <!-- Steps List Area säilyy ennallaan rakenteeltaan -->
                 <div id="steps-list-area">
                     <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
                     <ul id="steps-items">
@@ -108,7 +111,7 @@
                             <span id="time-remaining">00:00</span>
                             <p id="timer-label">Odottamassa...</p>
                         </div>
-                        {/* MUUTETTU: Nämä napit ovat nyt .control-button-containerin sisällä CSS:n kautta */}
+                        <!-- Napit ovat nyt .control-button-containerin sisällä -->
                         <div class="control-button-container">
                             <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
                             <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
