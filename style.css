@@ -180,7 +180,7 @@ aside#sidebar {
     transition: max-height 0.3s ease-in, opacity 0.2s ease-in, padding-top 0.3s ease-in, padding-bottom 0.3s ease-in, margin-bottom 0.3s ease-in, border-width 0.3s ease-in, visibility 0s linear 0.3s;
 }
 #info-area-notes-container { width: 100%; padding: 0; background-color: transparent; border-left: none; border-radius: 0; overflow-y: auto; max-height: 300px; }
-#info-area-notes { color: var(--accent-orange); font-size: 1.05rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
+#info-area-notes { color: var(--accent-orange); font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
 
 /* Sidebar Steps List */
 #steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
