@@ -3,25 +3,65 @@
     "durationMinutes": 5,
     "description": "Dynaaminen lämmittely. Noin 30-60 sekuntia per liike tai 10-15 toistoa.",
     "steps": [
-      { "name": "Nivelten pyörittelyt (ranteet, kyynärp., olkap., lantio, polvet, nilkat)" },
-      { "name": "Jalan heilautukset eteen-taakse & sivulle (molemmat jalat)" },
-      { "name": "Vartalon kierrot" },
-      { "name": "Syväkyykky ilman painoa" },
-      { "name": "Kevyt hölkkä paikallaan / Haarahypyt" },
-      { "name": "Halo kevyellä kuulalla (muutama hidas kierto / suunta)", "optional": true }
+      { 
+        "name": "Nivelten pyörittelyt", 
+        "description": "Pyörittele rauhallisesti ranteita, kyynärpäitä, olkapäitä, lantiota, polvia ja nilkkoja molempiin suuntiin." 
+      },
+      { 
+        "name": "Jalan heilautukset", 
+        "description": "Heilauta jalkaa hallitusti eteen-taakse (10-15/jalka) ja sivulle (10-15/jalka). Pidä keskivartalo tiukkana." 
+      },
+      { 
+        "name": "Vartalon kierrot", 
+        "description": "Seiso haara-asennossa, kädet vartalon sivulla tai edessä. Kierrä ylävartaloa puolelta toiselle rauhallisesti." 
+      },
+      { 
+        "name": "Syväkyykky ilman painoa", 
+        "description": "Laskeudu niin syvälle kyykkyyn kuin hyvällä tekniikalla pääset. Pidä selkä suorana ja kantapäät lattiassa. Voit pitää pienen hetken alhaalla." 
+      },
+      { 
+        "name": "Kevyt hölkkä / Haarahypyt", 
+        "description": "Nosta sykettä kevyellä hölkällä paikallaan tai tekemällä haarahyppyjä." 
+      },
+      { 
+        "name": "Halo kevyellä kuulalla (valinnainen)", 
+        "optional": true,
+        "description": "Jos käytät kuulaa, pyöritä sitä hitaasti pään ympäri molempiin suuntiin (3-5/suunta). Pidä keskivartalo aktiivisena." 
+      }
     ]
   },
   "cooldown": {
     "durationMinutes": 7,
     "description": "Rauhallisia, staattisia venytyksiä. Pidä 20-30 sekuntia per venytys.",
     "steps": [
-      { "name": "Takareisien venytys" },
-      { "name": "Pakaran venytys" },
-      { "name": "Etureiden venytys" },
-      { "name": "Rintalihaksen venytys" },
-      { "name": "Hartian / Takaolkapään venytys" },
-      { "name": "Ojentajan venytys" },
-      { "name": "Selän kevyt pyöristys/ojennus (esim. kissakameli)" }
+      { 
+        "name": "Takareisien venytys", 
+        "description": "Seisten tai istuen, ojenna toinen jalka suoraksi ja taivuta eteenpäin selkä suorana. Tunne venytys takareidessä. Tee molemmat jalat." 
+      },
+      { 
+        "name": "Pakaran venytys", 
+        "description": "Istu tuolilla tai lattialla, nosta toinen nilkka vastakkaisen polven päälle ja paina polvea kevyesti alaspäin. Tai selinmakuulla, vedä polvea koukussa kohti rintaa ja vastakkaista olkapäätä. Tee molemmat puolet." 
+      },
+      { 
+        "name": "Etureiden venytys", 
+        "description": "Seisten, ota tukea tarvittaessa. Koukista toinen jalka ja ota nilkasta kiinni, vedä kantapäätä kohti pakaraa. Pidä lantio suorana. Tee molemmat jalat." 
+      },
+      { 
+        "name": "Rintalihaksen venytys", 
+        "description": "Seiso oviaukossa, aseta kyynärvarsi seinää vasten ja kierrä vartaloa poispäin. Tunne venytys rintalihaksessa ja etuolkapäässä. Tee molemmat puolet." 
+      },
+      { 
+        "name": "Hartian / Takaolkapään venytys", 
+        "description": "Ojenna toinen käsi suorana vartalon etupuolelta ja paina toisella kädellä kevyesti olkavarresta lähemmäs vartaloa. Tunne venytys hartian takaosassa. Tee molemmat puolet." 
+      },
+      { 
+        "name": "Ojentajan venytys", 
+        "description": "Nosta toinen käsi ylös, koukista kyynärpää ja anna kämmenen laskeutua selkää kohti. Paina toisella kädellä kevyesti koukistetun käden kyynärpäästä. Tee molemmat puolet." 
+      },
+      { 
+        "name": "Selän kevyt pyöristys/ojennus", 
+        "description": "Konttausasennossa, pyöristä selkää rauhallisesti (kissa) ja notkista sitten kevyesti (kameli). Liike saa tuntua hyvältä." 
+      }
     ]
   },
   "exercises": [
@@ -287,7 +327,6 @@
            ]}
         ],
          "exampleWeeklyExercises": [ 
-              
               { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
               { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "Taso 1-2 voi tehdä 1h heilautus/clean."},
               { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula vas.)", "notes": "Tai kaksi kuulaa."},
