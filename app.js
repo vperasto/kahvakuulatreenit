@@ -1,4 +1,4 @@
-// app.js (Versio 13 - Tuki useille lämmittelyille/jäähdyttelyille)
+// app.js (Versio 13 - Tuki useille lämmittelyille/jäähdyttelyille + Kulunut aika -laskuri)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elementit ---
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
             itemNameH2.textContent = "Virhe ladattaessa ohjelmaa.";
             resetAppState();
         }
-    }
+    } // loadAppData loppuu
 
     // --- UI Populointi ja Kuuntelijat ---
 
@@ -121,11 +121,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 warmupButtonsContainer.appendChild(button);
             });
             startWarmupBtn.disabled = true; // Start-nappi aluksi pois päältä
+            startWarmupBtn.style.display = 'none'; // Varmista piilotus alussa
         } else {
             warmupButtonsContainer.innerHTML = '<p>Lämmittelytietoja ei löytynyt.</p>';
             startWarmupBtn.disabled = true;
+            startWarmupBtn.style.display = 'none';
         }
-    }
+    } // populateWarmupSelector loppuu
 
     // **MUUTOS: Luo napit kaikille jäähdyttelyille listasta**
     function populateCooldownSelector() {
@@ -141,13 +143,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 cooldownButtonsContainer.appendChild(button);
             });
             startCooldownBtn.disabled = true; // Start-nappi aluksi pois päältä
+            startCooldownBtn.style.display = 'none'; // Varmista piilotus alussa
         } else {
             cooldownButtonsContainer.innerHTML = '<p>Jäähdyttelytietoja ei löytynyt.</p>';
             startCooldownBtn.disabled = true;
+            startCooldownBtn.style.display = 'none';
         }
-    }
+    } // populateCooldownSelector loppuu
 
-    function populateWeekSelectors() { /* Ei muutoksia tähän */
+    function populateWeekSelectors() {
         if (!fullProgramData || !fullProgramData.kettlebellProgram11Weeks) return;
         weekButtonsContainer.innerHTML = ''; const totalWeeks = 11;
         for (let i = 1; i <= totalWeeks; i++) {
@@ -156,11 +160,12 @@ document.addEventListener('DOMContentLoaded', () => {
             button.addEventListener('click', (e) => { e.currentTarget.blur(); handleWeekSelect(i); });
             weekButtonsContainer.appendChild(button);
         }
-    }
-    function addLevelButtonListeners() { /* Ei muutoksia tähän */
+    } // populateWeekSelectors loppuu
+
+    function addLevelButtonListeners() {
         const buttons = levelButtonsContainer.querySelectorAll('.level-button');
         buttons.forEach(button => { button.addEventListener('click', () => handleLevelSelect(button.dataset.level)); });
-    }
+    } // addLevelButtonListeners loppuu
 
     // **MUUTOS: Käsittelee valitun lämmittelyn/jäähdyttelyn ID:n perusteella**
     function selectRoutine(routineType, routineId) {
@@ -173,6 +178,10 @@ document.addEventListener('DOMContentLoaded', () => {
         let routineList = []; // Mistä listasta etsitään
         if (routineType === 'warmup') routineList = allWarmups;
         else if (routineType === 'cooldown') routineList = allCooldowns;
+        else { // Jos tyyppi onkin jotain muuta (esim. workout tuli tätä kautta vahingossa)
+            console.warn("selectRoutine called with invalid type:", routineType);
+            return;
+        }
 
         // Etsi oikea rutiini ID:n perusteella
         selectedRoutineData = routineList.find(routine => routine.id === routineId);
@@ -182,8 +191,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (selectedRoutineData) {
             // Löytyi! Päivitä UI ja tila
+            // **Käytä valitun rutiinin nimeä ja kestoa otsikossa**
             infoAreaTitleH2.textContent = `${selectedRoutineData.name} (${selectedRoutineData.durationMinutes} min)`;
-            updateInfoAreaNotes(selectedRoutineData.description);
+            updateInfoAreaNotes(selectedRoutineData.description); // Käytä sen kuvausta
             currentRoutineSteps = selectedRoutineData.steps.map((step, index) => ({ ...step, index })); // Lisää indeksit vaiheisiin
             populateStepsList(currentRoutineSteps);
             displayStep(0);
@@ -202,20 +212,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateButtonStates();
         updateRoundDisplay();
-    }
+    } // selectRoutine loppuu
 
-    function handleLevelSelect(selectedLevel) { /* Ei muutoksia tähän */
+    function handleLevelSelect(selectedLevel) {
         if (selectedLevel === currentWorkoutInfo.level) return; console.log(`Level selected: ${selectedLevel}`);
         currentWorkoutInfo.level = selectedLevel;
         levelButtonsContainer.querySelectorAll('.level-button').forEach(btn => { btn.classList.toggle('active', btn.dataset.level === selectedLevel); });
         if (currentWorkoutInfo.week !== null && activeRoutineType === 'workout') handleWeekSelect(currentWorkoutInfo.week);
         else updateInfoAreaNotes();
-    }
+    } // handleLevelSelect loppuu
 
     function handleWeekSelect(weekNumber) { // Treenin valinta
         console.log(`Handling workout selection for Week: ${weekNumber}`);
         activeRoutineType = 'workout';
-        selectedRoutineData = null; // Nollaa mahdollinen aiempi lämm./jäähd. valinta
+        selectedRoutineData = null; // **Nollaa mahdollinen aiempi lämm./jäähd. valinta**
         resetAppState(false);
 
         // ... (loppuosa funktiosta ennallaan, se käsittelee vain treeniä) ...
@@ -257,20 +267,20 @@ document.addEventListener('DOMContentLoaded', () => {
         infoAreaNotesP.textContent = noteText.trim() || "Valitse toiminto yläpuolelta.";
     } // updateInfoAreaNotes loppuu
 
-    function highlightWeekButton(weekNumber) { /* Ei muutosta */ document.querySelectorAll('.week-button').forEach(btn => { btn.classList.toggle('active', parseInt(btn.dataset.weekNumber) === weekNumber); }); }
+    function highlightWeekButton(weekNumber) { document.querySelectorAll('.week-button').forEach(btn => { btn.classList.toggle('active', parseInt(btn.dataset.weekNumber) === weekNumber); }); }
 
-    function populateStepsList(steps) { /* Ei muutosta */
+    function populateStepsList(steps) {
         stepsListUl.innerHTML = '';
         if (!steps || steps.length === 0) { stepsListUl.innerHTML = '<li>Valitse toiminto ensin.</li>'; stepsListTitleH2.textContent = "Vaiheet"; return; }
         if (activeRoutineType === 'warmup') stepsListTitleH2.textContent = "Lämmittelyvaiheet"; else if (activeRoutineType === 'cooldown') stepsListTitleH2.textContent = "Jäähdyttelyvaiheet"; else if (activeRoutineType === 'workout') stepsListTitleH2.textContent = "Treeniharjoitukset"; else stepsListTitleH2.textContent = "Vaiheet";
         steps.forEach((step, index) => { const li = document.createElement('li'); li.textContent = `${index + 1}. ${step.displayTitle || step.name}`; li.dataset.index = index; li.classList.add('step-item'); li.addEventListener('click', () => { if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) jumpToStep(index); }); stepsListUl.appendChild(li); });
     }
 
-    function jumpToStep(index) { /* Ei muutosta */
+    function jumpToStep(index) {
         if (index >= 0 && index < currentRoutineSteps.length) { stopTimer(); stopRoutineTimer(); currentStepIndex = index; currentRound = 1; timerState = TimerState.IDLE; elapsedRoutineTime = 0; displayStep(currentStepIndex); updateButtonStates(); clearNextUpHighlight(); updateRoundDisplay(); }
     }
 
-    function displayStep(index) { /* Ei muutosta, käyttää currentRoutineSteps */
+    function displayStep(index) {
         if (index < 0 || index >= currentRoutineSteps.length || !currentRoutineSteps[index]) { console.error(`Invalid step index: ${index}`); resetAppState(); itemNameH2.textContent = "Virhe vaiheen näyttämisessä"; itemDescriptionP.textContent = `Vaihetta ei löytynyt indeksillä ${index}.`; itemImageImg.style.display = 'none'; timerDiv.style.visibility = 'hidden'; roundInfoP.textContent = ''; return; }
         const step = currentRoutineSteps[index]; itemNameH2.textContent = step.displayTitle || step.name;
         if (activeRoutineType === 'workout') { let descriptionText = step.description || ''; if (step.notes) descriptionText += `\n\nHuom: ${step.notes}`; itemDescriptionP.textContent = descriptionText.trim(); if (step.image) { itemImageImg.src = step.image; itemImageImg.alt = step.displayTitle || step.name; itemImageImg.style.display = 'block'; } else { itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = ''; } timerDiv.style.visibility = 'visible'; timerDiv.classList.remove('routine-timer-active'); if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) { remainingTime = step.workTime || 0; updateTimerDisplay(remainingTime); } }
@@ -279,78 +289,78 @@ document.addEventListener('DOMContentLoaded', () => {
         highlightCurrentStep(); updateRoundDisplay();
     }
 
-    function initializeInfoArea() { /* Ei muutosta */ infoContentWrapper.classList.add('collapsed'); toggleInfoBtn.setAttribute('aria-expanded', 'false'); if (toggleInfoTextSpan) toggleInfoTextSpan.textContent = "Näytä"; toggleInfoBtn.addEventListener('click', toggleInfoArea); }
-    function toggleInfoArea() { /* Ei muutosta */ const isCollapsed = infoContentWrapper.classList.toggle('collapsed'); const isExpanded = !isCollapsed; toggleInfoBtn.setAttribute('aria-expanded', String(isExpanded)); if (toggleInfoTextSpan) toggleInfoTextSpan.textContent = isExpanded ? "Piilota" : "Näytä"; console.log(`Info area ${isExpanded ? 'expanded' : 'collapsed'}`); }
+    function initializeInfoArea() { infoContentWrapper.classList.add('collapsed'); toggleInfoBtn.setAttribute('aria-expanded', 'false'); if (toggleInfoTextSpan) toggleInfoTextSpan.textContent = "Näytä"; toggleInfoBtn.addEventListener('click', toggleInfoArea); }
+    function toggleInfoArea() { const isCollapsed = infoContentWrapper.classList.toggle('collapsed'); const isExpanded = !isCollapsed; toggleInfoBtn.setAttribute('aria-expanded', String(isExpanded)); if (toggleInfoTextSpan) toggleInfoTextSpan.textContent = isExpanded ? "Piilota" : "Näytä"; console.log(`Info area ${isExpanded ? 'expanded' : 'collapsed'}`); }
 
     // --- Ajastimen ja Rutiinin Etenemisen toiminnot ---
-    function startSelectedRoutine() { /* Ei muutosta */
+    function startSelectedRoutine() {
         if (activeRoutineType === 'none' || currentRoutineSteps.length === 0 || timerState !== TimerState.IDLE) { console.warn("Start conditions not met."); return; }
         if (mainLayout) { window.scrollTo({ top: mainLayout.offsetTop, behavior: 'smooth' }); }
         if (activeRoutineType === 'workout') { if (isAudioUnlocked) { proceedWithWorkoutStart(); return; } console.log("Attempting to unlock audio context..."); beepSound.volume = 0.001; beepSound.play().then(() => { beepSound.pause(); beepSound.currentTime = 0; beepSound.volume = 1.0; isAudioUnlocked = true; console.log("Audio context unlocked."); proceedWithWorkoutStart(); }).catch(error => { console.warn("Audio context unlock failed:", error); beepSound.volume = 1.0; isAudioUnlocked = true; proceedWithWorkoutStart(); }); }
         else { proceedWithRoutineStart(); }
     }
-    function proceedWithWorkoutStart() { /* Ei muutosta */
+    function proceedWithWorkoutStart() {
         if (activeRoutineType !== 'workout' || currentRoutineSteps.length === 0 || timerState !== TimerState.IDLE) return; console.log("Starting WORKOUT..."); currentStepIndex = 0; currentRound = 1; selectionArea.classList.add('hidden'); toggleSelectionAreaBtn.classList.remove('open'); const toggleTextElem = toggleSelectionAreaBtn.querySelector('.toggle-text'); if (toggleTextElem) toggleTextElem.textContent = "Valinnat"; timerDiv.style.visibility = 'visible'; timerDiv.classList.remove('routine-timer-active'); startTimerForPhase(TimerState.RUNNING_EXERCISE, currentRoutineSteps[currentStepIndex].workTime);
     }
-    function proceedWithRoutineStart() { /* Ei muutosta */
+    function proceedWithRoutineStart() {
         if ((activeRoutineType !== 'warmup' && activeRoutineType !== 'cooldown') || currentRoutineSteps.length === 0 || timerState !== TimerState.IDLE) return; console.log(`Starting ${activeRoutineType.toUpperCase()}...`); currentStepIndex = 0; currentRound = 1; elapsedRoutineTime = 0; displayStep(currentStepIndex); selectionArea.classList.add('hidden'); toggleSelectionAreaBtn.classList.remove('open'); const toggleTextElem = toggleSelectionAreaBtn.querySelector('.toggle-text'); if (toggleTextElem) toggleTextElem.textContent = "Valinnat"; timerState = TimerState.RUNNING_STEP; timerDiv.style.visibility = 'visible'; timerDiv.classList.add('routine-timer-active'); timerLabelP.textContent = "Kulunut aika"; startRoutineTimer(); updateButtonStates(); updateRoundDisplay();
     }
-    function pauseResumeTimer() { /* Ei muutosta */
+    function pauseResumeTimer() {
         if (activeRoutineType !== 'workout') return; if (timerState === TimerState.RUNNING_EXERCISE || timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST) { pausedState = timerState; stopTimerInterval(); timerState = TimerState.PAUSED; console.log("Workout Paused"); pauseResumeBtn.textContent = "▶ Jatka"; pauseResumeBtn.classList.add('paused'); timerDiv.classList.add('timer-paused'); } else if (timerState === TimerState.PAUSED) { console.log("Workout Resumed"); timerState = pausedState || TimerState.RUNNING_EXERCISE; pausedState = null; runTimerInterval(); pauseResumeBtn.textContent = "⏸ Tauko"; pauseResumeBtn.classList.remove('paused'); timerDiv.classList.remove('timer-paused'); if(timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST){ timerDiv.classList.add('timer-resting'); highlightNextStep(); } else { timerDiv.classList.remove('timer-resting'); clearNextUpHighlight(); } } updateButtonStates(); updateRoundDisplay();
     }
-    function stopActiveRoutine() { /* Ei muutosta */
-        console.log(`Stopping ${activeRoutineType}...`); const previouslyActiveType = activeRoutineType; stopTimer(); stopRoutineTimer(); clearNextUpHighlight(); timerState = TimerState.IDLE; elapsedRoutineTime = 0; if (currentRoutineSteps.length > 0 && currentStepIndex < currentRoutineSteps.length) { displayStep(currentStepIndex); if(previouslyActiveType === 'workout') updateTimerDisplay(currentRoutineSteps[currentStepIndex]?.workTime || 0); } else { resetAppState(); return; } updateButtonStates();
+    function stopActiveRoutine() {
+        console.log(`Stopping ${activeRoutineType}...`); const previouslyActiveType = activeRoutineType; stopTimer(); stopRoutineTimer(); clearNextUpHighlight(); timerState = TimerState.IDLE; elapsedRoutineTime = 0; if (currentRoutineSteps.length > 0 && currentStepIndex < currentRoutineSteps.length) { displayStep(currentStepIndex); if(previouslyActiveType === 'workout') { updateTimerDisplay(currentRoutineSteps[currentStepIndex]?.workTime || 0); timerLabelP.textContent = "Valmiina"; } } else { resetAppState(); return; } updateButtonStates();
     }
-    function handleNextStep() { /* Ei muutosta */
+    function handleNextStep() {
          if (activeRoutineType !== 'warmup' && activeRoutineType !== 'cooldown') return; if (timerState !== TimerState.RUNNING_STEP) return; currentStepIndex++; if (currentStepIndex >= currentRoutineSteps.length) finishRoutine(); else { displayStep(currentStepIndex); highlightCurrentStep(); } updateButtonStates();
     }
-    function finishRoutine() { /* Ei muutosta */
+    function finishRoutine() {
          console.log(`${activeRoutineType} Finished.`); const finishedType = activeRoutineType; stopTimer(); stopRoutineTimer(); timerState = TimerState.FINISHED; clearNextUpHighlight(); itemNameH2.textContent = `${finishedType.charAt(0).toUpperCase() + finishedType.slice(1)} Valmis!`; itemDescriptionP.textContent = "Hyvää työtä!"; itemImageImg.style.display = 'none'; updateTimerDisplay(finishedType === 'workout' ? 0 : elapsedRoutineTime); timerLabelP.textContent = finishedType === 'workout' ? "Valmis" : "Valmis (Kesto)"; updateRoundDisplay(); updateInfoAreaNotes(`Valmista! Voit aloittaa seuraavan osion tai valita uuden.`); if (isAudioUnlocked && finishedType === 'workout') playSound(beepSound); updateButtonStates(); elapsedRoutineTime = 0;
      }
 
     // --- Ajastimen sisäiset toiminnot ---
-    function stopTimer() { /* Ei muutosta */ stopTimerInterval(); pausedState = null; timerDiv.classList.remove('timer-resting', 'timer-paused'); console.log("Treeni ajastin pysäytetty."); }
-    function stopTimerInterval() { /* Ei muutosta */ if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
-    function startTimerForPhase(phaseState, duration) { /* Ei muutosta */
+    function stopTimer() { stopTimerInterval(); pausedState = null; timerDiv.classList.remove('timer-resting', 'timer-paused'); console.log("Treeni ajastin pysäytetty."); }
+    function stopTimerInterval() { if (timerInterval) { clearInterval(timerInterval); timerInterval = null; } }
+    function startTimerForPhase(phaseState, duration) {
         stopTimerInterval(); stopRoutineTimer(); timerState = phaseState; remainingTime = duration; timerDiv.classList.remove('timer-resting', 'timer-paused', 'routine-timer-active'); clearNextUpHighlight();
         if (phaseState === TimerState.RUNNING_EXERCISE) { if (currentStepIndex < currentRoutineSteps.length) displayStep(currentStepIndex); else { console.error("Error..."); resetAppState(); return; } highlightCurrentStep(); }
         else if (phaseState === TimerState.RUNNING_REST || phaseState === TimerState.RUNNING_ROUND_REST) { timerDiv.classList.add('timer-resting'); const nextIdx = (phaseState === TimerState.RUNNING_ROUND_REST) ? 0 : currentStepIndex + 1; if (nextIdx < currentRoutineSteps.length) { displayStep(nextIdx); highlightNextStep(nextIdx); } else { if (currentStepIndex < currentRoutineSteps.length) { displayStep(currentStepIndex); highlightCurrentStep(); } else { console.error("Error..."); resetAppState(); return; } } }
         console.log(`Starting Timer Phase: ${phaseState}, Duration: ${duration}`); updateTimerDisplay(remainingTime); updateButtonStates(); updateRoundDisplay(); if (remainingTime >= 0) runTimerInterval(); else handleTimerEnd();
     }
-    function runTimerInterval() { /* Ei muutosta */
+    function runTimerInterval() {
         if (timerInterval) return; timerInterval = setInterval(() => { if (timerState === TimerState.PAUSED) return; remainingTime--; const isWork = timerState === TimerState.RUNNING_EXERCISE; const isRest = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST; const checkTime = remainingTime + 1; if(isAudioUnlocked){ if (isWork) { if (checkTime === 10 || (checkTime >= 1 && checkTime <= 5)) playSound(beepSound); } else if (isRest) { if (checkTime >= 1 && checkTime <= 3) playSound(beepSound); } } updateTimerDisplay(remainingTime); if (remainingTime < 0) handleTimerEnd(); }, 1000);
     }
-    function handleTimerEnd() { /* Ei muutosta */
+    function handleTimerEnd() {
         stopTimerInterval(); timerDiv.classList.remove('timer-resting'); if (timerState === TimerState.IDLE || timerState === TimerState.PAUSED || timerState === TimerState.FINISHED) return; const wasResting = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
         if (timerState === TimerState.RUNNING_EXERCISE) { if (currentStepIndex >= currentRoutineSteps.length) { console.error("Error..."); resetAppState(); return; } const currentEx = currentRoutineSteps[currentStepIndex]; if (!currentEx) { resetAppState(); return; } const isLastEx = currentStepIndex === currentRoutineSteps.length - 1; const isLastR = currentRound >= currentWorkoutInfo.rounds; const restDur = currentEx.restTime ?? 0; if (isLastEx) { if (isLastR) moveToNextPhase(); else { const roundRest = currentWorkoutInfo.restBetweenRounds || 0; if (roundRest > 0) startTimerForPhase(TimerState.RUNNING_ROUND_REST, roundRest); else moveToNextPhase(); } } else { if (restDur > 0) startTimerForPhase(TimerState.RUNNING_REST, restDur); else moveToNextPhase(); } }
         else if (wasResting) { clearNextUpHighlight(); moveToNextPhase(); }
     }
-    function moveToNextPhase() { /* Ei muutosta */
+    function moveToNextPhase() {
         const comingFromRest = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST; const comingFromRoundRest = timerState === TimerState.RUNNING_ROUND_REST; if (comingFromRoundRest) { currentRound++; currentStepIndex = 0; } else if (comingFromRest) { currentStepIndex++; } else { const isLastEx = currentStepIndex === currentRoutineSteps.length - 1; const isLastR = currentRound >= currentWorkoutInfo.rounds; if(isLastEx && !isLastR) { currentRound++; currentStepIndex = 0; } else if (!isLastEx) { currentStepIndex++; } }
         if (currentRound > currentWorkoutInfo.rounds) finishRoutine(); else if (currentStepIndex < currentRoutineSteps.length) { const nextEx = currentRoutineSteps[currentStepIndex]; if (!nextEx) { console.error("Error..."); resetAppState(); return; } startTimerForPhase(TimerState.RUNNING_EXERCISE, nextEx.workTime); } else { console.error("State mismatch..."); resetAppState(); }
     }
 
     // --- RUTIINIAJASTIMEN FUNKTIOT ---
-    function startRoutineTimer() { /* Ei muutosta */
+    function startRoutineTimer() {
         stopRoutineTimer(); if(timerState !== TimerState.RUNNING_STEP) return; updateTimerDisplay(elapsedRoutineTime); timerLabelP.textContent = "Kulunut aika"; routineTimerInterval = setInterval(() => { if (timerState !== TimerState.RUNNING_STEP) { stopRoutineTimer(); return; } elapsedRoutineTime++; updateTimerDisplay(elapsedRoutineTime); }, 1000); console.log("Routine timer started.");
     }
-    function stopRoutineTimer() { /* Ei muutosta */
+    function stopRoutineTimer() {
         if (routineTimerInterval) { clearInterval(routineTimerInterval); routineTimerInterval = null; console.log("Routine timer stopped."); }
     }
 
-    function updateTimerDisplay(timeInSeconds) { /* Ei muutosta */
+    function updateTimerDisplay(timeInSeconds) {
         const displayTime = Math.max(0, timeInSeconds); const minutes = Math.floor(displayTime / 60).toString().padStart(2, "0"); const seconds = (displayTime % 60).toString().padStart(2, "0"); timeRemainingSpan.textContent = `${minutes}:${seconds}`;
         if (timerState === TimerState.IDLE && activeRoutineType === 'none') timerLabelP.textContent = 'Odottamassa...';
     }
 
-    function updateRoundDisplay() { /* Ei muutosta */
+    function updateRoundDisplay() {
         if (activeRoutineType === 'workout') { if (timerState !== TimerState.FINISHED && currentWorkoutInfo.rounds > 0 && currentRoutineSteps.length > 0) { if (timerState === TimerState.IDLE) roundInfoP.textContent = `Kierrokset: ${currentWorkoutInfo.rounds}`; else roundInfoP.textContent = `Kierros ${currentRound} / ${currentWorkoutInfo.rounds}`; } else roundInfoP.textContent = ''; }
         else if (activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') { if (currentRoutineSteps.length > 0 && timerState !== TimerState.FINISHED) { const totalSteps = currentRoutineSteps.length; const currentStepNumber = currentStepIndex + 1; roundInfoP.textContent = `Vaihe ${currentStepNumber} / ${totalSteps}`; } else roundInfoP.textContent = ''; }
         else roundInfoP.textContent = '';
     }
 
-    function prevStep() { /* Ei muutosta */ if ((timerState === TimerState.IDLE || timerState === TimerState.FINISHED) && currentRoutineSteps.length > 0) { if (currentStepIndex > 0) jumpToStep(currentStepIndex - 1); } }
-    function nextStepNav() { /* Ei muutosta */ if ((timerState === TimerState.IDLE || timerState === TimerState.FINISHED) && currentRoutineSteps.length > 0) { if (currentStepIndex < currentRoutineSteps.length - 1) jumpToStep(currentStepIndex + 1); } }
+    function prevStep() { if ((timerState === TimerState.IDLE || timerState === TimerState.FINISHED) && currentRoutineSteps.length > 0) { if (currentStepIndex > 0) jumpToStep(currentStepIndex - 1); } }
+    function nextStepNav() { if ((timerState === TimerState.IDLE || timerState === TimerState.FINISHED) && currentRoutineSteps.length > 0) { if (currentStepIndex < currentRoutineSteps.length - 1) jumpToStep(currentStepIndex + 1); } }
 
     // **MUUTOS: Päivitetty Start-nappien logiikkaa**
     function updateButtonStates() {
@@ -366,32 +376,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 startWarmupBtn.style.display = 'block';
                 // Nappi on päällä, jos selectedRoutineData on olemassa (eli valinta onnistui)
                 startWarmupBtn.disabled = !selectedRoutineData;
+                 // Päivitä napin teksti näyttämään valitun rutiinin nimi
+                 if (selectedRoutineData) {
+                     startWarmupBtn.textContent = `Aloita: ${selectedRoutineData.name}`; // Voit lyhentää nimeä tarvittaessa
+                 } else {
+                     startWarmupBtn.textContent = 'Aloita Lämmittely'; // Oletus
+                 }
             } else if (activeRoutineType === 'workout') {
                 startWorkoutBtn.style.display = 'block';
                 // Nappi on päällä, jos viikko on valittu
                 startWorkoutBtn.disabled = currentWorkoutInfo.week === null;
+                startWorkoutBtn.textContent = 'Aloita Treeni'; // Treenin teksti vakio
             } else if (activeRoutineType === 'cooldown') {
                 startCooldownBtn.style.display = 'block';
                 // Nappi on päällä, jos selectedRoutineData on olemassa
                 startCooldownBtn.disabled = !selectedRoutineData;
+                 // Päivitä napin teksti näyttämään valitun rutiinin nimi
+                 if (selectedRoutineData) {
+                     startCooldownBtn.textContent = `Aloita: ${selectedRoutineData.name}`;
+                 } else {
+                     startCooldownBtn.textContent = 'Aloita Jäähdyttely'; // Oletus
+                 }
             }
         }
 
-        // Prev/Next navigointinapit (ennallaan)
+        // Prev/Next navigointinapit
         const canNavIdle = (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) && currentRoutineSteps.length > 0;
         prevBtn.disabled = !canNavIdle || currentStepIndex <= 0;
         nextBtn.disabled = !canNavIdle || currentStepIndex >= currentRoutineSteps.length - 1;
 
-        // Aktiivisen rutiinin kontrollit (ennallaan)
+        // Aktiivisen rutiinin kontrollit
         if (timerState === TimerState.RUNNING_EXERCISE || timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST) { pauseResumeBtn.style.display = 'block'; stopBtn.style.display = 'block'; pauseResumeBtn.disabled = false; stopBtn.disabled = false; pauseResumeBtn.textContent = "⏸ Tauko"; pauseResumeBtn.classList.remove('paused'); }
         else if (timerState === TimerState.RUNNING_STEP) { stopBtn.style.display = 'block'; nextStepBtn.style.display = 'block'; stopBtn.disabled = false; nextStepBtn.disabled = false; if (currentStepIndex === currentRoutineSteps.length - 1) nextStepBtn.textContent = "Valmis ✅"; else nextStepBtn.textContent = "Seuraava Vaihe ⏭"; }
         else if (timerState === TimerState.PAUSED) { pauseResumeBtn.style.display = 'block'; stopBtn.style.display = 'block'; pauseResumeBtn.disabled = false; stopBtn.disabled = false; pauseResumeBtn.textContent = "▶ Jatka"; pauseResumeBtn.classList.add('paused'); }
-    }
+    } // updateButtonStates loppuu
 
     // **MUUTOS: Nollaa myös selectedRoutineData**
     function resetAppState(resetSelections = true) {
         stopTimerInterval(); stopRoutineTimer();
-        currentRoutineSteps = []; currentWorkoutExercises = []; selectedRoutineData = null; // Nollaa valittu rutiini
+        selectedRoutineData = null; // **Nollaa valittu rutiini**
+        currentRoutineSteps = []; currentWorkoutExercises = [];
         currentStepIndex = 0; currentRound = 1; remainingTime = 0; elapsedRoutineTime = 0;
         timerState = TimerState.IDLE; pausedState = null; isAudioUnlocked = false;
         const savedLevel = currentWorkoutInfo.level;
@@ -412,13 +436,13 @@ document.addEventListener('DOMContentLoaded', () => {
         updateButtonStates(); console.log("App state reset.");
     } // resetAppState loppuu
 
-    function highlightCurrentStep() { /* Ei muutosta */ const items = stepsListUl.querySelectorAll('li.step-item'); items.forEach((item) => { const idx = parseInt(item.dataset.index, 10); if (currentRoutineSteps.length > 0 && !isNaN(idx) && idx === currentStepIndex) { item.classList.add('active'); if (item.offsetTop < stepsListUl.scrollTop || item.offsetTop + item.offsetHeight > stepsListUl.scrollTop + stepsListUl.clientHeight) item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } else item.classList.remove('active'); }); if (currentRoutineSteps.length === 0) stepsListUl.querySelectorAll('li').forEach(item => item.classList.remove('active')); }
-    function highlightNextStep(forceIndex = -1) { /* Ei muutosta */ clearNextUpHighlight(); let nextIdx = -1; if (forceIndex !== -1) nextIdx = forceIndex; else if (timerState === TimerState.RUNNING_REST) nextIdx = currentStepIndex + 1; if (nextIdx >= 0 && nextIdx < currentRoutineSteps.length) { const nextItem = stepsListUl.querySelector(`li[data-index="${nextIdx}"]`); if (nextItem) nextItem.classList.add('next-up'); } }
-    function clearNextUpHighlight() { /* Ei muutosta */ const item = stepsListUl.querySelector('li.next-up'); if (item) item.classList.remove('next-up'); }
+    function highlightCurrentStep() { const items = stepsListUl.querySelectorAll('li.step-item'); items.forEach((item) => { const idx = parseInt(item.dataset.index, 10); if (currentRoutineSteps.length > 0 && !isNaN(idx) && idx === currentStepIndex) { item.classList.add('active'); if (item.offsetTop < stepsListUl.scrollTop || item.offsetTop + item.offsetHeight > stepsListUl.scrollTop + stepsListUl.clientHeight) item.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } else item.classList.remove('active'); }); if (currentRoutineSteps.length === 0) stepsListUl.querySelectorAll('li').forEach(item => item.classList.remove('active')); }
+    function highlightNextStep(forceIndex = -1) { clearNextUpHighlight(); let nextIdx = -1; if (forceIndex !== -1) nextIdx = forceIndex; else if (timerState === TimerState.RUNNING_REST) nextIdx = currentStepIndex + 1; if (nextIdx >= 0 && nextIdx < currentRoutineSteps.length) { const nextItem = stepsListUl.querySelector(`li[data-index="${nextIdx}"]`); if (nextItem) nextItem.classList.add('next-up'); } }
+    function clearNextUpHighlight() { const item = stepsListUl.querySelector('li.next-up'); if (item) item.classList.remove('next-up'); }
     function addBodyLock() { /* CSS hoitaa */ } function removeBodyLock() { /* CSS hoitaa */ }
-    function toggleTrainingSelectionVisibility() { /* Ei muutosta */ const hidden = selectionArea.classList.toggle('hidden'); toggleSelectionAreaBtn.classList.toggle('open', !hidden); }
+    function toggleTrainingSelectionVisibility() { const hidden = selectionArea.classList.toggle('hidden'); toggleSelectionAreaBtn.classList.toggle('open', !hidden); }
 
-    // --- Event Listeners --- (Ei muutoksia)
+    // --- Event Listeners ---
     toggleSelectionAreaBtn.addEventListener('click', toggleTrainingSelectionVisibility);
     startWarmupBtn.addEventListener('click', startSelectedRoutine); startWorkoutBtn.addEventListener('click', startSelectedRoutine); startCooldownBtn.addEventListener('click', startSelectedRoutine);
     pauseResumeBtn.addEventListener('click', pauseResumeTimer); stopBtn.addEventListener('click', stopActiveRoutine); nextStepBtn.addEventListener('click', handleNextStep);
