@@ -1,3 +1,5 @@
+/* style.css (Versio 5 - Skrollauslukko poistettu desktopilta) */
+
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
 
@@ -51,28 +53,23 @@ header {
 header img { height: 42px; width: auto; }
 header h1 { font-size: 1.6rem; color: var(--text-main); }
 
-/* Header Toggle Button (MUUTETTU rakenne) */
+/* Header Toggle Button */
 #toggle-selection-area {
   background-color: var(--accent-orange); color: #000; border: none;
-  padding: 0.7rem 1rem 0.7rem 1.3rem; /* Säädetty paddingia ikonille */
-  border-radius: var(--border-radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 700;
-  font-family: var(--font-display);
+  padding: 0.7rem 1rem 0.7rem 1.3rem; border-radius: var(--border-radius-sm); cursor: pointer;
+  font-size: 0.95rem; font-weight: 700; font-family: var(--font-display);
   transition: background-color var(--transition-speed-normal) var(--transition-timing-func), transform var(--transition-speed-fast) var(--transition-timing-func);
-  display: inline-flex; align-items: center; gap: 0.5em; /* LISÄTTY: flex, align, gap */
+  display: inline-flex; align-items: center; gap: 0.5em;
 }
 #toggle-selection-area:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-1px); }
 #toggle-selection-area:focus-visible { outline-color: var(--bg-dark); box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4); }
-.toggle-text { /* Ei erityisiä tyylejä */ }
-.toggle-icon { /* LISÄTTY: Nuoli CSS:llä */
-  display: inline-block; width: 0; height: 0;
-  border-left: 5px solid transparent; border-right: 5px solid transparent;
-  border-top: 6px solid #000; /* Musta nuoli */
-  transition: transform var(--transition-speed-normal) ease-out;
-  transform-origin: center 40%;
+.toggle-text {}
+.toggle-icon {
+  display: inline-block; width: 0; height: 0; border-left: 5px solid transparent;
+  border-right: 5px solid transparent; border-top: 6px solid #000;
+  transition: transform var(--transition-speed-normal) ease-out; transform-origin: center 40%;
 }
-#toggle-selection-area.open .toggle-icon { /* LISÄTTY: Kääntää nuolen */
-  transform: rotate(180deg);
-}
+#toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
 
 /* --- Valinta-alue --- */
 #selection-area {
@@ -84,7 +81,7 @@ header h1 { font-size: 1.6rem; color: var(--text-main); }
 
 /* Valinta-alueen osiot */
 #training-selection, #warmup-selection, #cooldown-selection {
-    margin-bottom: 2.5rem; padding-bottom: 2rem; /* LISÄTTY/KASVATETTU training-selectionin padding-bottomia (oli 3rem, palautetaan 2rem + napin marginaali) */
+    margin-bottom: 2.5rem; padding-bottom: 2rem;
     border-bottom: 1px dashed var(--border-color-light); position: relative;
 }
 #cooldown-selection { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -129,93 +126,65 @@ header h1 { font-size: 1.6rem; color: var(--text-main); }
 .routine-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .routine-button.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); font-weight: 700; transform: scale(1.03); box-shadow: 0 0 10px rgba(66, 165, 245, 0.4); }
 
-/* Start Buttons (Yleistetty) */
-.start-button { /* Kohdistaa kaikkiin start-nappeihin ID:llä HTML:ssä */
+/* Start Buttons */
+.start-button {
     background-color: var(--accent-green); color: #000; border: none; border-radius: var(--border-radius-md);
     padding: 0.9rem 2.2rem; font-size: 1.2rem; cursor: pointer;
     transition: all var(--transition-speed-normal) var(--transition-timing-func);
-    font-weight: 700; margin-top: 2rem; /* LISÄTTY/KASVATETTU Tilaa yläpuolelle */
-    font-family: var(--font-display); display: block; margin-left: auto; margin-right: auto;
+    font-weight: 700; margin-top: 2rem; font-family: var(--font-display);
+    display: block; margin-left: auto; margin-right: auto;
     box-shadow: 0 3px 6px rgba(102, 187, 106, 0.3);
-    width: 90%; max-width: 340px; /* LISÄTTY Leveys ja max-leveys */
+    width: 90%; max-width: 340px;
 }
 .start-button:disabled { background-color: #444; opacity: 0.6; cursor: not-allowed; box-shadow: none; color: var(--text-subtle); transform: none; }
 .start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(102, 187, 106, 0.4); }
 .start-button:focus-visible { outline-color: var(--bg-dark); box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4); }
-#start-workout-btn { display: none; /* JS näyttää tämän */ }
-
+#start-workout-btn { display: none; }
 
 /* --- Pääsisällön Asettelu --- */
 main.main-layout {
   display: grid; grid-template-columns: minmax(320px, 1.3fr) 3fr; gap: 1.75rem; padding: 1.75rem;
-  flex: 1; overflow: hidden; min-height: 0; position: relative; /* LISÄTTY: position relative */
+  flex: 1; overflow: hidden; min-height: 0; position: relative;
 }
 
 /* Sidebar */
 aside#sidebar {
   background-color: var(--bg-panel); border-radius: var(--border-radius-lg); padding: 1.75rem;
-  display: flex; flex-direction: column; gap: 1.5rem; /* Säädetty gap */
+  display: flex; flex-direction: column; gap: 1.5rem;
   overflow: hidden; box-shadow: var(--shadow-md);
 }
-.sidebar-scroll-content { /* TÄMÄ ELEMENTTI EI OLE KÄYTÖSSÄ HTML:ssä TÄLLÄ HETKELLÄ */
-    flex-grow: 1; overflow-y: auto; padding-right: 0.75rem; margin-right: -0.75rem;
-    display: flex; flex-direction: column; gap: 2rem;
-}
-
-/* MUUTETTU: Info Area rakenne ja tyylit */
-#info-area { position: relative; /* Varmistetaan napin asemointia varten */ }
-.info-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1rem; /* Tilaa ennen sisältöä */
-}
-#info-area h2#info-area-title { /* Ei enää sticky, ei taustaa/paddingia */
-    margin: 0; font-size: 1.5rem; text-align: left; /* Kohdistus vasemmalle */
-    font-family: var(--font-display); font-weight: 700; color: var(--accent-orange);
-    flex-grow: 1; /* Vie tilaa */
-}
-.info-toggle { /* Uusi nappi */
-    background: var(--bg-panel-light); color: var(--text-medium); border: 1px solid var(--border-color);
-    border-radius: var(--border-radius-sm); padding: 0.3rem 0.7rem; font-size: 0.85rem; cursor: pointer;
-    display: inline-flex; align-items: center; gap: 0.4em;
+/* Sidebar Info Area */
+#info-area { position: relative; }
+.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+#info-area h2#info-area-title { margin: 0; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-orange); flex-grow: 1; }
+.info-toggle {
+    background: var(--bg-panel-light); color: var(--text-medium); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+    padding: 0.3rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4em;
     transition: all var(--transition-speed-normal) var(--transition-timing-func); margin-left: 1rem;
 }
 .info-toggle:hover { background: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); }
-.toggle-info-icon { /* Uusi ikoni */
-    display: inline-block; width: 0; height: 0; border-left: 4px solid transparent;
-    border-right: 4px solid transparent; border-top: 5px solid currentColor;
-    transition: transform var(--transition-speed-normal) ease-out; transform-origin: center 40%;
-}
-.info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); } /* Osoittaa oikealle */
-.info-toggle[aria-expanded="true"] .toggle-info-icon { transform: rotate(0deg); } /* Osoittaa alas */
-.info-toggle:focus-visible { /* Korostetaan fokusta napille */
-    border-color: var(--focus-outline-color);
-    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3);
-}
+.toggle-info-icon { display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform var(--transition-speed-normal) ease-out; transform-origin: center 40%; }
+.info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); }
+.info-toggle[aria-expanded="true"] .toggle-info-icon { transform: rotate(0deg); }
+.info-toggle:focus-visible { border-color: var(--focus-outline-color); box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3); }
 
-.info-content-wrapper { /* Uusi wrapper sisällölle */
+.info-content-wrapper {
     transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out, margin-bottom 0.4s ease-out, border-width 0.4s ease-out, visibility 0s linear 0s;
     overflow: hidden; max-height: 500px; opacity: 1; visibility: visible;
     border-left: 6px solid var(--accent-orange); background-color: rgba(0, 0, 0, 0.3);
     padding: 1.25rem; border-radius: var(--border-radius-sm); margin-bottom: 0;
 }
-.info-content-wrapper.collapsed { /* Piilotettu tila */
+.info-content-wrapper.collapsed {
     max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0;
     border-left-width: 0; visibility: hidden;
     transition: max-height 0.3s ease-in, opacity 0.2s ease-in, padding-top 0.3s ease-in, padding-bottom 0.3s ease-in, margin-bottom 0.3s ease-in, border-width 0.3s ease-in, visibility 0s linear 0.3s;
 }
-#info-area-notes-container { /* Sisempi container, ei enää reunuksia/taustaa */
-    width: 100%; padding: 0; background-color: transparent; border-left: none;
-    border-radius: 0; overflow-y: auto; max-height: 300px; /* Max-height säilyy */
-}
+#info-area-notes-container { width: 100%; padding: 0; background-color: transparent; border-left: none; border-radius: 0; overflow-y: auto; max-height: 300px; }
 #info-area-notes { color: var(--accent-orange); font-size: 1.05rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
 
-/* Steps List Area */
+/* Sidebar Steps List */
 #steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
-#steps-list-area h2#steps-list-title { /* Ei enää sticky */
-     margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem; text-align: left; /* Kohdistus vasemmalle */
-     font-family: var(--font-display); font-weight: 700; color: var(--accent-blue);
-     position: static; background: none; padding: 0; z-index: 1;
-}
+#steps-list-area h2#steps-list-title { margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-blue); position: static; background: none; padding: 0; z-index: 1; }
 ul#steps-items { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 0.75rem; }
 li.step-item {
     margin-bottom: 0.75rem; padding: 1rem 1.25rem; background-color: var(--bg-panel-light);
@@ -229,7 +198,6 @@ li.step-item.active { background-color: rgba(102, 187, 106, 0.1); border-left-co
 @keyframes pulse-border-dark { 0%, 100% { border-left-color: var(--accent-orange); } 50% { border-left-color: var(--accent-blue); } }
 li.step-item.next-up { border-left-width: 7px; animation: pulse-border-dark 1.5s infinite ease-in-out; }
 li.step-item:focus-visible { outline-color: var(--focus-outline-color); outline-offset: 1px; box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3); z-index: 1; }
-
 
 /* --- Päänäkymä (Aktiivinen Näyttö) --- */
 section#active-display {
@@ -259,30 +227,29 @@ section#active-display {
 #active-display img#item-image { display: block; max-width: 100%; width: auto; max-height: 480px; height: auto; object-fit: contain; border-radius: var(--border-radius-md); margin-bottom: 1.75rem; background-color: var(--bg-panel-light); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
 #active-display p#item-description { color: var(--text-medium); font-size: 1.1rem; line-height: 1.75; max-width: 100%; text-align: left; margin-top: 0.75rem; }
 
-/* Ajastin ja Kontrollit (MUUTETTU Asettelu) */
+/* Ajastin ja Kontrollit */
 #timer-and-controls {
   display: flex; flex-direction: column; align-items: center;
-  justify-content: flex-start; /* MUUTETTU: Kohdistaa ylös */
-  height: 100%; gap: 1.5rem; /* Säädetty gap */
-  min-height: 0; padding-top: 1.5rem; /* LISÄTTY/SÄÄDETTY: Tilaa ylös */
+  justify-content: flex-start; /* !! TÄRKEÄ: Kohdistaa ylös */
+  height: 100%; gap: 1.5rem;
+  min-height: 0; padding-top: 1.5rem; /* Tilaa yläreunaan */
 }
 .round-display { font-size: 1.15rem; color: var(--text-subtle); margin-bottom: 0; text-align: center; height: auto; font-weight: 500; background: var(--bg-panel-light); padding: 0.4rem 1rem; border-radius: var(--border-radius-pill); border: 1px solid var(--border-color); }
-#timer { text-align: center; margin-top: 0.5rem; } /* Pieni väli kierrosnäytöstä */
+#timer { text-align: center; margin-top: 0.5rem; }
 #time-remaining { font-size: clamp(4.5rem, 11vw, 6.5rem); font-weight: 700; display: block; line-height: 1; transition: color var(--transition-speed-normal) var(--transition-timing-func), text-shadow var(--transition-speed-normal) var(--transition-timing-func); color: var(--accent-blue); font-family: var(--font-display); text-shadow: var(--text-shadow-glow-blue); }
 #timer-label { font-size: clamp(1.2rem, 3vw, 1.6rem); color: var(--text-medium); margin-top: 0.75rem; font-weight: 500; }
 #timer.timer-resting #time-remaining { color: var(--accent-orange); text-shadow: var(--text-shadow-glow-orange); animation: pulse-orange-glow-dark 1.5s infinite ease-in-out; }
 #timer.timer-paused { opacity: 0.5; }
 @keyframes pulse-orange-glow-dark { 0%, 100% { text-shadow: var(--text-shadow-glow-orange); opacity: 1; } 50% { text-shadow: 0 0 20px rgba(255, 167, 38, 0.6); opacity: 0.8; } }
 
-/* Kontrollinapit Päänäkymässä (MUUTETTU Asettelu) */
+/* Kontrollinapit Päänäkymässä */
 .control-button-container {
     display: flex; flex-direction: column; align-items: center; gap: 1.2rem; width: 100%;
-    margin-top: 1.5rem; /* MUUTETTU: Ei enää 'auto', tasainen väli */
-    padding-top: 0; /* Nollataan yläpaddin, gap hoitaa */
+    margin-top: 1.5rem; /* !! TÄRKEÄ: Ei enää 'auto' */
+    padding-top: 0;
 }
-.control-button { /* Yleisluokka HTML:ssä oleville napeille */
-    display: none; /* JS hallitsee */
-    color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 1rem 2rem;
+.control-button {
+    display: none; color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 1rem 2rem;
     font-size: 1.15rem; font-family: var(--font-display); cursor: pointer;
     transition: all var(--transition-speed-normal) var(--transition-timing-func);
     font-weight: 700; width: 90%; max-width: 300px; box-shadow: var(--shadow-md);
@@ -316,22 +283,21 @@ section#active-display {
     html { font-size: 15.5px; } body { line-height: 1.6; }
     main.main-layout { grid-template-columns: 1fr; grid-template-rows: auto auto; overflow-y: auto; padding: 1rem; gap: 1.25rem; overflow-x: hidden; }
     aside#sidebar { order: 2; overflow-y: visible; padding: 1.25rem; max-height: none; border-radius: var(--border-radius-lg); }
-    /* .sidebar-scroll-content poistettu käytöstä HTML:ssä */
     aside#sidebar #info-area-notes-container { max-height: 250px; overflow-y: auto; }
     aside#sidebar ul#steps-items { max-height: 350px; overflow-y: auto; flex-grow: 0; flex-shrink: 0; }
     aside#sidebar #info-area-notes { font-size: 1rem; }
     aside#sidebar li.step-item { font-size: 1.1rem; padding: 0.8rem 1.1rem; }
-    #info-area h2#info-area-title { text-align: left; margin-bottom: 0; } /* Säädetty info headeriin */
-    #steps-list-area h2#steps-list-title { position: static; background: none; padding: 0; margin-bottom: 1rem; text-align: left; } /* Säädetty */
+    #info-area h2#info-area-title { text-align: left; margin-bottom: 0; }
+    #steps-list-area h2#steps-list-title { position: static; background: none; padding: 0; margin-bottom: 1rem; text-align: left; }
     section#active-display { order: 1; overflow: visible; min-height: auto; padding: 1.25rem; border-radius: var(--border-radius-lg); }
     #title-area { padding-bottom: 1rem; margin-bottom: 1.5rem; }
     #active-display h2#item-name { font-size: clamp(1.5rem, 5.5vw, 1.9rem); margin: 0 0.5rem; }
     .title-nav-btn { width: 40px; height: 40px; font-size: 1.2rem; }
-    #content-split { grid-template-columns: 1fr; gap: 2rem; /* Säädetty gap */ align-items: center; overflow: visible; }
+    #content-split { grid-template-columns: 1fr; gap: 2rem; align-items: center; overflow: visible; }
     #active-display div#item-details { order: 2; padding-right: 0; max-height: none; overflow-y: visible; width: 100%; }
     #active-display img#item-image { max-height: 320px; width: 100%; object-fit: contain; }
     #active-display p#item-description { text-align: left; font-size: 1rem; line-height: 1.7; }
-    #timer-and-controls { order: 1; justify-content: flex-start; height: auto; gap: 1.25rem; /* Säädetty gap */ padding-bottom: 1rem; width: 100%; padding-top: 0.5rem; }
+    #timer-and-controls { order: 1; justify-content: flex-start; height: auto; gap: 1.25rem; padding-bottom: 1rem; width: 100%; padding-top: 0.5rem; }
     #time-remaining { font-size: clamp(3.5rem, 13vw, 4.5rem); }
     #timer-label { font-size: 1.3rem; } .round-display { font-size: 1.1rem; }
     .control-button-container { margin-top: 1.5rem; padding-top: 0; gap: 1rem; }
@@ -360,15 +326,34 @@ section#active-display {
     .round-display { font-size: 1rem; padding: 0.3rem 0.8rem;} #timer-label { font-size: 1.2rem;}
 }
 
-/* --- Timer Active State & Scrolling --- */
-body.timer-active { overflow: hidden; }
-body.timer-active #selection-area, body.timer-active .sidebar-scroll-content, /* sidebar-scroll-content ei käytössä HTML:ssä */
-body.timer-active #info-area-notes-container, body.timer-active ul#steps-items,
-body.timer-active div#item-details { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+/* --- Timer Active State & Scrolling (MUUTETTU) --- */
+body.timer-active {
+     /* Ei enää globaalia overflow: hidden -sääntöä täällä */
+}
+
+/* Salli näiden elementtien sisäinen scrollaus AINA tarvittaessa */
+#selection-area,
+/* .sidebar-scroll-content, (ei käytössä HTML:ssä) */
+#info-area-notes-container,
+ul#steps-items,
+div#item-details {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobiilissa (<= 768px) varmista, että body skrollaa */
 @media (max-width: 768px) {
-  body.timer-active { overflow: auto; }
-  body.timer-active aside#sidebar, body.timer-active section#active-display,
-  body.timer-active #content-split, body.timer-active div#item-details { /* overflow: visible; Poistettu, koska voi olla tarpeen */ }
-  body.timer-active aside#sidebar #info-area-notes-container,
-  body.timer-active aside#sidebar ul#steps-items { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  body {
+    /* Varmistetaan scrollaus mobiilissa */
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  /* body.timer-active ei vaikuta mobiilin body-skrollaukseen */
+
+  /* Varmistetaan, että nämä skrollaavat sisäisesti mobiilissakin tarvittaessa */
+   aside#sidebar #info-area-notes-container,
+   aside#sidebar ul#steps-items {
+     overflow-y: auto;
+     -webkit-overflow-scrolling: touch;
+   }
 }
