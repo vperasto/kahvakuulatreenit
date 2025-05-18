@@ -1,30 +1,31 @@
-/* style.css (Versio 2.1 - Dynaaminen layout, sivupalkin piilotus) */
+/* style.css (Versio 2.2 - Korjattu Sticky, palautettu tyylejä) */
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
 
 :root {
+  /* Alkuperäiset värit toimivasta versiosta */
   --bg-dark: #0f1014; --bg-panel: #1b1d21; --bg-panel-hover: #24272c; --bg-panel-light: #2a2e34;
   --text-main: #eaeaea; --text-medium: #b0b0b0; --text-subtle: #888b93;
   --accent-blue: #42a5f5; --accent-orange: #ffa726; --accent-green: #66bb6a; --accent-red: #ef5350;
   --border-color: #373a40; --border-color-light: #4f535a; --focus-outline-color: var(--accent-blue);
   --font-display: 'Rajdhani', sans-serif; --font-body: 'Roboto', sans-serif;
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.25); /* Hieman kevyempi varjo */
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 6px 12px rgba(0, 0, 0, 0.35);
-  --text-shadow-glow-blue: 0 0 10px rgba(66, 165, 245, 0.35);
-  --text-shadow-glow-orange: 0 0 10px rgba(255, 167, 38, 0.35);
-  --border-radius-sm: 5px; --border-radius-md: 10px; --border-radius-lg: 15px; --border-radius-pill: 40px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 5px 10px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+  --text-shadow-glow-blue: 0 0 12px rgba(66, 165, 245, 0.4);
+  --text-shadow-glow-orange: 0 0 12px rgba(255, 167, 38, 0.4);
+  --border-radius-sm: 4px; --border-radius-md: 8px; --border-radius-lg: 12px; --border-radius-pill: 30px;
   --transition-speed-fast: 0.15s; --transition-speed-normal: 0.25s; --transition-speed-layout: 0.3s;
-  --transition-timing-func: ease-in-out; /* Vaihdettu ease-in-out */
+  --transition-timing-func: ease-out; /* Palautettu ease-out */
   --outline-offset: 2px;
 
   /* Layout-muuttujat */
-  --sidebar-width: 300px;
+  --sidebar-width: 280px; /* Hieman kapeampi oletus */
   --sidebar-width-collapsed: 0px;
-  --timer-panel-width: 280px;
-  --header-height: 60px; /* Oletus, JS päivittää tämän */
-  --main-view-padding: 1.25rem; /* Yhtenäinen padding pääalueille */
+  --timer-panel-width: 260px; /* Hieman kapeampi oletus */
+  --header-height: 60px;
+  --base-padding: 1rem; /* Yhtenäinen peruspadding */
 }
 
 /* --- Perusasetukset ja Body --- */
@@ -32,48 +33,47 @@
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
   font-family: var(--font-body); background-color: var(--bg-dark); color: var(--text-main);
-  display: flex; flex-direction: column; min-height: 100vh; line-height: 1.6;
+  display: flex; flex-direction: column; min-height: 100vh; line-height: 1.65; /* Palautettu alkuperäinen */
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
 #app { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 
-/* --- Scrollbar --- */
-::-webkit-scrollbar { width: 8px; height: 8px; } /* Hieman ohuempi */
-::-webkit-scrollbar-track { background: var(--bg-panel); } /* Tummempi tausta */
-::-webkit-scrollbar-thumb { background-color: var(--border-color-light); border-radius: 4px; }
+/* Scrollbar (alkuperäinen) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; border: 2px solid var(--bg-dark); }
 ::-webkit-scrollbar-thumb:hover { background-color: var(--accent-blue); }
-* { scrollbar-width: thin; scrollbar-color: var(--border-color-light) var(--bg-panel); }
+* { scrollbar-width: thin; scrollbar-color: var(--border-color) var(--bg-dark); }
 
-/* --- Fokus-tyylit --- */
+/* Fokus-tyylit (alkuperäinen) */
 *:focus:not(:focus-visible) { outline: none; }
 *:focus-visible {
   outline: 2px solid var(--focus-outline-color); outline-offset: var(--outline-offset);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus-outline-color) 40%, transparent); /* Pehmeämpi focus-hehku */
-  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 0 4px rgba(66, 165, 245, 0.3); border-radius: var(--border-radius-sm);
 }
 
 /* --- Header --- */
 header {
-  background-color: var(--bg-panel); padding: 0.75rem var(--main-view-padding);
+  background-color: var(--bg-panel); padding: 0.8rem var(--base-padding); /* Käytetään base-padding */
   font-family: var(--font-display);
-  font-weight: 600; border-bottom: 2px solid var(--accent-blue); /* Ohuempi reuna */
+  font-weight: 600; border-bottom: 3px solid var(--accent-blue); /* Alkuperäinen reuna */
   position: relative; z-index: 1001;
   flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md);
-  height: var(--header-height); /* Käytetään CSS-muuttujaa */
+  height: var(--header-height);
 }
-header img { height: calc(var(--header-height) - 24px); width: auto; } /* Logo skaalautuu headerin korkeuden mukaan */
-.header-controls { display: flex; align-items: center; gap: 0.75rem; }
+header img { height: calc(var(--header-height) - 18px); width: auto; }
+.header-controls { display: flex; align-items: center; gap: 0.8rem; } /* Alkuperäinen gap */
 
-.header-icon-btn {
-  background: transparent; border: 1px solid var(--border-color); color: var(--text-medium);
-  border-radius: var(--border-radius-sm); width: 38px; height: 38px;
+.header-icon-btn { /* Tyyli kuten title-nav-btn, mutta pienempi */
+  background: transparent; border: 2px solid var(--border-color); color: var(--text-medium);
+  border-radius: var(--border-radius-sm); /* Pienempi pyöristys */
+  width: 40px; height: 40px; /* Alkuperäinen koko lähempänä */
   padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  transition: background-color var(--transition-speed-normal), border-color var(--transition-speed-normal), color var(--transition-speed-normal);
+  transition: all var(--transition-speed-normal) var(--transition-timing-func);
 }
-.header-icon-btn:hover { background-color: var(--bg-panel-hover); border-color: var(--accent-blue); color: var(--accent-blue); }
-.header-icon-btn.active { background-color: color-mix(in srgb, var(--accent-blue) 20%, var(--bg-panel-light)); border-color: var(--accent-blue); color: var(--accent-blue); }
-
+.header-icon-btn:hover { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.05); }
+.header-icon-btn.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); transform: scale(1.05); }
 .icon-menu { display: block; width: 18px; height: 14px; position: relative; }
 .icon-menu::before, .icon-menu::after, .icon-menu span {
   content: ''; display: block; background-color: currentColor; height: 2px; width: 100%;
@@ -81,44 +81,88 @@ header img { height: calc(var(--header-height) - 24px); width: auto; } /* Logo s
   transition: transform var(--transition-speed-normal) var(--transition-timing-func), opacity var(--transition-speed-normal) var(--transition-timing-func);
 }
 .icon-menu::before { top: 0; }
-.icon-menu span { top: 50%; transform: translateY(-50%);} /* Keskimmäinen viiva */
+.icon-menu span { top: 50%; transform: translateY(-50%); }
 .icon-menu::after { bottom: 0; }
-/* X-muoto kun aktiivinen */
 #toggle-sidebar-btn.active .icon-menu::before { top: 6px; transform: rotate(45deg); }
 #toggle-sidebar-btn.active .icon-menu span { opacity: 0; }
 #toggle-sidebar-btn.active .icon-menu::after { bottom: 6px; transform: rotate(-45deg); }
 
-
+/* Header Toggle Button (alkuperäinen) */
 #toggle-selection-area {
   background-color: var(--accent-orange); color: #000; border: none;
-  padding: 0.6rem 0.9rem 0.6rem 1.2rem; border-radius: var(--border-radius-sm); cursor: pointer;
-  font-size: 0.9rem; font-weight: 700; font-family: var(--font-display);
-  transition: background-color var(--transition-speed-normal), transform var(--transition-speed-fast);
-  display: inline-flex; align-items: center; gap: 0.4em;
+  padding: 0.7rem 1rem 0.7rem 1.3rem; border-radius: var(--border-radius-sm); cursor: pointer;
+  font-size: 0.95rem; font-weight: 700; font-family: var(--font-display);
+  transition: background-color var(--transition-speed-normal) var(--transition-timing-func), transform var(--transition-speed-fast) var(--transition-timing-func);
+  display: inline-flex; align-items: center; gap: 0.5em;
 }
-#toggle-selection-area:hover:not(:disabled) { background-color: color-mix(in srgb, var(--accent-orange) 90%, #fff); transform: translateY(-1px); }
-.toggle-icon { border-left-width: 4px; border-right-width: 4px; border-top-width: 5px; }
+#toggle-selection-area:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-1px); }
+#toggle-selection-area:focus-visible { outline-color: var(--bg-dark); box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4); }
+.toggle-icon { border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #000; }
 #toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
 
-/* --- Valinta-alue --- */
+/* --- Valinta-alue (palautettu lähemmäs alkuperäistä) --- */
 #selection-area {
-    background-color: var(--bg-panel-light); padding: 1.5rem var(--main-view-padding); border-bottom: 1px solid var(--border-color);
-    transition: max-height 0.35s var(--transition-timing-func), padding 0.35s var(--transition-timing-func), opacity 0.3s var(--transition-timing-func);
-    max-height: 75vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 1000; position: relative;
+    background-color: var(--bg-panel-light); padding: 2rem var(--base-padding); border-bottom: 1px solid var(--border-color);
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.3s ease-out;
+    max-height: 80vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 1000; position: relative;
 }
 #selection-area.hidden { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
-#training-selection h2, .routine-selection h2 { font-size: 1.4rem; margin-bottom: 1rem; }
-.button-container { gap: 0.75rem; }
-.week-button { padding: 0.7rem 1.2rem; font-size: 0.95rem; min-width: 150px; }
-.level-button { padding: 0.5rem 1rem; font-size: 0.85rem; min-width: 75px; }
-.routine-button { padding: 0.7rem 1.3rem; font-size: 1rem; min-width: 200px; }
-.start-button { padding: 0.8rem 2rem; font-size: 1.1rem; margin-top: 1.5rem; max-width: 300px; }
+#training-selection, #warmup-selection, #cooldown-selection { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color-light); }
+#cooldown-selection { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+#training-selection h2, .routine-selection h2 { margin-bottom: 1rem; font-size: 1.5rem; color: var(--accent-orange); text-align: center; font-family: var(--font-display); font-weight: 700; }
+.button-container { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
+/* Week Buttons (alkuperäinen) */
+#week-buttons-container { margin-bottom: 1.5rem; }
+.week-button {
+  background-color: var(--accent-blue); color: var(--bg-dark); border: none; padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md); cursor: pointer; font-size: 1rem; font-family: var(--font-display); font-weight: 700;
+  transition: all var(--transition-speed-normal) var(--transition-timing-func);
+  flex-grow: 1; text-align: center; min-width: 170px; box-shadow: var(--shadow-sm);
+}
+.week-button:hover:not(.active):not(:disabled) { background-color: #64b5f6; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.week-button.active { background-color: var(--accent-green); color: #000; transform: scale(1.03); box-shadow: 0 0 12px rgba(102, 187, 106, 0.5); }
+/* Level Buttons (alkuperäinen) */
+.level-container { margin-top: 1.5rem; text-align: center; }
+#level-buttons-container { gap: 0.6rem; margin-top: 1rem; }
+.level-button {
+    background-color: transparent; color: var(--text-medium); border: 2px solid var(--border-color); padding: 0.55rem 1.1rem;
+    border-radius: var(--border-radius-pill); cursor: pointer; font-size: 0.9rem; font-family: var(--font-body); font-weight: 500;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func); min-width: 85px; text-align: center;
+}
+.level-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel); color: var(--text-main); border-color: var(--accent-blue); }
+.level-button.active { background-color: var(--accent-orange); color: #000; border-color: var(--accent-orange); font-weight: 700; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 167, 38, 0.4); }
+.level-button:focus-visible { border-radius: var(--border-radius-pill); }
+/* Routine Buttons (alkuperäinen) */
+.routine-buttons { margin-bottom: 1.5rem; }
+.routine-button {
+    background-color: var(--bg-panel); color: var(--text-medium); border: 1px solid var(--border-color); padding: 0.8rem 1.6rem;
+    border-radius: var(--border-radius-md); cursor: pointer; font-size: 1.05rem; font-family: var(--font-display); font-weight: 600;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    flex-grow: 1; text-align: center; min-width: 220px; box-shadow: var(--shadow-sm);
+}
+.routine-button .duration { font-size: 0.8em; color: var(--text-subtle); opacity: 0.8;}
+.routine-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.routine-button.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); font-weight: 700; transform: scale(1.03); box-shadow: 0 0 10px rgba(66, 165, 245, 0.4); }
+/* Start Buttons (alkuperäinen) */
+.start-button {
+    background-color: var(--accent-green); color: #000; border: none; border-radius: var(--border-radius-md);
+    padding: 0.9rem 2.2rem; font-size: 1.2rem; cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-weight: 700; margin-top: 2rem; font-family: var(--font-display);
+    display: block; margin-left: auto; margin-right: auto;
+    box-shadow: 0 3px 6px rgba(102, 187, 106, 0.3);
+    width: 90%; max-width: 340px;
+}
+.start-button:disabled { background-color: #444; opacity: 0.6; cursor: not-allowed; box-shadow: none; color: var(--text-subtle); transform: none; }
+.start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(102, 187, 106, 0.4); }
+#start-workout-btn { display: none; }
+
 
 /* --- Pääsisällön Asettelu --- */
 .main-content-wrapper {
   display: flex;
   flex: 1;
-  overflow: hidden;
+  overflow: hidden; /* Tämä on tärkeä sticky-elementin toiminnan kannalta */
   position: relative; /* Tarvitaan sticky-elementin kontekstiksi */
 }
 
@@ -126,8 +170,8 @@ header img { height: calc(var(--header-height) - 24px); width: auto; } /* Logo s
 aside#sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-panel);
-  padding: var(--main-view-padding);
-  display: flex; flex-direction: column; gap: 1.25rem; /* Lisätty väliä */
+  padding: var(--base-padding);
+  display: flex; flex-direction: column; gap: var(--base-padding);
   overflow-y: auto;
   flex-shrink: 0;
   transition: width var(--transition-speed-layout) var(--transition-timing-func),
@@ -138,174 +182,253 @@ aside#sidebar {
   box-shadow: var(--shadow-sm);
   opacity: 1;
   transform: translateX(0);
+  z-index: 900; /* Varmista, ettei mene headerin päälle, mutta valikon alle */
 }
 aside#sidebar.sidebar-hidden {
   width: var(--sidebar-width-collapsed);
   padding-left: 0; padding-right: 0;
   opacity: 0;
-  transform: translateX(-100%); /* Liukuu pois näkyvistä */
+  transform: translateX(calc(-1 * var(--sidebar-width))); /* Liukuu pois näkyvistä */
   border-right: none;
-  overflow: hidden; /* Piilota sisältö kokonaan, kun palkki piilossa */
+  overflow: hidden;
 }
-/* Sivupalkin sisältö */
-#info-area h2#info-area-title { font-size: 1.2rem; }
-.info-toggle { font-size: 0.75rem; }
-.info-content-wrapper { padding: 0.8rem; border-left-width: 3px; }
-#info-area-notes-container { max-height: 200px; /* Säädä tarvittaessa */ }
-#info-area-notes { font-size: 0.85rem; line-height: 1.55; }
-#steps-list-area h2#steps-list-title { font-size: 1.2rem; }
-ul#steps-items { padding-right: 0.4rem; }
-li.step-item { padding: 0.5rem 0.9rem; border-left-width: 3px; font-size: 0.9rem; }
-li.step-item.active, li.step-item.next-up { border-left-width: 5px; }
+/* Sivupalkin sisältö (palautettu lähemmäs alkuperäistä) */
+#info-area { position: relative; }
+.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+#info-area h2#info-area-title { margin: 0; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-orange); flex-grow: 1; }
+.info-toggle {
+    background: var(--bg-panel-light); color: var(--text-medium); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+    padding: 0.3rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4em;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func); margin-left: 1rem;
+}
+.info-toggle:hover { background: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); }
+.toggle-info-icon { display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform var(--transition-speed-normal) ease-out; transform-origin: center 40%; }
+.info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); }
+.info-toggle[aria-expanded="true"] .toggle-info-icon { transform: rotate(0deg); }
+.info-content-wrapper {
+    transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out, margin-bottom 0.4s ease-out, border-width 0.4s ease-out, visibility 0s linear 0s;
+    overflow: hidden; max-height: 500px; opacity: 1; visibility: visible;
+    border-left: 6px solid var(--accent-orange); background-color: rgba(0, 0, 0, 0.3);
+    padding: 1.25rem; border-radius: var(--border-radius-sm); margin-bottom: 0;
+}
+.info-content-wrapper.collapsed {
+    max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0;
+    border-left-width: 0; visibility: hidden;
+    transition: max-height 0.3s ease-in, opacity 0.2s ease-in, padding-top 0.3s ease-in, padding-bottom 0.3s ease-in, margin-bottom 0.3s ease-in, border-width 0.3s ease-in, visibility 0s linear 0.3s;
+}
+#info-area-notes-container { width: 100%; padding: 0; background-color: transparent; border-left: none; border-radius: 0; overflow-y: auto; max-height: 250px; /* Sopiva korkeus */ }
+#info-area-notes { color: var(--accent-orange); font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
+#steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
+#steps-list-area h2#steps-list-title { margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-blue); }
+ul#steps-items { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 0.75rem; }
+li.step-item { /* Alkuperäinen, toimiva tyyli */
+    margin-bottom: 0.3rem; padding: 0.5rem 1.25rem; background-color: var(--bg-panel-light);
+    border-left: 5px solid var(--accent-blue); border-radius: var(--border-radius-md); cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-size: 1rem; font-weight: 500; overflow: hidden; white-space: nowrap;
+    text-overflow: ellipsis; position: relative; color: var(--text-medium);
+}
+li.step-item:hover { background-color: var(--bg-panel-hover); border-left-color: #64b5f6; transform: translateX(4px); color: var(--text-main); }
+li.step-item.active { background-color: rgba(102, 187, 106, 0.1); border-left-color: var(--accent-green); border-left-width: 7px; font-weight: 700; color: var(--accent-green); }
+@keyframes pulse-border-dark { 0%, 100% { border-left-color: var(--accent-orange); } 50% { border-left-color: var(--accent-blue); } }
+li.step-item.next-up { border-left-width: 7px; animation: pulse-border-dark 1.5s infinite ease-in-out; }
+
 
 /* Päänäkymä (Harjoite + Ajastin) */
 #main-view-area {
   flex-grow: 1;
-  display: flex; /* Harjoite ja ajastin rinnakkain */
-  overflow: hidden;
-  position: relative; /* Tarvitaan stickyn toimintaan */
-  gap: var(--main-view-padding); /* Väli harjoitealueen ja ajastinpaneelin välillä */
-  padding: var(--main-view-padding); /* Yhtenäinen padding */
+  display: flex;
+  overflow: hidden; /* Tärkeää, jotta sisältö ei ylitä */
+  position: relative;
+  gap: var(--base-padding);
 }
 
-/* Aktiivinen Harjoite -alue */
+/* Aktiivinen Harjoite -alue (palautettu lähemmäs alkuperäistä) */
 section#active-display {
-  flex-grow: 1; /* Ottaa suurimman osan tilasta */
+  flex-grow: 1;
   background-color: var(--bg-panel);
   border-radius: var(--border-radius-lg);
-  overflow: hidden; /* Estää sisällön ylivuodon, oma skrollaus item-details:ssa */
+  padding: var(--base-padding); /* Yhtenäinen padding */
+  overflow: hidden;
   display: flex; flex-direction: column;
   box-shadow: var(--shadow-md);
+  min-width: 0; /* Estää flex-itemiä venymästä liikaa */
 }
 #title-area {
-    padding: 1rem; /* Pienempi padding title-arealle */
-    margin-bottom: 1rem; padding-bottom: 1rem;
+    display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1.5rem; /* Vähemmän margin */
+    flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
 }
-#active-display h2#item-name { font-size: clamp(1.5rem, 2.8vw, 2rem); margin: 0 0.8rem; }
-.title-nav-btn { width: 40px; height: 40px; font-size: 1.3rem; }
-#item-details {
-    flex-grow: 1; /* Täyttää jäljellä olevan tilan #active-display:ssä */
-    overflow-y: auto; /* TÄMÄ skrollaa */
-    padding: 0 1rem 1rem 1rem; /* Padding kuvalle ja kuvaukselle */
+#active-display h2#item-name {
+    margin: 0 1rem; font-size: clamp(1.6rem, 3.5vw, 2.2rem); /* Maltillisempi fontti */
+    font-weight: 700; color: var(--text-main); flex-grow: 1; text-align: center; font-family: var(--font-display);
+}
+.title-nav-btn { /* Alkuperäinen */
+    background: transparent; border: 2px solid var(--border-color); color: var(--text-medium); border-radius: 50%;
+    width: 48px; height: 48px; font-size: 1.5rem; padding: 0; cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.title-nav-btn:hover:not(:disabled) { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.08); }
+.title-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+#item-details { /* Alkuperäinen + skrollaus */
+    flex-grow: 1; overflow-y: auto;
+    padding-right: 0.5rem; /* Pieni padding skrollbarille */
     display: flex; flex-direction: column; align-items: center; text-align: center;
 }
-#active-display img#item-image {
-    max-width: 100%; width: auto; max-height: 360px; /* Sopiva korkeus */
-    margin-bottom: 1rem;
+#active-display img#item-image { /* Alkuperäinen */
+    display: block; max-width: 100%; width: auto; max-height: 400px; /* Sopiva oletuskorkeus */
+    height: auto; object-fit: contain; border-radius: var(--border-radius-md); margin-bottom: 1.5rem;
+    background-color: var(--bg-panel-light); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
 }
-#active-display p#item-description { font-size: 0.95rem; line-height: 1.65; }
+#active-display p#item-description { /* Alkuperäinen */
+    color: var(--text-medium); font-size: 1.05rem; /* Maltillisempi */
+    line-height: 1.7; max-width: 100%; text-align: left; margin-top: 0.5rem;
+}
 
-/* Ajastin ja Kontrollit -paneeli */
+/* Ajastin ja Kontrollit -paneeli (NYT OIKEIN STICKY) */
 aside#timer-controls-panel {
   width: var(--timer-panel-width);
   flex-shrink: 0;
   background-color: var(--bg-panel);
   border-radius: var(--border-radius-lg);
-  position: sticky;
-  top: calc(var(--header-height) + var(--main-view-padding)); /* Headerin korkeus + pääalueen yläpadding */
-  /* Max korkeus, jotta ei mene footerin (jos olisi) tai sivun alareunan alle */
-  max-height: calc(100vh - var(--header-height) - (2 * var(--main-view-padding)));
-  overflow-y: auto; /* Salli skrollaus jos sisältö pitkä */
+  padding: var(--base-padding);
+  position: sticky; /* TÄMÄ ON OIKEA STICKY ELEMENTTI */
+  top: calc(var(--header-height) + var(--base-padding)); /* Kiinnittyy headerin alapuolelle + padding */
+  align-self: flex-start; /* Pitää paneelin ylhäällä flex-kontissa */
+  max-height: calc(100vh - var(--header-height) - (2 * var(--base-padding))); /* Estää menemästä liian alas */
+  overflow-y: auto;
   box-shadow: var(--shadow-md);
-  z-index: 900;
+  z-index: 800; /* Sidebarin alla, jos se on overlay */
 }
-.timer-controls-content {
-    padding: 1rem; /* Sisäinen padding paneelille */
-    display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+.timer-controls-content { /* Alkuperäiset tyylit ajastimelle ja napeille */
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start;
+    gap: 1rem; /* Maltillisempi gap */
 }
-.round-display { font-size: 1rem; padding: 0.3rem 0.8rem; }
-#timer { margin-top: 0.3rem; }
-#time-remaining { font-size: clamp(3rem, 7vw, 4.5rem); }
-#timer-label { font-size: clamp(1rem, 2vw, 1.3rem); margin-top: 0.4rem; }
-.control-button-container { margin-top: 0.8rem; gap: 0.8rem;}
-.control-button { padding: 0.75rem 1.3rem; font-size: 1rem; max-width: 240px; }
+.round-display { font-size: 1.1rem; background: var(--bg-panel-light); padding: 0.4rem 1rem; border-radius: var(--border-radius-pill); border: 1px solid var(--border-color); }
+#timer { text-align: center; margin-top: 0.5rem; }
+#time-remaining { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 700; display: block; line-height: 1; transition: color var(--transition-speed-normal), text-shadow var(--transition-speed-normal); color: var(--accent-blue); font-family: var(--font-display); text-shadow: var(--text-shadow-glow-blue); }
+#timer-label { font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--text-medium); margin-top: 0.5rem; font-weight: 500; }
+#timer.timer-resting #time-remaining { color: var(--accent-orange); text-shadow: var(--text-shadow-glow-orange); animation: pulse-orange-glow-dark 1.5s infinite ease-in-out; }
+#timer.timer-paused { opacity: 0.5; }
+/* Kontrollinapit Päänäkymässä (alkuperäiset) */
+.control-button-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; margin-top: 1rem; }
+.control-button {
+    display: none; color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 0.9rem 1.8rem;
+    font-size: 1.1rem; font-family: var(--font-display); cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-weight: 700; width: 90%; max-width: 280px; box-shadow: var(--shadow-md);
+}
+.control-button:disabled { opacity: 0.5; cursor: not-allowed; background-color: #444 !important; box-shadow: none; transform: none; color: var(--text-subtle); }
+#pause-resume-btn { background-color: var(--accent-orange); color: #000; }
+#pause-resume-btn:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(255, 167, 38, 0.3); }
+#pause-resume-btn.paused { background-color: var(--accent-green); color: #000; }
+#pause-resume-btn.paused:hover:not(:disabled) { background-color: #81c784; box-shadow: 0 5px 10px rgba(102, 187, 106, 0.3); }
+#stop-btn { background-color: var(--accent-red); color: #000; }
+#stop-btn:hover:not(:disabled) { background-color: #e57373; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(239, 83, 80, 0.3); }
+#next-step-btn { background-color: var(--accent-blue); color: #000; }
+#next-step-btn:hover:not(:disabled) { background-color: #64b5f6; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(66, 165, 245, 0.3); }
 
-/* --- Responsiivisuus --- */
-@media (max-width: 1100px) { /* Kapeampi tabletti / leveä portrait */
-  :root {
-    --sidebar-width: 260px;
-    --timer-panel-width: 250px;
-    --main-view-padding: 1rem;
-  }
-  #active-display img#item-image { max-height: 320px; }
-  #time-remaining { font-size: clamp(2.8rem, 6.5vw, 4rem); }
+/* --- Responsiivisuus (säilytetään alkuperäinen pohja, mutta huomioidaan uusi layout) --- */
+/* Suuret näytöt (XL: 1600px+) */
+@media (min-width: 1600px) {
+  :root { --sidebar-width: 320px; --timer-panel-width: 280px; --base-padding: 1.5rem; }
+  #active-display img#item-image { max-height: 500px; }
 }
-
-@media (max-width: 900px) { /* iPad Portrait / Isot puhelimet Landscape */
-  /* Sivupalkki piiloon oletuksena (JS hoitaa luokan) tai pienempi */
-  /* Ajastinpaneeli siirtyy harjoituksen alle */
-  .main-content-wrapper {
-      /* Sivupalkki voi edelleen olla vasemmalla, jos JS ei piilota sitä oletuksena */
-  }
-  #main-view-area {
-      flex-direction: column; /* Harjoite ja ajastin päällekkäin */
-      overflow-y: auto; /* Salli skrollaus koko pääalueella */
-  }
-  section#active-display {
-      min-height: 300px; /* Varmista että on tilaa vaikka kuvaus lyhyt */
-  }
-  aside#timer-controls-panel {
-      width: 100%; /* Täysleveä */
-      position: relative; /* Ei enää sticky */
-      top: auto;
-      max-height: none; /* Ei rajoitusta korkeudelle */
-      margin-top: var(--main-view-padding); /* Väliä harjoitteeseen */
-      box-shadow: none; /* Voi poistaa varjon, kun ei ole "päällä" */
-      border-top: 1px solid var(--border-color);
-  }
-  #active-display img#item-image { max-height: 300px; }
+/* Isot näytöt (L: 1200px - 1599px) - Todennäköinen iPad Pro landscape */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  :root { --sidebar-width: 300px; --timer-panel-width: 270px; --base-padding: 1.25rem; }
+  #active-display img#item-image { max-height: 450px; }
 }
 
-@media (max-width: 767px) { /* Puhelimet */
-  html { font-size: 15px; }
-  :root {
-      --sidebar-width: 100%; /* Täysleveä jos auki */
-      --main-view-padding: 0.75rem;
-      --header-height: 56px;
-  }
-  header { padding: 0.5rem var(--main-view-padding); }
-  .header-icon-btn { width: 36px; height: 36px; }
-  
+/* Tabletit (M - Leveä: 901px - 1199px) - iPad Air/perus landscape */
+@media (min-width: 901px) and (max-width: 1199px) {
+  :root { --sidebar-width: 260px; --timer-panel-width: 240px; --base-padding: 1rem; }
+  #active-display h2#item-name { font-size: clamp(1.5rem, 3vw, 2rem); }
+  #time-remaining { font-size: clamp(3.2rem, 7vw, 4.5rem); }
+  #active-display img#item-image { max-height: 380px; }
+}
+
+/* Tabletit (M - Kapea & Suuret puhelimet: 768px - 900px) - iPad portrait */
+@media (min-width: 768px) and (max-width: 900px) {
+  .main-content-wrapper { flex-direction: column; overflow-y: auto; } /* Päällekkäin */
   aside#sidebar {
-      position: absolute; /* Voi olla parempi mobiilissa overlayna */
-      left: 0; top: 0; bottom: 0; /* Täyttää korkeuden */
-      z-index: 950; /* Pääsisällön päällä, headerin alla */
-      transform: translateX(-100%); /* Oletuksena kokonaan pois */
-      border-right: 1px solid var(--border-color-light); /* Reuna kun auki */
+      width: 100%; /* Täysleveä, jos näkyvissä */
+      max-height: 40vh; /* Rajoitetaan korkeutta, kun päällekkäin */
+      border-right: none; border-bottom: 1px solid var(--border-color);
+      transform: translateX(0); /* Varmistetaan näkyvyys, jos ei piilotettu JS:llä */
+      opacity: 1;
   }
-  aside#sidebar.sidebar-visible { /* JS lisää tämän luokan */
-      transform: translateX(0);
-      width: min(var(--sidebar-width), 300px); /* Max leveys mobiilissa */
+  aside#sidebar.sidebar-hidden { max-height: 0; border-bottom: none;}
+  #main-view-area { flex-direction: column; } /* Harjoite ja ajastin päällekkäin */
+  aside#timer-controls-panel {
+      width: 100%; position: relative; top: auto;
+      align-self: stretch; /* Venyy täyttämään leveyden */
+      max-height: none;
+      margin-top: var(--base-padding);
+      box-shadow: none;
   }
-  /* Tarvitaan taustadimmennys kun sivupalkki auki mobiilissa */
-  body.sidebar-open::before {
+  #active-display img#item-image { max-height: 350px; }
+}
+
+/* Puhelin (S: alle 768px) */
+@media (max-width: 767px) {
+    html { font-size: 15.5px; } body { line-height: 1.6; }
+    :root { --base-padding: 0.75rem; --header-height: 56px; }
+    header { padding: 0.6rem var(--base-padding); }
+    .main-content-wrapper { flex-direction: column; overflow-y: auto; } /* Varmistetaan pystysuuntainen layout */
+
+    aside#sidebar { /* Overlay-tyyli mobiilissa */
+        position: fixed; /* Muutettu fixediksi overlay-efektiä varten */
+        left: 0; top: 0; bottom: 0;
+        height: 100vh; /* Koko korkeus */
+        width: min(85vw, 300px); /* Max leveys, mutta ei liian leveä pienillä näytöillä */
+        z-index: 1002; /* Headerin ja kaiken muun päällä */
+        transform: translateX(-105%); /* Aluksi kokonaan pois näkyvistä */
+        border-right: 1px solid var(--border-color-light);
+        transition: transform var(--transition-speed-layout) var(--transition-timing-func);
+    }
+    aside#sidebar.sidebar-visible { transform: translateX(0); } /* Näkyviin liukuu vasemmalta */
+    aside#sidebar.sidebar-hidden { transform: translateX(-105%); } /* Piiloon liukuu vasemmalle */
+
+    /* Taustadimmennys kun sivupalkki auki mobiilissa */
+    body.sidebar-open::before {
       content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.5); z-index: 940;
-      opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
-  }
-  body.sidebar-open.sidebar-really-open::before { opacity: 1; visibility: visible; }
+      background-color: rgba(0,0,0,0.6); z-index: 1001; /* Sidebarin alla, headerin päällä */
+      opacity: 0; visibility: hidden;
+      transition: opacity var(--transition-speed-layout) var(--transition-timing-func),
+                  visibility 0s var(--transition-speed-layout); /* Visibility heti pois */
+    }
+    body.sidebar-open.sidebar-really-open::before {
+        opacity: 1; visibility: visible;
+        transition-delay: 0s; /* Visibility heti päälle */
+    }
 
+    #main-view-area { flex-direction: column; }
+    aside#timer-controls-panel { width: 100%; position: relative; top: auto; max-height: none; margin-top: var(--base-padding); box-shadow: none; }
+    #active-display { border-radius: var(--border-radius-lg); /* Pyöristys takaisin */ }
+    aside#timer-controls-panel { border-radius: var(--border-radius-lg); /* Pyöristys takaisin */ }
 
-  #main-view-area { gap: 0; padding: var(--main-view-padding) 0; } /* Poista gap ja sivupadding */
-  section#active-display { border-radius: 0; padding: var(--main-view-padding); }
-  aside#timer-controls-panel { border-radius: 0; margin-top: 0; border-top: 1px solid var(--border-color); padding: var(--main-view-padding);}
-
-  #active-display h2#item-name { font-size: clamp(1.3rem, 4.5vw, 1.7rem); }
-  #active-display img#item-image { max-height: 240px; }
-  #time-remaining { font-size: clamp(2.5rem, 10vw, 3.8rem); }
-
-  /* Valinta-alueen napit mobiilissa */
-  #selection-area { padding: 1rem var(--main-view-padding); }
-  #week-buttons-container { flex-direction: column; }
-  .level-button { flex-basis: calc(50% - 0.25rem); }
+    #active-display h2#item-name { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+    #active-display img#item-image { max-height: 280px; }
+    #time-remaining { font-size: clamp(3rem, 11vw, 4rem); }
+    .control-button { width: 95%; max-width: 320px; }
+    .start-button { width: 95%; max-width: 320px; }
+    #selection-area { max-height: 70vh; }
+    #week-buttons-container { flex-direction: column; }
+    .level-button { flex-basis: calc(50% - 0.3rem); }
 }
 
 /* Skrollausasetukset */
-#selection-area, aside#sidebar, #item-details, aside#timer-controls-panel, #main-view-area /* Lisätty main-view-area pienemmille näytöille */ {
+#selection-area, aside#sidebar, #item-details, aside#timer-controls-panel,
+.main-content-wrapper /* Lisätty .main-content-wrapper pienemmille näytöille */ {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* Poistetaan main-view-area skrollaus kun ajastin on sticky (suuremmat näytöt) */
-@media (min-width: 901px) {
-  #main-view-area { overflow-y: hidden; }
+@media (min-width: 901px) { /* Kun ajastin on sticky */
+  .main-content-wrapper { overflow-y: hidden; } /* Estä ulompi skrollaus */
+}
+@media (max-width: 900px) { /* Kun ajastin ei ole sticky */
+  #main-view-area { overflow-y: visible; } /* Salli skrollaus tarvittaessa */
+  /* #timer-controls-panel ei tarvitse omaa skrollausta, koska #main-view-area skrollaa */
 }
