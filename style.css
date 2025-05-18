@@ -1,10 +1,10 @@
-/* style.css (Versio 2.3 - Yksinkertaistettu sticky ja layout-yritys) */
+/* style.css (Versio 2.2.1 - Korjattu Sticky ja paneelin ulkoasu) */
 
-/* Google Fonts (kuten ennen) */
+/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
 
 :root {
-  /* Palautetaan alkuperäiset muuttujat, jotta ei tule uusia ongelmia niiden takia */
+  /* Alkuperäiset värit toimivasta versiosta */
   --bg-dark: #0f1014; --bg-panel: #1b1d21; --bg-panel-hover: #24272c; --bg-panel-light: #2a2e34;
   --text-main: #eaeaea; --text-medium: #b0b0b0; --text-subtle: #888b93;
   --accent-blue: #42a5f5; --accent-orange: #ffa726; --accent-green: #66bb6a; --accent-red: #ef5350;
@@ -20,118 +20,162 @@
   --transition-timing-func: ease-out;
   --outline-offset: 2px;
 
-  --header-height: 60px; /* JS asettaa tämän */
+  /* Layout-muuttujat */
   --sidebar-width: 280px;
+  --sidebar-width-collapsed: 0px;
   --timer-panel-width: 260px;
+  --header-height: 60px;
   --base-padding: 1rem;
 }
 
+/* --- Perusasetukset ja Body --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
   font-family: var(--font-body); background-color: var(--bg-dark); color: var(--text-main);
   display: flex; flex-direction: column; min-height: 100vh; line-height: 1.65;
-  overflow-x: hidden; /* Vain X-suuntainen overflow piiloon bodylta */
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
-#app { display: flex; flex-direction: column; flex: 1; overflow: hidden; /* App voi pitää oman overflow: hidden */ }
+#app { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
 
-/* Scrollbar & Fokus (kuten versiossa 2.2, ne olivat hyviä) */
+/* Scrollbar */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
 ::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; border: 2px solid var(--bg-dark); }
 ::-webkit-scrollbar-thumb:hover { background-color: var(--accent-blue); }
 * { scrollbar-width: thin; scrollbar-color: var(--border-color) var(--bg-dark); }
+
+/* Fokus-tyylit */
 *:focus:not(:focus-visible) { outline: none; }
 *:focus-visible {
   outline: 2px solid var(--focus-outline-color); outline-offset: var(--outline-offset);
   box-shadow: 0 0 0 4px rgba(66, 165, 245, 0.3); border-radius: var(--border-radius-sm);
 }
 
-
-/* --- Header (kuten versiossa 2.2, se oli ok) --- */
+/* --- Header --- */
 header {
   background-color: var(--bg-panel); padding: 0.8rem var(--base-padding);
+  font-family: var(--font-display);
   font-weight: 600; border-bottom: 3px solid var(--accent-blue);
-  position: sticky; /* Header on sticky ylhäällä */
-  top: 0; /* Kiinnittyy yläreunaan */
-  z-index: 1001; /* Päällimmäisenä */
+  position: relative; z-index: 1001;
   flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md);
   height: var(--header-height);
 }
 header img { height: calc(var(--header-height) - 18px); width: auto; }
 .header-controls { display: flex; align-items: center; gap: 0.8rem; }
+
 .header-icon-btn {
   background: transparent; border: 2px solid var(--border-color); color: var(--text-medium);
-  border-radius: var(--border-radius-sm); width: 40px; height: 40px;
+  border-radius: var(--border-radius-sm);
+  width: 40px; height: 40px;
   padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center;
   transition: all var(--transition-speed-normal) var(--transition-timing-func);
 }
 .header-icon-btn:hover { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.05); }
 .header-icon-btn.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); transform: scale(1.05); }
 .icon-menu { display: block; width: 18px; height: 14px; position: relative; }
-.icon-menu::before, .icon-menu::after, .icon-menu span { content: ''; display: block; background-color: currentColor; height: 2px; width: 100%; position: absolute; left: 0; border-radius: 1px; transition: transform var(--transition-speed-normal) var(--transition-timing-func), opacity var(--transition-speed-normal) var(--transition-timing-func); }
-.icon-menu::before { top: 0; } .icon-menu span { top: 50%; transform: translateY(-50%);} .icon-menu::after { bottom: 0; }
+.icon-menu::before, .icon-menu::after, .icon-menu span {
+  content: ''; display: block; background-color: currentColor; height: 2px; width: 100%;
+  position: absolute; left: 0; border-radius: 1px;
+  transition: transform var(--transition-speed-normal) var(--transition-timing-func), opacity var(--transition-speed-normal) var(--transition-timing-func);
+}
+.icon-menu::before { top: 0; }
+.icon-menu span { top: 50%; transform: translateY(-50%); }
+.icon-menu::after { bottom: 0; }
 #toggle-sidebar-btn.active .icon-menu::before { top: 6px; transform: rotate(45deg); }
 #toggle-sidebar-btn.active .icon-menu span { opacity: 0; }
 #toggle-sidebar-btn.active .icon-menu::after { bottom: 6px; transform: rotate(-45deg); }
-#toggle-selection-area { background-color: var(--accent-orange); color: #000; border: none; padding: 0.7rem 1rem 0.7rem 1.3rem; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 0.95rem; font-weight: 700; font-family: var(--font-display); transition: background-color var(--transition-speed-normal) var(--transition-timing-func), transform var(--transition-speed-fast) var(--transition-timing-func); display: inline-flex; align-items: center; gap: 0.5em; }
+
+#toggle-selection-area {
+  background-color: var(--accent-orange); color: #000; border: none;
+  padding: 0.7rem 1rem 0.7rem 1.3rem; border-radius: var(--border-radius-sm); cursor: pointer;
+  font-size: 0.95rem; font-weight: 700; font-family: var(--font-display);
+  transition: background-color var(--transition-speed-normal) var(--transition-timing-func), transform var(--transition-speed-fast) var(--transition-timing-func);
+  display: inline-flex; align-items: center; gap: 0.5em;
+}
 #toggle-selection-area:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-1px); }
+#toggle-selection-area:focus-visible { outline-color: var(--bg-dark); box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.4); }
 .toggle-icon { border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #000; }
 #toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
 
-/* Valinta-alue (kuten versiossa 2.2) */
-#selection-area { background-color: var(--bg-panel-light); padding: 2rem var(--base-padding); border-bottom: 1px solid var(--border-color); transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.3s ease-out; max-height: 80vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 1000; position: relative; }
+/* --- Valinta-alue --- */
+#selection-area {
+    background-color: var(--bg-panel-light); padding: 2rem var(--base-padding); border-bottom: 1px solid var(--border-color);
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.3s ease-out;
+    max-height: 80vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 1000; position: relative;
+}
 #selection-area.hidden { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
 #training-selection, #warmup-selection, #cooldown-selection { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color-light); }
 #cooldown-selection { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
 #training-selection h2, .routine-selection h2 { margin-bottom: 1rem; font-size: 1.5rem; color: var(--accent-orange); text-align: center; font-family: var(--font-display); font-weight: 700; }
 .button-container { display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center; }
 #week-buttons-container { margin-bottom: 1.5rem; }
-.week-button { background-color: var(--accent-blue); color: var(--bg-dark); border: none; padding: 0.75rem 1.5rem; border-radius: var(--border-radius-md); cursor: pointer; font-size: 1rem; font-family: var(--font-display); font-weight: 700; transition: all var(--transition-speed-normal) var(--transition-timing-func); flex-grow: 1; text-align: center; min-width: 170px; box-shadow: var(--shadow-sm); }
+.week-button {
+  background-color: var(--accent-blue); color: var(--bg-dark); border: none; padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius-md); cursor: pointer; font-size: 1rem; font-family: var(--font-display); font-weight: 700;
+  transition: all var(--transition-speed-normal) var(--transition-timing-func);
+  flex-grow: 1; text-align: center; min-width: 170px; box-shadow: var(--shadow-sm);
+}
 .week-button:hover:not(.active):not(:disabled) { background-color: #64b5f6; transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .week-button.active { background-color: var(--accent-green); color: #000; transform: scale(1.03); box-shadow: 0 0 12px rgba(102, 187, 106, 0.5); }
 .level-container { margin-top: 1.5rem; text-align: center; }
 #level-buttons-container { gap: 0.6rem; margin-top: 1rem; }
-.level-button { background-color: transparent; color: var(--text-medium); border: 2px solid var(--border-color); padding: 0.55rem 1.1rem; border-radius: var(--border-radius-pill); cursor: pointer; font-size: 0.9rem; font-family: var(--font-body); font-weight: 500; transition: all var(--transition-speed-normal) var(--transition-timing-func); min-width: 85px; text-align: center; }
+.level-button {
+    background-color: transparent; color: var(--text-medium); border: 2px solid var(--border-color); padding: 0.55rem 1.1rem;
+    border-radius: var(--border-radius-pill); cursor: pointer; font-size: 0.9rem; font-family: var(--font-body); font-weight: 500;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func); min-width: 85px; text-align: center;
+}
 .level-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel); color: var(--text-main); border-color: var(--accent-blue); }
 .level-button.active { background-color: var(--accent-orange); color: #000; border-color: var(--accent-orange); font-weight: 700; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 167, 38, 0.4); }
+.level-button:focus-visible { border-radius: var(--border-radius-pill); }
 .routine-buttons { margin-bottom: 1.5rem; }
-.routine-button { background-color: var(--bg-panel); color: var(--text-medium); border: 1px solid var(--border-color); padding: 0.8rem 1.6rem; border-radius: var(--border-radius-md); cursor: pointer; font-size: 1.05rem; font-family: var(--font-display); font-weight: 600; transition: all var(--transition-speed-normal) var(--transition-timing-func); flex-grow: 1; text-align: center; min-width: 220px; box-shadow: var(--shadow-sm); }
+.routine-button {
+    background-color: var(--bg-panel); color: var(--text-medium); border: 1px solid var(--border-color); padding: 0.8rem 1.6rem;
+    border-radius: var(--border-radius-md); cursor: pointer; font-size: 1.05rem; font-family: var(--font-display); font-weight: 600;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    flex-grow: 1; text-align: center; min-width: 220px; box-shadow: var(--shadow-sm);
+}
 .routine-button .duration { font-size: 0.8em; color: var(--text-subtle); opacity: 0.8;}
 .routine-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .routine-button.active { background-color: var(--accent-blue); color: var(--bg-dark); border-color: var(--accent-blue); font-weight: 700; transform: scale(1.03); box-shadow: 0 0 10px rgba(66, 165, 245, 0.4); }
-.start-button { background-color: var(--accent-green); color: #000; border: none; border-radius: var(--border-radius-md); padding: 0.9rem 2.2rem; font-size: 1.2rem; cursor: pointer; transition: all var(--transition-speed-normal) var(--transition-timing-func); font-weight: 700; margin-top: 2rem; font-family: var(--font-display); display: block; margin-left: auto; margin-right: auto; box-shadow: 0 3px 6px rgba(102, 187, 106, 0.3); width: 90%; max-width: 340px; }
+.start-button {
+    background-color: var(--accent-green); color: #000; border: none; border-radius: var(--border-radius-md);
+    padding: 0.9rem 2.2rem; font-size: 1.2rem; cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-weight: 700; margin-top: 2rem; font-family: var(--font-display);
+    display: block; margin-left: auto; margin-right: auto;
+    box-shadow: 0 3px 6px rgba(102, 187, 106, 0.3);
+    width: 90%; max-width: 340px;
+}
 .start-button:disabled { background-color: #444; opacity: 0.6; cursor: not-allowed; box-shadow: none; color: var(--text-subtle); transform: none; }
 .start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(102, 187, 106, 0.4); }
 #start-workout-btn { display: none; }
 
 
-/* --- PÄÄSISÄLLÖN ASETTELU --- */
+/* --- Pääsisällön Asettelu --- */
 .main-content-wrapper {
   display: flex;
-  flex: 1; /* Täyttää jäljellä olevan korkeuden */
-  overflow: hidden; /* Estää koko wrapperin skrollauksen, sisäelementit skrollaavat */
-  padding-top: var(--base-padding); /* Tilaa headerin ja sisällön väliin */
-  padding-bottom: var(--base-padding);
-  padding-left: var(--base-padding); /* Vain vasen padding tässä, oikea tulee #main-view-area */
+  flex: 1;
+  /* overflow: hidden; < POISTETTU.
+     Annetaan tämän elementin skrollata, jotta sticky-elementit sen sisällä toimivat.
+     Globaali skrollaussääntö (myöhempänä) asettaa tälle overflow-y: auto;
+  */
+  position: relative; /* Hyvä olla sticky-kontekstille */
 }
 
-/* VASEN SIVUPALKKI (Info & Vaiheet) */
+/* Sivupalkki (Info & Vaiheet) */
 aside#sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-panel);
-  padding: var(--base-padding); /* Sisäinen padding */
-  display: flex;
-  flex-direction: column;
-  gap: var(--base-padding);
-  overflow-y: auto; /* Salli tämän skrollaus */
-  flex-shrink: 0; /* Estä kutistuminen */
+  padding: var(--base-padding);
+  display: flex; flex-direction: column; gap: var(--base-padding);
+  overflow-y: auto; /* Sivupalkki skrollaa edelleen itsenäisesti */
+  flex-shrink: 0;
   transition: width var(--transition-speed-layout) var(--transition-timing-func),
               padding var(--transition-speed-layout) var(--transition-timing-func),
               opacity var(--transition-speed-layout) var(--transition-timing-func),
-              transform var(--transition-speed-layout) var(--transition-timing-func),
-              border var(--transition-speed-layout) var(--transition-timing-func);
+              transform var(--transition-speed-layout) var(--transition-timing-func);
   border-right: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
   opacity: 1;
@@ -139,87 +183,132 @@ aside#sidebar {
   z-index: 900;
 }
 aside#sidebar.sidebar-hidden {
-  width: 0; /* Leveys nollaan kun piilossa */
-  padding-left: 0;
-  padding-right: 0;
+  width: var(--sidebar-width-collapsed);
+  padding-left: 0; padding-right: 0;
   opacity: 0;
-  transform: translateX(calc(-1 * var(--sidebar-width))); /* Varmistaa, että liukuu kokonaan pois */
+  transform: translateX(calc(-1 * var(--sidebar-width)));
   border-right: none;
-  overflow: hidden; /* Estä sisällön näkyminen piilotettuna */
+  overflow: hidden;
 }
-/* Sivupalkin sisältötyylit (kuten versiossa 2.2, ne olivat ok) */
 #info-area { position: relative; }
 .info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
 #info-area h2#info-area-title { margin: 0; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-orange); flex-grow: 1; }
-.info-toggle { background: var(--bg-panel-light); color: var(--text-medium); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm); padding: 0.3rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4em; transition: all var(--transition-speed-normal) var(--transition-timing-func); margin-left: 1rem; }
+.info-toggle {
+    background: var(--bg-panel-light); color: var(--text-medium); border: 1px solid var(--border-color); border-radius: var(--border-radius-sm);
+    padding: 0.3rem 0.7rem; font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4em;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func); margin-left: 1rem;
+}
 .info-toggle:hover { background: var(--bg-panel-hover); color: var(--text-main); border-color: var(--accent-blue); }
 .toggle-info-icon { display: inline-block; width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform var(--transition-speed-normal) ease-out; transform-origin: center 40%; }
 .info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); }
 .info-toggle[aria-expanded="true"] .toggle-info-icon { transform: rotate(0deg); }
-.info-content-wrapper { transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out, margin-bottom 0.4s ease-out, border-width 0.4s ease-out, visibility 0s linear 0s; overflow: hidden; max-height: 500px; opacity: 1; visibility: visible; border-left: 6px solid var(--accent-orange); background-color: rgba(0, 0, 0, 0.3); padding: 1.25rem; border-radius: var(--border-radius-sm); margin-bottom: 0; }
-.info-content-wrapper.collapsed { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0; border-left-width: 0; visibility: hidden; transition: max-height 0.3s ease-in, opacity 0.2s ease-in, padding-top 0.3s ease-in, padding-bottom 0.3s ease-in, margin-bottom 0.3s ease-in, border-width 0.3s ease-in, visibility 0s linear 0.3s; }
+.info-content-wrapper {
+    transition: max-height 0.4s ease-out, opacity 0.3s ease-out, padding-top 0.4s ease-out, padding-bottom 0.4s ease-out, margin-bottom 0.4s ease-out, border-width 0.4s ease-out, visibility 0s linear 0s;
+    overflow: hidden; max-height: 500px; opacity: 1; visibility: visible;
+    border-left: 6px solid var(--accent-orange); background-color: rgba(0, 0, 0, 0.3);
+    padding: 1.25rem; border-radius: var(--border-radius-sm); margin-bottom: 0;
+}
+.info-content-wrapper.collapsed {
+    max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-bottom: 0;
+    border-left-width: 0; visibility: hidden;
+    transition: max-height 0.3s ease-in, opacity 0.2s ease-in, padding-top 0.3s ease-in, padding-bottom 0.3s ease-in, margin-bottom 0.3s ease-in, border-width 0.3s ease-in, visibility 0s linear 0.3s;
+}
 #info-area-notes-container { width: 100%; padding: 0; background-color: transparent; border-left: none; border-radius: 0; overflow-y: auto; max-height: 250px; }
 #info-area-notes { color: var(--accent-orange); font-size: 0.9rem; line-height: 1.6; white-space: pre-wrap; margin: 0; }
 #steps-list-area { display: flex; flex-direction: column; flex-grow: 1; overflow: hidden; }
 #steps-list-area h2#steps-list-title { margin-top: 0; margin-bottom: 1rem; font-size: 1.5rem; text-align: left; font-family: var(--font-display); font-weight: 700; color: var(--accent-blue); }
 ul#steps-items { list-style: none; padding: 0; margin: 0; overflow-y: auto; flex-grow: 1; padding-right: 0.75rem; }
-li.step-item { margin-bottom: 0.3rem; padding: 0.5rem 1.25rem; background-color: var(--bg-panel-light); border-left: 5px solid var(--accent-blue); border-radius: var(--border-radius-md); cursor: pointer; transition: all var(--transition-speed-normal) var(--transition-timing-func); font-size: 1rem; font-weight: 500; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; position: relative; color: var(--text-medium); }
+li.step-item {
+    margin-bottom: 0.3rem; padding: 0.5rem 1.25rem; background-color: var(--bg-panel-light);
+    border-left: 5px solid var(--accent-blue); border-radius: var(--border-radius-md); cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-size: 1rem; font-weight: 500; overflow: hidden; white-space: nowrap;
+    text-overflow: ellipsis; position: relative; color: var(--text-medium);
+}
 li.step-item:hover { background-color: var(--bg-panel-hover); border-left-color: #64b5f6; transform: translateX(4px); color: var(--text-main); }
 li.step-item.active { background-color: rgba(102, 187, 106, 0.1); border-left-color: var(--accent-green); border-left-width: 7px; font-weight: 700; color: var(--accent-green); }
 @keyframes pulse-border-dark { 0%, 100% { border-left-color: var(--accent-orange); } 50% { border-left-color: var(--accent-blue); } }
 li.step-item.next-up { border-left-width: 7px; animation: pulse-border-dark 1.5s infinite ease-in-out; }
 
-/* PÄÄNÄKYMÄ (Harjoite + Ajastin) */
+
+/* Päänäkymä (Harjoite + Ajastin) */
 #main-view-area {
-  flex-grow: 1; /* Tämä kasvaa täyttämään jäljellä olevan tilan */
-  display: flex; /* Harjoite ja ajastin rinnakkain */
-  overflow: hidden; /* Estää sisällön ylivuodon */
-  position: relative; /* Tarvitaan sticky-elementin toimintaan */
-  padding-left: var(--base-padding); /* Väli sivupalkkiin */
-  padding-right: var(--base-padding); /* Väli oikeaan reunaan */
+  flex-grow: 1;
+  display: flex;
+  /* overflow: hidden; */ /* POISTETTU. Ei saa leikata sticky-elementtiä.
+                             Anna sisällön (.active-display) määrittää korkeus,
+                             jotta .main-content-wrapper skrollaa tarvittaessa. */
+  gap: var(--base-padding);
+  position: relative; /* Tarvitaan joissain tapauksissa sisäisille positionoinneille */
 }
 
-/* AKTIIVINEN HARJOITE -ALUE */
+/* Aktiivinen Harjoite -alue */
 section#active-display {
-  flex-grow: 1; /* Ottaa suurimman osan tilasta #main-view-area:ssa */
+  flex-grow: 1;
   background-color: var(--bg-panel);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--border-radius-lg); /* Tämä pyöristys säilyy, ellei toisin haluta */
   padding: var(--base-padding);
-  overflow: hidden; /* Oma skrollaus item-details:ssa */
-  display: flex;
-  flex-direction: column;
+  /* overflow: hidden; */ /* POISTETTU. Ei saa estää sisältöä kasvamasta. */
+  display: flex; flex-direction: column;
   box-shadow: var(--shadow-md);
   min-width: 0; /* Estää flex-itemiä venymästä liikaa */
-  margin-right: var(--base-padding); /* Väli ajastinpaneeliin */
 }
-/* Sisältötyylit kuten versiossa 2.2 */
-#title-area { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1.5rem; flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
-#active-display h2#item-name { margin: 0 1rem; font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 700; color: var(--text-main); flex-grow: 1; text-align: center; font-family: var(--font-display); }
-.title-nav-btn { background: transparent; border: 2px solid var(--border-color); color: var(--text-medium); border-radius: 50%; width: 48px; height: 48px; font-size: 1.5rem; padding: 0; cursor: pointer; transition: all var(--transition-speed-normal) var(--transition-timing-func); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+#title-area {
+    display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1.5rem;
+    flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
+}
+#active-display h2#item-name {
+    margin: 0 1rem; font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    font-weight: 700; color: var(--text-main); flex-grow: 1; text-align: center; font-family: var(--font-display);
+}
+.title-nav-btn {
+    background: transparent; border: 2px solid var(--border-color); color: var(--text-medium); border-radius: 50%;
+    width: 48px; height: 48px; font-size: 1.5rem; padding: 0; cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
 .title-nav-btn:hover:not(:disabled) { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.08); }
 .title-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-#item-details { flex-grow: 1; overflow-y: auto; padding-right: 0.5rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
-#active-display img#item-image { display: block; max-width: 100%; width: auto; max-height: 400px; height: auto; object-fit: contain; border-radius: var(--border-radius-md); margin-bottom: 1.5rem; background-color: var(--bg-panel-light); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
-#active-display p#item-description { color: var(--text-medium); font-size: 1.05rem; line-height: 1.7; max-width: 100%; text-align: left; margin-top: 0.5rem; }
+#item-details { /* Sisältö, joka venyttää #active-display:tä */
+    flex-grow: 1; /* Antaa tämän kasvaa ja täyttää tilan */
+    /* overflow-y: auto; */ /* POISTETTU. .main-content-wrapper hoitaa skrollauksen. */
+    padding-right: 0.5rem; /* Pieni padding skrollbarille, jos .main-content-wrapper sitä tarvitsee */
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+#active-display img#item-image {
+    display: block; max-width: 100%; width: auto; max-height: 400px;
+    height: auto; object-fit: contain; border-radius: var(--border-radius-md); margin-bottom: 1.5rem;
+    background-color: var(--bg-panel-light); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color);
+}
+#active-display p#item-description {
+    color: var(--text-medium); font-size: 1.05rem;
+    line-height: 1.7; max-width: 100%; text-align: left; margin-top: 0.5rem;
+}
 
-/* AJASTIN JA KONTROLLIT -PANEELI */
+/* Ajastin ja Kontrollit -paneeli (NYT OIKEIN STICKY JA SIISTITTY) */
 aside#timer-controls-panel {
   width: var(--timer-panel-width);
-  flex-shrink: 0; /* Estä kutistuminen */
+  flex-shrink: 0;
   background-color: var(--bg-panel);
-  border-radius: var(--border-radius-lg);
+  /* border-radius: var(--border-radius-lg); */ /* VANHA PYÖRISTYS */
+  border-radius: 0; /* UUSI: Ei pyöristystä käyttäjän toiveen mukaisesti.
+                       Voi myös olla var(--border-radius-sm) jos halutaan pieni, moderni pyöristys. */
   padding: var(--base-padding);
-  position: sticky; /* TÄMÄ ON OIKEA STICKY ELEMENTTI */
-  top: calc(var(--header-height) + var(--base-padding)); /* Kiinnittyy headerin alapuolelle + .main-content-wrapperin yläpadding */
-  align-self: flex-start; /* Pitää paneelin ylhäällä flex-kontissa */
-  height: calc(100vh - var(--header-height) - (2 * var(--base-padding))); /* Estää menemästä liian alas, huomioi ylä- ja alapadding */
-  max-height: calc(100vh - var(--header-height) - (2 * var(--base-padding)));
-  overflow-y: auto; /* Salli skrollaus jos sisältö pitkä */
-  box-shadow: var(--shadow-md);
+
+  /* STICKY-ASETUKSET */
+  position: sticky;
+  top: calc(var(--header-height) + var(--base-padding)); /* Kiinnittyy headerin alapuolelle + #main-view-area:n gap */
+  align-self: flex-start; /* Pitää paneelin ylhäällä flex-kontainerissa (#main-view-area) */
+  max-height: calc(100vh - var(--header-height) - (2 * var(--base-padding))); /* Rajoittaa korkeutta, ettei mene viewportin yli */
+  overflow-y: auto; /* Paneeli itse skrollaa, jos sen oma sisältö ylittää max-height */
+  box-shadow: var(--shadow-md); /* Säilytetään antamaan erottuvuutta */
   z-index: 800;
 }
-/* Ajastimen ja kontrollien sisältötyylit kuten versiossa 2.2 */
-.timer-controls-content { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 1rem; }
+.timer-controls-content {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+}
 .round-display { font-size: 1.1rem; background: var(--bg-panel-light); padding: 0.4rem 1rem; border-radius: var(--border-radius-pill); border: 1px solid var(--border-color); }
 #timer { text-align: center; margin-top: 0.5rem; }
 #time-remaining { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 700; display: block; line-height: 1; transition: color var(--transition-speed-normal), text-shadow var(--transition-speed-normal); color: var(--accent-blue); font-family: var(--font-display); text-shadow: var(--text-shadow-glow-blue); }
@@ -227,7 +316,12 @@ aside#timer-controls-panel {
 #timer.timer-resting #time-remaining { color: var(--accent-orange); text-shadow: var(--text-shadow-glow-orange); animation: pulse-orange-glow-dark 1.5s infinite ease-in-out; }
 #timer.timer-paused { opacity: 0.5; }
 .control-button-container { display: flex; flex-direction: column; align-items: center; gap: 1rem; width: 100%; margin-top: 1rem; }
-.control-button { display: none; color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 0.9rem 1.8rem; font-size: 1.1rem; font-family: var(--font-display); cursor: pointer; transition: all var(--transition-speed-normal) var(--transition-timing-func); font-weight: 700; width: 90%; max-width: 280px; box-shadow: var(--shadow-md); }
+.control-button {
+    display: none; color: var(--bg-dark); border: none; border-radius: var(--border-radius-md); padding: 0.9rem 1.8rem;
+    font-size: 1.1rem; font-family: var(--font-display); cursor: pointer;
+    transition: all var(--transition-speed-normal) var(--transition-timing-func);
+    font-weight: 700; width: 90%; max-width: 280px; box-shadow: var(--shadow-md);
+}
 .control-button:disabled { opacity: 0.5; cursor: not-allowed; background-color: #444 !important; box-shadow: none; transform: none; color: var(--text-subtle); }
 #pause-resume-btn { background-color: var(--accent-orange); color: #000; }
 #pause-resume-btn:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(255, 167, 38, 0.3); }
@@ -239,69 +333,98 @@ aside#timer-controls-panel {
 #next-step-btn:hover:not(:disabled) { background-color: #64b5f6; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(66, 165, 245, 0.3); }
 
 /* --- Responsiivisuus --- */
-@media (max-width: 1024px) { /* Yleinen tabletti ja pienemmät */
-  :root {
-    --sidebar-width: 250px;
-    --timer-panel-width: 230px;
+@media (min-width: 1600px) {
+  :root { --sidebar-width: 320px; --timer-panel-width: 280px; --base-padding: 1.5rem; }
+  #active-display img#item-image { max-height: 500px; }
+}
+@media (min-width: 1200px) and (max-width: 1599px) {
+  :root { --sidebar-width: 300px; --timer-panel-width: 270px; --base-padding: 1.25rem; }
+  #active-display img#item-image { max-height: 450px; }
+}
+@media (min-width: 901px) and (max-width: 1199px) {
+  :root { --sidebar-width: 260px; --timer-panel-width: 240px; --base-padding: 1rem; }
+  #active-display h2#item-name { font-size: clamp(1.5rem, 3vw, 2rem); }
+  #time-remaining { font-size: clamp(3.2rem, 7vw, 4.5rem); }
+  #active-display img#item-image { max-height: 380px; }
+}
+@media (min-width: 768px) and (max-width: 900px) {
+  .main-content-wrapper { flex-direction: column; /* overflow-y: auto; on jo yleisessä skrollaussäännössä */ }
+  aside#sidebar {
+      width: 100%; max-height: 40vh;
+      border-right: none; border-bottom: 1px solid var(--border-color);
+      transform: translateX(0); opacity: 1;
   }
-  #main-view-area { padding-left: 0.8rem; padding-right: 0.8rem; gap: 0.8rem;}
-  section#active-display { margin-right: 0.8rem; }
-  aside#timer-controls-panel { top: calc(var(--header-height) + 0.8rem); height: calc(100vh - var(--header-height) - (1.6rem)); max-height: calc(100vh - var(--header-height) - (1.6rem));}
-}
-
-@media (max-width: 900px) { /* iPad Portrait / Isot puhelimet Landscape */
-  .main-content-wrapper { flex-direction: column; padding-left: 0; /* Poista vasen padding kun päällekkäin */ }
-  aside#sidebar { width: 100%; max-height: 45vh; border-right: none; border-bottom: 1px solid var(--border-color); z-index: 850; transform: none !important; opacity: 1 !important; /* Poista liukuanimaatio tässä koossa */ }
-  aside#sidebar.sidebar-hidden { max-height: 0; border-bottom: none; padding-top: 0; padding-bottom: 0; }
-  #main-view-area { flex-direction: column; padding-left: var(--base-padding); padding-right: var(--base-padding); /* Palauta paddingit */ }
-  section#active-display { margin-right: 0; /* Ei väliä oikealle kun ajastin alla */ }
-  aside#timer-controls-panel { width: 100%; position: relative; top: auto; align-self: stretch; max-height: none; margin-top: var(--base-padding); height: auto; }
-}
-
-@media (max-width: 767px) { /* Puhelimet */
-  html { font-size: 15px; }
-  :root { --base-padding: 0.75rem; --header-height: 56px; }
-  header { padding: 0.6rem var(--base-padding); }
-  .main-content-wrapper { padding-top: 0.5rem; padding-bottom: 0.5rem; }
-
-  aside#sidebar { /* Overlay-tyyli mobiilissa */
-    position: fixed; left: 0; top: 0; bottom: 0; height: 100%;
-    width: min(85vw, 280px); /* Hieman kapeampi mobiilissa */
-    z-index: 1002;
-    transform: translateX(-105%);
-    border-right: 1px solid var(--border-color-light);
-    transition: transform var(--transition-speed-layout) var(--transition-timing-func);
+  aside#sidebar.sidebar-hidden { max-height: 0; border-bottom: none;}
+  #main-view-area { flex-direction: column; overflow: visible; /* Sallii sisällön kasvaa, .main-content-wrapper skrollaa */ }
+  aside#timer-controls-panel {
+      width: 100%; position: relative; top: auto; /* Sticky ei toimi/tarvita tässä layoutissa */
+      align-self: stretch; max-height: none;
+      margin-top: var(--base-padding);
+      box-shadow: none; /* Yksinkertaisempi ulkoasu päällekkäin */
   }
-  aside#sidebar.sidebar-visible { transform: translateX(0); }
-  /* Taustadimmennys */
-  body.sidebar-open::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.6); z-index: 1001; opacity: 0; visibility: hidden; transition: opacity var(--transition-speed-layout) var(--transition-timing-func), visibility 0s var(--transition-speed-layout); }
-  body.sidebar-open.sidebar-really-open::before { opacity: 1; visibility: visible; transition-delay: 0s; }
+  #item-details { overflow: visible; } /* Varmistaa, ettei leikkaa tai skrollaa itseään */
+  #active-display img#item-image { max-height: 350px; }
+}
+@media (max-width: 767px) {
+    html { font-size: 15.5px; } body { line-height: 1.6; }
+    :root { --base-padding: 0.75rem; --header-height: 56px; }
+    header { padding: 0.6rem var(--base-padding); }
+    .main-content-wrapper { flex-direction: column; /* overflow-y: auto; on jo yleisessä skrollaussäännössä */ }
 
-  #main-view-area { padding-left: var(--base-padding); padding-right: var(--base-padding); }
-  #active-display { border-radius: var(--border-radius-md); } /* Pienemmät pyöristykset */
-  aside#timer-controls-panel { border-radius: var(--border-radius-md); }
-  #active-display h2#item-name { font-size: clamp(1.3rem, 4.5vw, 1.7rem); }
-  #active-display img#item-image { max-height: 250px; }
-  #time-remaining { font-size: clamp(2.8rem, 10vw, 3.8rem); }
-  /* ... muut puhelinkohtaiset säädöt kuten aiemmin ... */
-  #selection-area { max-height: 75vh; }
-  #week-buttons-container { flex-direction: column; }
-  .level-button { flex-basis: calc(50% - 0.3rem); }
+    aside#sidebar {
+        position: fixed; left: 0; top: 0; bottom: 0;
+        height: 100vh; width: min(85vw, 300px);
+        z-index: 1002; transform: translateX(-105%);
+        border-right: 1px solid var(--border-color-light);
+        transition: transform var(--transition-speed-layout) var(--transition-timing-func);
+    }
+    aside#sidebar.sidebar-visible { transform: translateX(0); }
+    aside#sidebar.sidebar-hidden { transform: translateX(-105%); }
+
+    body.sidebar-open::before {
+      content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0,0,0,0.6); z-index: 1001;
+      opacity: 0; visibility: hidden;
+      transition: opacity var(--transition-speed-layout) var(--transition-timing-func),
+                  visibility 0s var(--transition-speed-layout);
+    }
+    body.sidebar-open.sidebar-really-open::before {
+        opacity: 1; visibility: visible;
+        transition-delay: 0s;
+    }
+
+    #main-view-area { flex-direction: column; overflow: visible; }
+    #item-details { overflow: visible; }
+    aside#timer-controls-panel {
+        width: 100%; position: relative; top: auto; max-height: none;
+        margin-top: var(--base-padding); box-shadow: none;
+        border-radius: var(--border-radius-lg); /* Palautetaan pyöristys mobiilissa, jos halutaan yhtenäisyyttä muiden elementtien kanssa */
+                                                /* TAI border-radius: 0; jos halutaan sama kuin desktopissa */
+    }
+    #active-display { border-radius: var(--border-radius-lg); }
+
+    #active-display h2#item-name { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+    #active-display img#item-image { max-height: 280px; }
+    #time-remaining { font-size: clamp(3rem, 11vw, 4rem); }
+    .control-button { width: 95%; max-width: 320px; }
+    .start-button { width: 95%; max-width: 320px; }
+    #selection-area { max-height: 70vh; }
+    #week-buttons-container { flex-direction: column; }
+    .level-button { flex-basis: calc(50% - 0.3rem); }
 }
 
-/* Varmistetaan, että tietyt elementit skrollaavat sisäisesti */
-#selection-area, aside#sidebar, #item-details, aside#timer-controls-panel {
+/* Skrollausasetukset (PÄIVITETTY) */
+#selection-area, aside#sidebar,
+aside#timer-controls-panel, /* Skrollaa omaa sisältöään tarvittaessa */
+.main-content-wrapper {    /* Pääasiallinen skrollaava elementti, kun sisältö ylittää */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
-/* Kun layout on kolmipalstainen (sidebar, active-display, timer-panel rinnakkain) */
-@media (min-width: 901px) {
-  .main-content-wrapper { overflow-y: hidden; } /* Estä .main-content-wrapperin skrollaus */
-  #main-view-area { overflow-y: hidden; } /* Estä #main-view-area skrollaus */
-  /* #item-details ja #timer-controls-panel skrollaavat itse */
-}
-/* Kun layout on kaksipalstainen (sidebar + (active-display ja timer-panel päällekkäin)) tai yksipalstainen */
-@media (max-width: 900px) {
-  .main-content-wrapper { overflow-y: auto; } /* Salli .main-content-wrapperin skrollaus */
-  #main-view-area { overflow-y: visible; /* Tai auto, jos halutaan skrollaus tähän */ }
-}
+/*
+  HUOM: Aiempi sääntö:
+  @media (min-width: 901px) {
+    .main-content-wrapper { overflow-y: hidden; }
+  }
+  on nyt POISTETTU, jotta .main-content-wrapper voi skrollata myös suurilla näytöillä,
+  mikä on edellytys sticky-toiminnallisuudelle sen sisällä.
+*/
