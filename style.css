@@ -1,4 +1,4 @@
-/* style.css (Versio 2.3 - Koko reunan sticky-ajastin) */
+/* style.css (Versio 2.4 - Kaksi pääpalstaa, oikea sticky) */
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
@@ -23,9 +23,10 @@
   /* Layout-muuttujat */
   --sidebar-width: 280px;
   --sidebar-width-collapsed: 0px;
-  --timer-panel-width: 260px; /* Ajastinpaneelin leveys */
-  --header-height: 60px;
-  --base-padding: 1rem; /* Yleinen padding */
+  --right-timer-panel-width: 280px; /* Oikean sticky-paneelin leveys */
+  --header-height-actual: 60px; /* Headerin todellinen korkeus */
+  --base-padding: 1rem;
+  --outer-gap: 1.5rem; /* Väli vasemman ja oikean palstan välillä */
 }
 
 /* --- Perusasetukset ja Body --- */
@@ -33,18 +34,57 @@
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
   font-family: var(--font-body); background-color: var(--bg-dark); color: var(--text-main);
-  display: flex; flex-direction: column; min-height: 100vh; line-height: 1.65;
-  overflow-x: hidden; /* Estää sivuttaisskrollauksen */
+  min-height: 100vh; line-height: 1.65;
   -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Estää vaakasuuntaisen skrollauksen */
 }
-#app { display: flex; flex-direction: column; flex: 1; overflow: hidden; /* #app ei skrollaa */ }
 
-/* Scrollbar */
+/* Uusi ylätason wrapper */
+#app-wrapper {
+  display: flex;
+  min-height: 100vh; /* Varmistaa, että wrapper täyttää ainakin näytön korkeuden */
+}
+
+/* Vasen, skrollaava palsta */
+#left-column {
+  flex-grow: 1; /* Vie suurimman osan tilasta */
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* TÄMÄ PALSTA SKROLLAA */
+  overflow-x: hidden;
+  position: relative; /* Konteksti sisäisille elementeille */
+  padding: var(--base-padding); /* Yleinen padding vasemmalle palstalle */
+  background-color: var(--bg-dark); /* Varmistaa taustavärin, jos sisältö lyhyt */
+}
+
+/* Oikea, sticky palsta ajastimelle */
+#right-column-timer {
+  width: var(--right-timer-panel-width);
+  flex-shrink: 0; /* Estää kutistumisen */
+  background-color: var(--bg-panel);
+  padding: var(--base-padding);
+  border-left: 1px solid var(--border-color); /* Erotinviiva */
+  box-shadow: -5px 0 15px rgba(0,0,0,0.2); /* Varjo vasemmalle puolelle */
+
+  position: sticky;
+  top: 0; /* Kiinnittyy viewportin yläreunaan */
+  height: 100vh; /* Vie koko näytön korkeuden */
+  overflow-y: auto; /* Jos sisältö ylittää, tämä skrollaa */
+  z-index: 950; /* Korkealla, mutta headerin (jos se olisi globaali) alapuolella */
+}
+
+/* Scrollbar (yleinen) */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-track { background: var(--bg-dark); } /* Yleinen tausta */
 ::-webkit-scrollbar-thumb { background-color: var(--border-color); border-radius: 5px; border: 2px solid var(--bg-dark); }
 ::-webkit-scrollbar-thumb:hover { background-color: var(--accent-blue); }
 * { scrollbar-width: thin; scrollbar-color: var(--border-color) var(--bg-dark); }
+
+/* Scrollbar oikealle paneelille, jos tarvitaan eri väri */
+#right-column-timer::-webkit-scrollbar-track { background: var(--bg-panel); }
+#right-column-timer::-webkit-scrollbar-thumb { border: 2px solid var(--bg-panel); }
+#right-column-timer { scrollbar-color: var(--border-color) var(--bg-panel); }
+
 
 /* Fokus-tyylit */
 *:focus:not(:focus-visible) { outline: none; }
@@ -53,19 +93,22 @@ body {
   box-shadow: 0 0 0 4px rgba(66, 165, 245, 0.3); border-radius: var(--border-radius-sm);
 }
 
-/* --- Header --- */
+/* --- Header (nyt osana #left-column) --- */
 header {
-  background-color: var(--bg-panel); padding: 0 var(--base-padding); /* Yhtenäistetty padding */
+  background-color: var(--bg-panel); /* Headerin taustaväri */
+  padding: 0 var(--base-padding); /* Padding headerin sisällä */
   font-family: var(--font-display);
   font-weight: 600; border-bottom: 3px solid var(--accent-blue);
-  position: sticky; /* Header pysyy ylhäällä, kun body skrollaa */
-  top: 0;
-  z-index: 1001; /* Korkealla, jotta pysyy päällimmäisenä */
+  /* position: sticky; top:0; EI TARVITA ENÄÄ, KOSKA #left-column SKROLLAA */
+  z-index: 1000; /* Edelleen korkealla vasemman palstan sisällä */
   flex-shrink: 0; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-md);
-  height: var(--header-height);
+  height: var(--header-height-actual);
+  margin: calc(-1 * var(--base-padding)) calc(-1 * var(--base-padding)) var(--base-padding) calc(-1 * var(--base-padding)); /* Poistaa #left-column paddingin ja lisää välin alas */
+  width: calc(100% + (2 * var(--base-padding))); /* Varmistaa täysleveän headerin paddingin sisällä */
+  border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; /* Pyöristys vain yläkulmiin, jos halutaan */
 }
-header img { height: calc(var(--header-height) - 18px); width: auto; }
-.header-controls { display: flex; align-items: center; gap: 0.8rem; }
+header img { height: calc(var(--header-height-actual) - 18px); width: auto; }
+.header-controls { display: flex; align-items: center; gap: 0.8rem; padding-right: var(--base-padding); } /* Lisätty padding-right, ettei ole kiinni reunassa */
 /* ... Headerin nappien tyylit ennallaan ... */
 .header-icon-btn { background: transparent; border: 2px solid var(--border-color); color: var(--text-medium); border-radius: var(--border-radius-sm); width: 40px; height: 40px; padding: 0; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-speed-normal) var(--transition-timing-func); }
 .header-icon-btn:hover { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.05); }
@@ -84,14 +127,16 @@ header img { height: calc(var(--header-height) - 18px); width: auto; }
 .toggle-icon { border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid #000; }
 #toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
 
-
-/* --- Valinta-alue --- */
+/* --- Valinta-alue (osana #left-column) --- */
 #selection-area {
-    background-color: var(--bg-panel-light); padding: 2rem var(--base-padding); border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-panel-light); padding: 2rem var(--base-padding); /* Käyttää omaa paddingia */
+    border-bottom: 1px solid var(--border-color);
     transition: max-height 0.4s ease-out, padding 0.4s ease-out, opacity 0.3s ease-out;
-    max-height: 80vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 1000; position: relative;
+    max-height: 80vh; overflow-y: auto; opacity: 1; flex-shrink: 0; z-index: 990; position: relative;
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--base-padding); /* Väli seuraavaan osioon */
 }
-#selection-area.hidden { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden; }
+#selection-area.hidden { max-height: 0; padding-top: 0; padding-bottom: 0; opacity: 0; overflow: hidden; margin-bottom: 0; }
 /* ... Valinta-alueen muu sisältö ennallaan ... */
 #training-selection, #warmup-selection, #cooldown-selection { margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border-color-light); }
 #cooldown-selection { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -117,16 +162,13 @@ header img { height: calc(var(--header-height) - 18px); width: auto; }
 .start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: 0 5px 10px rgba(102, 187, 106, 0.4); }
 #start-workout-btn { display: none; }
 
-
-/* --- Pääsisällön Asettelu (UUSI) --- */
-.main-content-wrapper {
-  display: flex; /* Järjestää sivupalkin, päänäkymän ja ajastimen vierekkäin */
-  flex: 1; /* Täyttää jäljellä olevan tilan #app sisällä */
-  overflow: hidden; /* Estää tämän tason skrollauksen, lapsielementit hoitavat sen */
-  position: relative; /* Konteksti sticky-elementeille */
-  padding-top: var(--base-padding); /* Pieni tila headerin ja sisällön väliin */
-  padding-bottom: var(--base-padding); /* Tilaa alareunaan */
-  gap: var(--base-padding); /* Väli flex-itemien (sidebar, main-view, timer-panel) välille */
+/* --- Pääsisältöalue (osana #left-column) --- */
+.main-content-area-left { /* Wrapper #sidebar ja #main-view-area:lle */
+  display: flex;
+  flex-grow: 1; /* Täyttää lopun tilan #left-column:sta */
+  overflow: hidden; /* Estää tämän tason skrollauksen, lapset hoitaa */
+  gap: var(--base-padding); /* Väli sivupalkin ja päänäkymän välille */
+  min-height: 0; /* Tarvitaan flexbox bugien välttämiseksi tietyissä selaimissa */
 }
 
 /* Sivupalkki (Info & Vaiheet) */
@@ -134,8 +176,8 @@ aside#sidebar {
   width: var(--sidebar-width);
   background-color: var(--bg-panel);
   padding: var(--base-padding);
-  display: flex; flex-direction: column; /* gap poistettu, koska padding hoitaa sisäiset välit */
-  overflow-y: auto; /* Sivupalkki skrollaa itsenäisesti */
+  display: flex; flex-direction: column;
+  overflow-y: auto;
   flex-shrink: 0;
   transition: width var(--transition-speed-layout) var(--transition-timing-func),
               padding var(--transition-speed-layout) var(--transition-timing-func),
@@ -146,8 +188,7 @@ aside#sidebar {
   opacity: 1;
   transform: translateX(0);
   z-index: 900;
-  border-radius: var(--border-radius-lg); /* Pyöristys kuten muillakin paneeleilla */
-  /* EI position: sticky; TÄSSÄ MALLISSA */
+  border-radius: var(--border-radius-lg);
 }
 aside#sidebar.sidebar-hidden {
   width: var(--sidebar-width-collapsed);
@@ -156,7 +197,7 @@ aside#sidebar.sidebar-hidden {
   transform: translateX(calc(-1 * var(--sidebar-width)));
   border-right: none;
   overflow: hidden;
-  margin-right: calc(-1 * var(--base-padding)); /* Kompensoi gap kun piilossa */
+  margin-right: calc(-1 * var(--base-padding)); /* Kompensoi gap */
 }
 /* ... Sivupalkin muu sisältö ennallaan ... */
 #info-area { position: relative; margin-bottom: var(--base-padding); }
@@ -181,65 +222,42 @@ li.step-item.active { background-color: rgba(102, 187, 106, 0.1); border-left-co
 li.step-item.next-up { border-left-width: 7px; animation: pulse-border-dark 1.5s infinite ease-in-out; }
 
 
-/* Päänäkymä (Harjoite) - Ei enää sisällä ajastinta */
+/* Päänäkymä (Harjoite) */
 #main-view-area {
-  flex-grow: 1; /* Tämä vie suurimman osan tilasta */
-  display: flex; /* Tarvitaan, jotta #active-display täyttää sen */
-  flex-direction: column; /* Varmistaa, että #active-display venyy korkeussuunnassa */
-  overflow-y: auto; /* PÄÄNÄKYMÄ SKROLLAA NYT ITSE */
-  min-width: 0; /* Estää flex-itemiä venymästä liikaa */
-  background-color: var(--bg-panel); /* Taustaväri tälle alueelle */
-  border-radius: var(--border-radius-lg); /* Pyöristys */
-  padding: var(--base-padding); /* Sisäinen padding */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* Tämä skrollaa päänäkymän sisältöä */
+  min-width: 0;
+  background-color: var(--bg-panel);
+  border-radius: var(--border-radius-lg);
+  padding: var(--base-padding);
   box-shadow: var(--shadow-md);
 }
-
-/* Aktiivinen Harjoite -alue */
 section#active-display {
-  /* flex-grow: 1; EI TARVITA, KOSKA #main-view-area ON FLEX COLUMN JA TÄMÄ ON AINOA LAPSI */
-  /* background-color, border-radius, padding, box-shadow SIIRRETTY #main-view-area:lle */
   display: flex; flex-direction: column;
+  flex-grow: 1; /* Varmistaa, että #item-details voi kasvaa */
   min-width: 0;
 }
-#title-area {
-    display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1.5rem;
-    flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color);
-}
-#active-display h2#item-name {
-    margin: 0 1rem; font-size: clamp(1.6rem, 3.5vw, 2.2rem);
-    font-weight: 700; color: var(--text-main); flex-grow: 1; text-align: center; font-family: var(--font-display);
-}
+#title-area { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1.5rem; flex-shrink: 0; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); }
+#active-display h2#item-name { margin: 0 1rem; font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 700; color: var(--text-main); flex-grow: 1; text-align: center; font-family: var(--font-display); }
 .title-nav-btn { background: transparent; border: 2px solid var(--border-color); color: var(--text-medium); border-radius: 50%; width: 48px; height: 48px; font-size: 1.5rem; padding: 0; cursor: pointer; transition: all var(--transition-speed-normal) var(--transition-timing-func); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .title-nav-btn:hover:not(:disabled) { background-color: var(--bg-panel-light); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.08); }
 .title-nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-#item-details {
-    flex-grow: 1; /* Antaa tämän kasvaa ja täyttää tilan #active-display:n sisällä */
-    /* overflow-y: auto; POISTETTU, #main-view-area hoitaa skrollauksen */
-    /* padding-right: 0.5rem; POISTETTU */
-    display: flex; flex-direction: column; align-items: center; text-align: center;
-}
+#item-details { flex-grow: 1; display: flex; flex-direction: column; align-items: center; text-align: center; /* Ei omaa skrollausta */ }
 #active-display img#item-image { display: block; max-width: 100%; width: auto; max-height: 400px; height: auto; object-fit: contain; border-radius: var(--border-radius-md); margin-bottom: 1.5rem; background-color: var(--bg-panel-light); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); }
 #active-display p#item-description { color: var(--text-medium); font-size: 1.05rem; line-height: 1.7; max-width: 100%; text-align: left; margin-top: 0.5rem; }
 
-/* Ajastin ja Kontrollit -paneeli (KOKO REUNAN STICKY) */
-aside#timer-controls-panel {
-  width: var(--timer-panel-width);
-  flex-shrink: 0; /* Estää kutistumisen */
-  background-color: var(--bg-panel);
-  border-radius: 0; /* Ei pyöristystä, kuten pyydetty */
-  padding: var(--base-padding);
-
-  position: sticky;
-  top: calc(var(--header-height) + var(--base-padding)); /* Kiinnittyy headerin + .main-content-wrapper:n padding-top:n alapuolelle */
-  /* align-self: flex-start; EI TARVITA, KOSKA ON SUORAAN .main-content-wrapper:N FLEX-ITEM */
-  height: calc(100vh - var(--header-height) - (2 * var(--base-padding))); /* Vie koko korkeuden headerin ja .main-content-wrapper:n paddingien välistä */
-  max-height: calc(100vh - var(--header-height) - (2 * var(--base-padding))); /* Sama kuin height, varmuuden vuoksi */
-  overflow-y: auto; /* Paneeli itse skrollaa, jos sen oma sisältö ylittää korkeuden */
-  box-shadow: var(--shadow-md);
-  z-index: 800;
+/* Ajastimen sisältö (osana #right-column-timer) */
+.timer-controls-content { /* Nämä tyylit olivat jo olemassa ja sopivat tänne */
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: flex-start; /* Tai center, jos halutaan keskittää pystysuunnassa */
+    gap: 1rem;
+    /* Jos haluat sisällön keskelle pystysuunnassa ja korkeus on 100vh:
+    height: 100%;
+    justify-content: center; */
 }
-/* ... Ajastimen muu sisältö ennallaan ... */
-.timer-controls-content { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 1rem; }
+/* ... Ajastimen muut tyylit ennallaan ... */
 .round-display { font-size: 1.1rem; background: var(--bg-panel-light); padding: 0.4rem 1rem; border-radius: var(--border-radius-pill); border: 1px solid var(--border-color); }
 #timer { text-align: center; margin-top: 0.5rem; }
 #time-remaining { font-size: clamp(3.5rem, 8vw, 5rem); font-weight: 700; display: block; line-height: 1; transition: color var(--transition-speed-normal), text-shadow var(--transition-speed-normal); color: var(--accent-blue); font-family: var(--font-display); text-shadow: var(--text-shadow-glow-blue); }
@@ -260,98 +278,121 @@ aside#timer-controls-panel {
 
 
 /* --- Responsiivisuus --- */
-/* Isot näytöt: Sidebar, Main View ja Timer Panel vierekkäin */
-@media (min-width: 901px) { /* Tämä on nyt pääasiallinen desktop-breakpoint */
-    /* .main-content-wrapper on jo display:flex */
+/* Isot näytöt: Kaksi palstaa */
+@media (min-width: 1025px) { /* Säädä tätä breakpointia tarpeen mukaan */
+  #app-wrapper {
+    gap: var(--outer-gap); /* Väli vasemman ja oikean palstan välille */
+    padding: var(--outer-gap); /* Tilaa reunoille */
+    background-color: var(--bg-dark); /* Taustaväri wrapperille */
+  }
+  #left-column {
+    border-radius: var(--border-radius-lg);
+    /* padding on jo määritelty */
+  }
+  #right-column-timer {
+    border-radius: var(--border-radius-lg);
+  }
+  header {
+    /* Pyöristys poistetaan, jos left-columnilla on jo pyöristys */
+    /* border-radius: 0; */
+    /* Tai jos haluat headerin olevan "sisällä" left-columnin paddingissa:
+    margin: 0;
+    width: 100%;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    */
+  }
 }
 
-/* Tabletit ja Pienemmät Desktopit (sidebar ja main view/timer päällekkäin TAI timer katoaa) */
-@media (max-width: 900px) {
-  .main-content-wrapper {
-    flex-direction: column; /* Kaikki lapset päällekkäin */
-    overflow-y: auto; /* Tämä skrollaa nyt koko sisältöä */
-    padding-left: var(--base-padding); /* Lisätään padding sivuille */
-    padding-right: var(--base-padding);
+/* Tabletit ja Pienemmät Desktopit (kaikki päällekkäin, ei sticky-ajastinta) */
+@media (max-width: 1024px) {
+  #app-wrapper {
+    flex-direction: column; /* Palstat päällekkäin */
+  }
+  #left-column {
+    overflow-y: visible; /* Ei omaa skrollausta, body skrollaa */
+    padding: var(--base-padding); /* Yhtenäinen padding */
+  }
+  #right-column-timer {
+    position: relative; /* Ei sticky */
+    top: auto;
+    height: auto; /* Korkeus sisällön mukaan */
+    width: auto; /* Leveys täyttää vanhemman (body) */
+    border-left: none;
+    box-shadow: var(--shadow-md); /* Normaali varjo */
+    margin-top: var(--base-padding);
+    border-radius: var(--border-radius-lg); /* Pyöristys takaisin */
+  }
+  header { /* Palautetaan headerin sticky-toiminnallisuus, kun se on taas "ylimpänä" */
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    margin: calc(-1 * var(--base-padding)) calc(-1 * var(--base-padding)) var(--base-padding) calc(-1 * var(--base-padding));
+    width: calc(100% + (2 * var(--base-padding)));
+    border-radius: 0; /* Tai pyöristys jos left-column ei ole pyöristetty */
+  }
+  .main-content-area-left {
+     flex-direction: column; /* Sivupalkki ja päänäkymä päällekkäin */
+     gap: var(--base-padding);
   }
   aside#sidebar {
-      width: 100%; /* Täysleveä */
-      max-height: 45vh; /* Rajoitetaan korkeutta, kun päällekkäin */
-      border-right: none; /* Ei tarvita, kun päällekkäin */
-      margin-bottom: var(--base-padding); /* Väli seuraavaan elementtiin */
-      /* transform & opacity hoidetaan JS:llä edelleen .sidebar-hidden kautta */
+    width: 100%; /* Täysleveä */
+    border-right: none;
+    /* transform & opacity hoidetaan JS:llä .sidebar-hidden kautta */
   }
-  aside#sidebar.sidebar-hidden {
-    max-height: 0;
-    padding-top: 0; padding-bottom: 0;
-    margin-bottom: 0;
-  }
-
-  #main-view-area {
-      /* overflow-y: auto; pysyy, skrollaa omaa sisältöään */
-      /* background-color, border-radius, padding, box-shadow pysyvät */
-      /* Ei tarvitse muuttaa merkittävästi tässä koossa */
-  }
-
-  aside#timer-controls-panel {
-      width: 100%; /* Täysleveä */
-      position: relative; /* EI STICKY */
-      top: auto;
-      height: auto; /* Korkeus määräytyy sisällön mukaan */
-      max-height: none; /* Ei rajoitusta */
-      margin-top: var(--base-padding); /* Väli edelliseen elementtiin (.main-view-area) */
-      border-radius: var(--border-radius-lg); /* Pyöristys mobiilissa */
+   aside#sidebar.sidebar-hidden {
+    margin-right: 0; /* Ei tarvita gap-kompensaatiota */
   }
 }
 
-/* Erityisesti puhelimille (sidebar on overlay) */
+/* Puhelimet (sidebar on overlay) */
 @media (max-width: 767px) {
-    html { font-size: 15.5px; } body { line-height: 1.6; }
-    /* .main-content-wrapper, #main-view-area, aside#timer-controls-panel perivät jo edellisestä breakpointista */
+  #left-column { padding: 0.75rem; } /* Pienempi padding mobiilissa */
+  header {
+    /* position: sticky; top: 0; periytyy */
+    height: 56px; /* Pienempi header mobiilissa */
+    margin: -0.75rem -0.75rem 0.75rem -0.75rem;
+    width: calc(100% + 1.5rem);
+  }
+  #selection-area { padding: 1.5rem 0.75rem; }
 
-    aside#sidebar { /* Overlay-tyyli mobiilissa */
-        position: fixed; top: 0; left: 0; /* Kiinnittyy viewporttiin */
-        height: 100vh; /* Koko korkeus */
-        width: min(85vw, 300px);
-        z-index: 1002; /* Headerin ja kaiken muun päällä */
-        transform: translateX(-105%);
-        border-right: 1px solid var(--border-color-light);
-        border-radius: 0 0 var(--border-radius-lg) 0; /* Pieni pyöristys oikeaan alakulmaan */
-        margin-bottom: 0; /* Ei marginaalia kun fixed */
-        padding-top: calc(var(--header-height) + var(--base-padding)); /* Tilaa headerille */
-    }
-    aside#sidebar.sidebar-visible { transform: translateX(0); }
-    aside#sidebar.sidebar-hidden { transform: translateX(-105%); }
+  .main-content-area-left {
+    /* flex-direction: column; periytyy */
+  }
+  aside#sidebar { /* Overlay-tyyli mobiilissa */
+      position: fixed; top: 0; left: 0;
+      height: 100vh; width: min(85vw, 300px);
+      z-index: 1002; transform: translateX(-105%);
+      border-right: 1px solid var(--border-color-light);
+      border-radius: 0 var(--border-radius-lg) var(--border-radius-lg) 0;
+      padding-top: calc(56px + 0.75rem); /* Headerin korkeus + padding */
+      background-color: var(--bg-panel); /* Varmista taustaväri */
+  }
+  aside#sidebar.sidebar-visible { transform: translateX(0); }
+  aside#sidebar.sidebar-hidden { transform: translateX(-105%); }
 
-    body.sidebar-open::before { /* Taustadimmennys */
-      content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-      background-color: rgba(0,0,0,0.6); z-index: 1001;
-      opacity: 0; visibility: hidden;
-      transition: opacity var(--transition-speed-layout) var(--transition-timing-func),
-                  visibility 0s var(--transition-speed-layout);
-    }
-    body.sidebar-open.sidebar-really-open::before {
-        opacity: 1; visibility: visible;
-        transition-delay: 0s;
-    }
-
-    /* Muut koot periytyvät */
-    #active-display h2#item-name { font-size: clamp(1.4rem, 5vw, 1.8rem); }
-    #active-display img#item-image { max-height: 280px; }
-    #time-remaining { font-size: clamp(3rem, 11vw, 4rem); }
-    .control-button { width: 95%; max-width: 320px; }
-    .start-button { width: 95%; max-width: 320px; }
-    #selection-area { max-height: 70vh; }
-    #week-buttons-container { flex-direction: column; }
-    .level-button { flex-basis: calc(50% - 0.3rem); }
+  body.sidebar-open::before {
+    content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.6); z-index: 1001;
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--transition-speed-layout) var(--transition-timing-func),
+                visibility 0s var(--transition-speed-layout);
+  }
+  body.sidebar-open.sidebar-really-open::before {
+      opacity: 1; visibility: visible;
+      transition-delay: 0s;
+  }
+  #right-column-timer {
+    margin-left: 0.75rem; /* Kohdistus #left-column paddingin kanssa */
+    margin-right: 0.75rem;
+    width: auto; /* Ota tilaa paddingien välistä */
+  }
 }
 
 /* Skrollausasetukset */
-/* Nämä elementit voivat skrollata omaa sisältöään tarvittaessa */
-#selection-area, aside#sidebar, #main-view-area, aside#timer-controls-panel {
+#left-column, /* Pääasiallinen skrollaava elementti suurilla näytöillä */
+#selection-area, aside#sidebar, #main-view-area, /* Näiden sisäinen skrollaus tarvittaessa */
+#right-column-timer /* Oikean paneelin sisäinen skrollaus tarvittaessa */
+{
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-}
-/* .main-content-wrapper EI SAA skrollata tässä mallissa, koska haluamme sticky-elementtien toimivan suhteessa viewporttiin (headerin kautta) */
-.main-content-wrapper {
-    /* overflow: hidden; on jo määritelty aiemmin */
 }

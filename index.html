@@ -3,127 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1</title>
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Uusi Layout)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app">
+    <div id="app-wrapper"> <!-- UUSI YLIMMÄN TASON WRAPPER KAH DELLE PALSTALLE -->
 
-        <!-- Header -->
-        <header>
-            <img src="img/logo_small.png" alt="Kuulapakki Logo">
-            <div class="header-controls">
-                <!-- UUSI: Sivupalkin piilotus/näyttö -nappi -->
-                <button id="toggle-sidebar-btn" class="header-icon-btn" title="Näytä/Piilota sivupalkki">
-                    <span class="icon-menu"></span> <!-- Ikoni CSS:llä -->
-                </button>
-                <button id="toggle-selection-area">
-                    <span class="toggle-text">Valinnat</span>
-                    <span class="toggle-icon"></span>
-                </button>
-            </div>
-        </header>
-
-        <!-- Valinta-alue -->
-        <section id="selection-area" class="collapsible hidden">
-            <!-- Lämmittelyn valinta -->
-            <div id="warmup-selection" class="routine-selection">
-                 <h2>Lämmittely (valinnainen)</h2>
-                 <div id="warmup-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan...</p>
-                 </div>
-                 <button id="start-warmup-btn" class="start-button" disabled>Aloita Lämmittely</button>
-            </div>
-
-            <!-- Treenin valinta -->
-            <div id="training-selection">
-                <h2>Varsinainen Treeni</h2>
-                <p style="text-align: center; color: var(--text-subtle); margin-bottom: 0.5rem;">Valitse viikko ja taso:</p>
-                <div id="week-buttons-container" class="button-container">
-                    <p>Ladataan...</p>
+        <!-- VASEN PALSTA (SKROLLAAVA) -->
+        <div id="left-column">
+            <!-- Header tulee osaksi vasenta, skrollaavaa palstaa -->
+            <header>
+                <img src="img/logo_small.png" alt="Kuulapakki Logo">
+                <div class="header-controls">
+                    <button id="toggle-sidebar-btn" class="header-icon-btn" title="Näytä/Piilota sivupalkki">
+                        <span class="icon-menu"></span>
+                    </button>
+                    <button id="toggle-selection-area">
+                        <span class="toggle-text">Valinnat</span>
+                        <span class="toggle-icon"></span>
+                    </button>
                 </div>
-                <div id="level-selection" class="level-container">
-                    <div id="level-buttons-container" class="button-container">
-                        <button class="level-button" data-level="1">Taso 1</button>
-                        <button class="level-button active" data-level="2">Taso 2</button>
-                        <button class="level-button" data-level="3">Taso 3</button>
-                        <button class="level-button" data-level="4">Taso 4</button>
-                    </div>
+            </header>
+
+            <!-- Valinta-alue -->
+            <section id="selection-area" class="collapsible hidden">
+                <!-- Lämmittelyn valinta -->
+                <div id="warmup-selection" class="routine-selection">
+                     <h2>Lämmittely (valinnainen)</h2>
+                     <div id="warmup-buttons-container" class="button-container routine-buttons">
+                         <p>Ladataan...</p>
+                     </div>
+                     <button id="start-warmup-btn" class="start-button" disabled>Aloita Lämmittely</button>
                 </div>
-                 <button id="start-workout-btn" class="start-button" style="display: none;">Aloita Treeni</button>
-            </div>
-
-             <!-- Jäähdyttelyn valinta -->
-             <div id="cooldown-selection" class="routine-selection">
-                 <h2>Jäähdyttely (valinnainen)</h2>
-                 <div id="cooldown-buttons-container" class="button-container routine-buttons">
-                     <p>Ladataan...</p>
-                 </div>
-                 <button id="start-cooldown-btn" class="start-button" disabled>Aloita Jäähdyttely</button>
-             </div>
-        </section>
-
-        <!-- Pääsisältöalue (RAKENNE MUUTETTU) -->
-        <div class="main-content-wrapper">
-            <!-- Sivupalkki (Info & Vaiheet) -->
-            <aside id="sidebar"> <!-- Luokka .sidebar-visible/.sidebar-hidden lisätään JS:llä -->
-                <div id="info-area">
-                    <div class="info-header">
-                        <h2 id="info-area-title">Tiedot</h2>
-                        <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
-                            <span class="toggle-info-text">Piilota</span>
-                            <span class="toggle-info-icon"></span>
-                        </button>
+                <!-- Treenin valinta -->
+                <div id="training-selection">
+                    <h2>Varsinainen Treeni</h2>
+                    <p style="text-align: center; color: var(--text-subtle); margin-bottom: 0.5rem;">Valitse viikko ja taso:</p>
+                    <div id="week-buttons-container" class="button-container">
+                        <p>Ladataan...</p>
                     </div>
-                    <div id="info-content" class="info-content-wrapper">
-                        <div id="info-area-notes-container">
-                            <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
+                    <div id="level-selection" class="level-container">
+                        <div id="level-buttons-container" class="button-container">
+                            <button class="level-button" data-level="1">Taso 1</button>
+                            <button class="level-button active" data-level="2">Taso 2</button>
+                            <button class="level-button" data-level="3">Taso 3</button>
+                            <button class="level-button" data-level="4">Taso 4</button>
                         </div>
                     </div>
+                     <button id="start-workout-btn" class="start-button" style="display: none;">Aloita Treeni</button>
                 </div>
-                <div id="steps-list-area">
-                    <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
-                    <ul id="steps-items">
-                        <li>Valitse toiminto yläpuolelta.</li>
-                    </ul>
-                </div>
-            </aside>
+                 <!-- Jäähdyttelyn valinta -->
+                 <div id="cooldown-selection" class="routine-selection">
+                     <h2>Jäähdyttely (valinnainen)</h2>
+                     <div id="cooldown-buttons-container" class="button-container routine-buttons">
+                         <p>Ladataan...</p>
+                     </div>
+                     <button id="start-cooldown-btn" class="start-button" disabled>Aloita Jäähdyttely</button>
+                 </div>
+            </section>
 
-            <!-- Päänäkymä (Harjoite) - AJASTINPANELI ON SIIRRETTY TÄSTÄ POIS -->
-            <div id="main-view-area">
-                <!-- Aktiivinen Harjoite -->
-                <section id="active-display">
-                    <div id="title-area">
-                        <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen">⏮</button>
-                        <h2 id="item-name">Valitse toiminto</h2>
-                        <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
+            <!-- Pääsisältöalue (ilman ajastinta) -->
+            <div class="main-content-area-left"> <!-- Nimi muutettu selkeyden vuoksi -->
+                <!-- Sivupalkki (Info & Vaiheet) -->
+                <aside id="sidebar">
+                    <div id="info-area">
+                        <div class="info-header">
+                            <h2 id="info-area-title">Tiedot</h2>
+                            <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
+                                <span class="toggle-info-text">Piilota</span>
+                                <span class="toggle-info-icon"></span>
+                            </button>
+                        </div>
+                        <div id="info-content" class="info-content-wrapper">
+                            <div id="info-area-notes-container">
+                                <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div id="item-details"> <!-- Kuva ja kuvaus -->
-                        <img id="item-image" src="" alt="Kuva" style="display: none;">
-                        <p id="item-description"></p>
+                    <div id="steps-list-area">
+                        <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
+                        <ul id="steps-items">
+                            <li>Valitse toiminto yläpuolelta.</li>
+                        </ul>
                     </div>
-                </section>
-                <!-- AJASTINPANELI ON SIIRRETTY TÄSTÄ POIS -->
+                </aside>
+
+                <!-- Päänäkymä (Harjoite) -->
+                <div id="main-view-area">
+                    <section id="active-display">
+                        <div id="title-area">
+                            <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen">⏮</button>
+                            <h2 id="item-name">Valitse toiminto</h2>
+                            <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
+                        </div>
+                        <div id="item-details">
+                            <img id="item-image" src="" alt="Kuva" style="display: none;">
+                            <p id="item-description"></p>
+                        </div>
+                    </section>
+                </div>
+            </div> <!-- .main-content-area-left loppuu -->
+        </div> <!-- #left-column loppuu -->
+
+        <!-- OIKEA PALSTA (STICKY) -->
+        <aside id="right-column-timer"> <!-- Uusi ID tälle sticky-palstalle -->
+            <div class="timer-controls-content"> <!-- Sisältö pysyy samana -->
+                <p id="round-info" class="round-display"></p>
+                <div id="timer">
+                    <span id="time-remaining">00:00</span>
+                    <p id="timer-label">Odottamassa...</p>
+                </div>
+                <div class="control-button-container">
+                    <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
+                    <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
+                    <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
+                </div>
             </div>
+        </aside>
 
-            <!-- Ajastin ja Kontrollit -paneeli (UUSI SIJAINTI .main-content-wrapper:n SUORANA LAPSEKSI) -->
-            <aside id="timer-controls-panel">
-                <div class="timer-controls-content">
-                    <p id="round-info" class="round-display"></p>
-                    <div id="timer">
-                        <span id="time-remaining">00:00</span>
-                        <p id="timer-label">Odottamassa...</p>
-                    </div>
-                    <div class="control-button-container">
-                        <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
-                        <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
-                        <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
-                    </div>
-                </div>
-            </aside>
-            
-        </div> <!-- .main-content-wrapper loppuu -->
-    </div> <!-- #app loppuu -->
+    </div> <!-- #app-wrapper loppuu -->
 
     <script src="app.js"></script>
 </body>
