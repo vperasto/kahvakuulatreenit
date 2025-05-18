@@ -1,21 +1,55 @@
-/* style.css (Versio 2.5 - YKSINKERTAISTETTU STICKY-YRITYS) */
+/* style.css (Versio 2.6 - Toimiva Sticky + Uudet Nappityylit) */
 
-/* Google Fonts (säilytetään) */
+/* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
 
 :root {
-  /* YKSINKERTAISTETUT VÄRIT TESTAUKSEEN */
-  --bg-main: #101218; /* Tumma tausta koko sivulle */
-  --bg-left-column: #181a20; /* Vasemman palstan tausta */
+  /* Yhdistetyt värit ja perusmuuttujat */
+  --bg-main: #101218;
+  --bg-left-column: #181a20;
   --bg-right-column: #0D0E12; /* Oikean sticky-palstan tausta */
+  --bg-panel: #1E2025;       /* Yleinen paneelitausta (esim. header, sidebar) */
+  --bg-panel-light: #2a2e34; /* Vaaleampi paneelitausta (esim. selection-area) */
+
   --text-main: #eaeaea;
+  --text-light: #f0f0f0;
+  --text-dark: #1a1a1a;
+  --text-subtle: #888b93; /* Lisätty hienovaraisemmalle tekstille */
+
   --accent-blue: #42a5f5;
+  --accent-orange: #ffa726;
+  --accent-green: #66bb6a;
+  --accent-red: #ef5350;
+
   --border-color: #373a40;
+  --border-color-light: #4f535a;
 
   /* Layout-muuttujat */
-  --right-timer-panel-width: 280px; /* Oikean palstan leveys */
-  --header-height: 60px; /* Headerin korkeus */
-  --base-padding: 1rem; /* Yleinen padding */
+  --right-timer-panel-width: 280px;
+  --header-height: 60px;
+  --base-padding: 1rem;
+  --outer-gap: 1.5rem; /* Väli pääpalstojen välillä (käytetään responsiivisessa osiossa) */
+  --sidebar-width: 250px;
+
+  /* Nappimuuttujat */
+  --btn-padding-y: 0.65rem;
+  --btn-padding-x: 1.25rem;
+  --btn-font-size-normal: 0.9rem;
+  --btn-font-size-large: 1rem;
+  --btn-border-radius: 4px; /* Yleinen pieni pyöristys napeille */
+  --btn-border-width: 1px;
+  --btn-transition-speed: 0.2s;
+
+  /* Fontit */
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+
+  /* Muut muuttujat */
+  --focus-outline-color: var(--accent-blue);
+  --outline-offset: 2px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --border-radius-general: 0px; /* YLEINEN PYÖRISTYS POIS PANELEISTA */
 }
 
 /* --- PERUSASETUKSET --- */
@@ -28,104 +62,159 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
-  background-color: var(--bg-main); /* Koko HTML-tausta */
+  background-color: var(--bg-main);
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-body);
   color: var(--text-main);
   min-height: 100vh;
   line-height: 1.6;
-  background-color: var(--bg-main); /* Bodyn tausta, varmuuden vuoksi */
-  /* overflow-x: hidden; Poistetaan tämä testin ajaksi, voi peittää ongelmia */
+  background-color: var(--bg-main);
+  overflow-x: hidden; /* Estää vaakaskrollauksen, jos jokin elementti yrittää levitä */
 }
 
 /* --- PÄÄLAYOUT (KAKSI PALSTAA) --- */
 #app-wrapper {
-  display: flex; /* Asettaa vasemman ja oikean palstan vierekkäin */
+  display: flex;
   min-height: 100vh;
 }
 
 #left-column {
-  flex-grow: 1; /* Vasen palsta vie loput tilasta */
+  flex-grow: 1;
   overflow-y: auto; /* VASEN PALSTA SKROLLAA SISÄLTÖÄÄN */
-  background-color: var(--bg-left-column); /* Selkeä taustaväri */
+  background-color: var(--bg-left-column);
   padding: var(--base-padding);
-  display: flex; /* Jotta lapset voidaan järjestellä */
-  flex-direction: column; /* Lapset allekkain */
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
 }
 
 #right-column-timer {
   width: var(--right-timer-panel-width);
-  flex-shrink: 0; /* Estää palstaa kutistumasta */
-  background-color: var(--bg-right-column); /* Selkeä taustaväri */
+  flex-shrink: 0;
+  background-color: var(--bg-right-column);
   padding: var(--base-padding);
-  border-left: 1px solid var(--border-color); /* Erotin */
+  border-left: 1px solid var(--border-color);
 
-  position: sticky; /* TÄRKEIN OSA */
-  top: 0; /* Kiinnittyy sivun yläreunaan */
-  height: 100vh; /* Vie koko näytön korkeuden */
-  overflow-y: auto; /* Jos oikean palstan oma sisältö on pitkä, se skrollaa */
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
+  z-index: 950;
 }
 
 /* --- VASEN PALSTAN SISÄLTÖ --- */
 header {
-  background-color: #22252A; /* Headerille oma selkeä väri testiin */
+  background-color: var(--bg-panel);
   color: var(--text-main);
   padding: 0 var(--base-padding);
   height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-shrink: 0; /* Estää headeria kutistumasta */
+  flex-shrink: 0;
   border-bottom: 2px solid var(--accent-blue);
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
   margin: calc(-1 * var(--base-padding)) calc(-1 * var(--base-padding)) var(--base-padding) calc(-1 * var(--base-padding));
   width: calc(100% + (2 * var(--base-padding)));
+  box-shadow: var(--shadow-md);
+  z-index: 1000; /* Varmistaa että on päällimmäisenä vasemmassa palstassa */
 }
 header img { height: calc(var(--header-height) - 18px); }
+.header-controls { padding-right: var(--base-padding); display: flex; align-items: center; gap: 0.8rem; }
 
 #selection-area {
-  background-color: #2a2e34; /* Selkeä väri */
-  padding: var(--base-padding);
+  background-color: var(--bg-panel-light);
+  padding: var(--base-padding); /* Vähennetty 2rem -> 1rem */
   margin-bottom: var(--base-padding);
   flex-shrink: 0;
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
-  /* overflow-y: auto; jos tarvitaan oma skrollaus */
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out, margin-bottom 0.3s ease-out;
+  overflow: hidden; /* Tarvitaan transition toimimiseen max-height kanssa */
 }
-#selection-area.hidden { display: none; } /* Yksinkertainen piilotus */
+#selection-area.hidden {
+  max-height: 0 !important; /* Varmistetaan piilotus */
+  opacity: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  overflow: hidden; /* Edelleen tärkeä */
+  border: none; /* Piilotetaan reunatkin */
+}
+/* Valinta-alueen otsikot yms. */
+#training-selection h2, .routine-selection h2 { margin-bottom: 1rem; font-size: 1.3rem; color: var(--accent-orange); text-align: center; font-family: var(--font-display); font-weight: 600; }
+#training-selection p, .routine-selection p { text-align: center; color: var(--text-subtle); margin-bottom: 0.75rem; }
+
 
 .main-content-area-left {
   display: flex;
-  flex-grow: 1; /* Täyttää loput #left-column:sta */
+  flex-grow: 1;
   gap: var(--base-padding);
-  min-height: 0; /* Flexbox-säätö */
-  overflow: hidden; /* Estää tätä skrollaamasta, lapset skrollaavat */
+  min-height: 0;
+  overflow: hidden; /* Lapset skrollaavat */
 }
 
 aside#sidebar {
-  width: 250px; /* Kiinteä leveys testiin */
-  background-color: #1E2025; /* Selkeä väri */
+  width: var(--sidebar-width);
+  background-color: var(--bg-panel);
   padding: var(--base-padding);
   overflow-y: auto;
   flex-shrink: 0;
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
+  transition: width 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+  box-shadow: var(--shadow-sm);
 }
-aside#sidebar.sidebar-hidden { display: none; } /* Yksinkertainen piilotus */
+aside#sidebar.sidebar-hidden {
+  width: 0;
+  opacity: 0;
+  padding-left: 0; padding-right: 0;
+  overflow: hidden;
+  margin-right: calc(-1 * var(--base-padding)); /* Kompensoi gap */
+  border: none;
+}
+/* Sivupalkin sisäosat */
+#info-area { margin-bottom: var(--base-padding); }
+.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+#info-area h2#info-area-title, #steps-list-area h2#steps-list-title { margin: 0; font-size: 1.2rem; text-align: left; font-family: var(--font-display); font-weight: 600; flex-grow: 1; }
+#info-area h2#info-area-title { color: var(--accent-orange); }
+#steps-list-area h2#steps-list-title { color: var(--accent-blue); margin-bottom: 0.75rem; }
+.info-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-subtle); border-radius: var(--btn-border-radius); padding: 0.25rem 0.5rem; font-size: 0.8rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.3em; transition: all var(--btn-transition-speed) ease-out; }
+.info-toggle:hover { color: var(--accent-blue); border-color: var(--accent-blue); }
+.toggle-info-icon { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform var(--btn-transition-speed) ease-out; }
+.info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); }
+.info-content-wrapper { border-left: 4px solid var(--accent-orange); background-color: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: var(--btn-border-radius); transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out; overflow: hidden; }
+.info-content-wrapper.collapsed { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; }
+#info-area-notes { color: var(--text-main); font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; margin: 0; }
+ul#steps-items { list-style: none; padding-right: 0.5rem; /* Tilaa scrollbarille */ }
+li.step-item { margin-bottom: 0.25rem; padding: 0.4rem 0.8rem; background-color: rgba(255,255,255,0.03); border-left: 3px solid var(--border-color-light); border-radius: var(--btn-border-radius); cursor: pointer; transition: all var(--btn-transition-speed) ease-out; font-size: 0.9rem; color: var(--text-subtle); }
+li.step-item:hover { background-color: rgba(255,255,255,0.07); border-left-color: var(--accent-blue); color: var(--accent-blue); }
+li.step-item.active { background-color: rgba(66, 165, 245, 0.1); border-left-color: var(--accent-blue); font-weight: 500; color: var(--accent-blue); }
+
 
 #main-view-area {
   flex-grow: 1;
-  background-color: #15171B; /* Selkeä väri */
+  background-color: var(--bg-panel);
   padding: var(--base-padding);
-  overflow-y: auto; /* Päänäkymä skrollaa */
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  overflow-y: auto;
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
+  box-shadow: var(--shadow-sm);
+  display: flex; /* Tarvitaan, jotta active-display voi kasvaa */
+  flex-direction: column; /* Tarvitaan, jotta active-display voi kasvaa */
 }
 
 section#active-display {
-  /* Tämän sisällä oleva sisältö voi olla pitkä */
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
+  flex-grow: 1; /* Varmistaa, että tämä täyttää #main-view-area:n */
+  display: flex;
+  flex-direction: column;
 }
+#title-area { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 1rem; flex-shrink: 0; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); }
+#active-display h2#item-name { margin: 0 0.75rem; font-size: clamp(1.3rem, 2.5vw, 1.8rem); font-weight: 600; color: var(--text-light); flex-grow: 1; text-align: center; font-family: var(--font-display); }
+#item-details { flex-grow: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 0.5rem; }
+#active-display img#item-image { display: block; max-width: 100%; width: auto; max-height: 350px; object-fit: contain; border-radius: var(--btn-border-radius); margin-bottom: 1rem; background-color: var(--bg-left-column); border: 1px solid var(--border-color); }
+#active-display p#item-description { color: var(--text-main); font-size: 0.95rem; line-height: 1.6; max-width: 100%; text-align: left; }
 
 
 /* --- OIKEAN PALSTAN SISÄLTÖ (AJASTIN) --- */
@@ -134,335 +223,224 @@ section#active-display {
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  color: var(--text-main); /* Varmistetaan tekstin väri */
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
+  color: var(--text-main);
+  border-radius: var(--border-radius-general); /* Yleinen pyöristys */
 }
-#timer { text-align: center; }
-#time-remaining { font-size: 3rem; font-weight: bold; }
-#timer-label { font-size: 1rem; }
-.control-button-container { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
-.control-button {
-  background-color: var(--accent-blue);
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  cursor: pointer;
-  text-align: center;
-  font-size: 1rem;
-  border-radius: 0 !important; /* EI PYÖRISTYKSIÄ */
-}
-.control-button:hover { background-color: #64b5f6; }
+#timer { text-align: center; margin-top: 0.5rem; }
+#time-remaining { font-size: clamp(2.8rem, 7vw, 4rem); font-weight: 700; font-family: var(--font-display); color: var(--accent-blue); }
+#timer-label { font-size: 1rem; color: var(--text-subtle); }
+.round-display { font-size: 1rem; background: var(--bg-left-column); padding: 0.3rem 0.8rem; border-radius: 20px; /* Pilleri ok tälle */ border: 1px solid var(--border-color); }
+.control-button-container { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; margin-top: 1rem; }
 
 
-/* Yksinkertaistetaan muita elementtejä testauksen ajaksi */
-.header-controls button, #toggle-selection-area, .week-button, .level-button, .routine-button, .start-button, .title-nav-btn {
-    border-radius: 0 !important;
-}
-
-/* Yleiset otsikot ja tekstit (vain perusasetukset testiin) */
-h2 { font-size: 1.5rem; margin-bottom: 0.5rem; color: var(--accent-blue); }
-p { margin-bottom: 0.5rem; }
-
-/* Scrollbar (säilytetään perusmuotoilu) */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
-::-webkit-scrollbar-thumb { background-color: #555; border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background-color: var(--accent-blue); }
-* { scrollbar-width: thin; scrollbar-color: #555 rgba(0,0,0,0.1); }
-
-/* Poistetaan animaatiot ja siirtymät testauksen ajaksi, ne voivat joskus häiritä stickyn diagnosointia */
-* {
-    transition: none !important;
-    animation: none !important;
-}
-
-
-
-/* ---------------------------------------------------- */
-/* style.css (Jatkoa Versio 2.5:lle - Nappien tyylittely) */
-
-:root {
-  /* ... Aiemmat muuttujat ... */
-  --bg-main: #101218;
-  --bg-left-column: #181a20;
-  --bg-right-column: #0D0E12;
-  --text-main: #eaeaea;
-  --text-light: #f0f0f0; /* Vaaleampi teksti napeille */
-  --text-dark: #1a1a1a;  /* Tummempi teksti vaaleille napeille */
-  --accent-blue: #42a5f5;
-  --accent-orange: #ffa726;
-  --accent-green: #66bb6a;
-  --accent-red: #ef5350;
-  --border-color: #373a40;
-  --border-color-light: #4f535a; /* Hieman vaaleampi reunaväri */
-
-  /* Uudet/muokatut nappimuuttujat */
-  --btn-padding-y: 0.65rem;  /* Yleinen pystysuuntainen padding napeille */
-  --btn-padding-x: 1.25rem; /* Yleinen vaakasuuntainen padding napeille */
-  --btn-font-size-normal: 0.9rem; /* Normaali fonttikoko */
-  --btn-font-size-large: 1rem;   /* Suurempi fonttikoko (esim. start-napit) */
-  --btn-border-radius: 4px;     /* Yhtenäinen, pieni pyöristys */
-  --btn-border-width: 1px;      /* Reunaviivan leveys */
-  --btn-transition-speed: 0.2s;
-
-  /* Fontit (jos haluat erotella) */
-  --font-display: 'Rajdhani', sans-serif;
-  --font-body: 'Roboto', sans-serif;
-
-  /* Layout-muuttujat */
-  --right-timer-panel-width: 280px;
-  --header-height: 60px;
-  --base-padding: 1rem;
-}
-
-/* --- YLEISET NAPPIEN PERUSTYYLIT (LISÄYS) --- */
-button, .button { /* Yleinen luokka, jos käytät esim. <a>-tageja nappeina */
+/* --- YLEISET NAPPIEN PERUSTYYLIT --- */
+button, .button {
   font-family: var(--font-body);
-  font-weight: 500; /* Hieman lihavoitu, mutta ei liikaa */
+  font-weight: 500;
   cursor: pointer;
-  border: var(--btn-border-width) solid transparent; /* Läpinäkyvä reuna oletuksena */
+  border: var(--btn-border-width) solid transparent;
   border-radius: var(--btn-border-radius);
   padding: var(--btn-padding-y) var(--btn-padding-x);
   font-size: var(--btn-font-size-normal);
   text-decoration: none;
-  display: inline-flex; /* Jotta ikonit ja teksti asettuvat hyvin */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em; /* Väli tekstin ja ikonin välillä */
+  gap: 0.5em;
   transition: background-color var(--btn-transition-speed) ease-out,
               border-color var(--btn-transition-speed) ease-out,
               color var(--btn-transition-speed) ease-out,
               transform var(--btn-transition-speed) ease-out,
               box-shadow var(--btn-transition-speed) ease-out;
-  line-height: 1.4; /* Estää tekstin menemisen liian tiiviiksi */
-  -webkit-appearance: none; /* Poistaa oletusmuotoilut joissain selaimissa */
-  -moz-appearance: none;
-  appearance: none;
+  line-height: 1.4;
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
 }
-
 button:disabled, .button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: var(--border-color) !important; /* Selkeä disabled-väri */
-  color: var(--text-main) !important;
-  border-color: var(--border-color) !important;
-  box-shadow: none !important;
-  transform: none !important;
+  opacity: 0.5; cursor: not-allowed; background-color: var(--border-color) !important;
+  color: var(--text-subtle) !important; border-color: var(--border-color-light) !important;
+  box-shadow: none !important; transform: none !important;
 }
-
-/* Fokus-tyylit napeille (jos haluat erilliset) */
 button:focus-visible, .button:focus-visible {
-  outline: 2px solid var(--accent-blue);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3); /* Hienovarainen hehku */
+  outline: 2px solid var(--focus-outline-color); outline-offset: var(--outline-offset);
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.25);
 }
-
 
 /* --- HEADERIN NAPIT --- */
 .header-icon-btn {
-  background: transparent;
-  border-color: var(--border-color);
-  color: var(--text-main);
-  width: 38px; /* Hieman pienempi */
-  height: 38px;
-  padding: 0; /* Ei ylimääräistä paddingia ikoninapeille */
-  /* border-radius periytyy yleisestä */
+  background: transparent; border-color: var(--border-color); color: var(--text-subtle);
+  width: 38px; height: 38px; padding: 0;
 }
-.header-icon-btn:hover:not(:disabled) {
-  background-color: var(--bg-left-column); /* Vasemman palstan tausta */
-  color: var(--accent-blue);
-  border-color: var(--accent-blue);
-  transform: scale(1.05);
-}
-.header-icon-btn.active { /* Esim. sidebar-toggle */
-  background-color: var(--accent-blue);
-  color: var(--text-dark);
-  border-color: var(--accent-blue);
-}
+.header-icon-btn:hover:not(:disabled) { background-color: var(--bg-left-column); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.05); }
+.header-icon-btn.active { background-color: var(--accent-blue); color: var(--text-dark); border-color: var(--accent-blue); }
+.icon-menu { display: block; width: 16px; height: 12px; position: relative; } /* Pienennetty ikonia */
+.icon-menu::before, .icon-menu::after, .icon-menu span { content: ''; display: block; background-color: currentColor; height: 2px; width: 100%; position: absolute; left: 0; border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
+.icon-menu::before { top: 0; } .icon-menu span { top: 50%; transform: translateY(-50%); } .icon-menu::after { bottom: 0; }
+#toggle-sidebar-btn.active .icon-menu::before { top: 5px; transform: rotate(45deg); } /* Säädetty hampurilaista X:ksi */
+#toggle-sidebar-btn.active .icon-menu span { opacity: 0; }
+#toggle-sidebar-btn.active .icon-menu::after { bottom: 5px; transform: rotate(-45deg); }
 
 #toggle-selection-area {
-  background-color: var(--accent-orange);
-  color: var(--text-dark);
-  border-color: var(--accent-orange);
-  font-weight: 600; /* Selkeästi tärkeä nappi */
-  padding: var(--btn-padding-y) 1rem; /* Hieman säädetty padding */
-  /* border-radius ja font-size periytyy */
+  background-color: var(--accent-orange); color: var(--text-dark); border-color: transparent;
+  font-weight: 600; padding: var(--btn-padding-y) 1rem;
 }
-#toggle-selection-area:hover:not(:disabled) {
-  background-color: #ffb74d; /* Hieman vaaleampi oranssi */
-  border-color: #ffb74d;
-  transform: translateY(-1px);
-}
+#toggle-selection-area:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-1px); }
+.toggle-icon { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform 0.2s; } /* Pienennetty nuolta */
+#toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
 
 
 /* --- VALINTA-ALUEEN NAPIT --- */
-.button-container { /* Yleinen kontti napeille valinta-alueella */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem; /* Väli nappien välillä */
-  justify-content: center;
-}
-
+.button-container { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
 .week-button {
-  background-color: var(--accent-blue);
-  color: var(--text-dark);
-  border-color: var(--accent-blue);
-  font-size: var(--btn-font-size-normal); /* Yhtenäinen koko */
-  font-weight: 600;
-  flex-grow: 1; /* Antaa nappien kasvaa ja täyttää tilaa */
-  min-width: 150px; /* Minimileveys */
-  text-align: center;
-  /* border-radius periytyy */
+  background-color: var(--accent-blue); color: var(--text-dark); border-color: transparent;
+  font-weight: 600; flex-grow: 1; min-width: 140px; text-align: center;
 }
-.week-button:hover:not(.active):not(:disabled) {
-  background-color: #64b5f6;
-  border-color: #64b5f6;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.week-button.active {
-  background-color: var(--accent-green);
-  border-color: var(--accent-green);
-  color: var(--text-dark);
-  transform: scale(1.02);
-  box-shadow: 0 0 8px rgba(102, 187, 106, 0.4);
-}
+.week-button:hover:not(.active):not(:disabled) { background-color: #64b5f6; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+.week-button.active { background-color: var(--accent-green); color: var(--text-dark); transform: scale(1.02); box-shadow: 0 0 6px rgba(102, 187, 106, 0.3); }
 
 .level-button {
-  background-color: transparent;
-  color: var(--text-main);
-  border-color: var(--border-color-light);
-  font-size: 0.85rem; /* Hieman pienempi kuin muut */
-  min-width: 80px;
-  /* border-radius: var(--border-radius-pill); */ /* POISTETTU PILLERIMUOTO, käytetään yleistä */
+  background-color: transparent; color: var(--text-main); border-color: var(--border-color-light);
+  font-size: 0.8rem; min-width: 70px;
 }
-.level-button:hover:not(.active):not(:disabled) {
-  background-color: var(--bg-left-column);
-  color: var(--accent-blue);
-  border-color: var(--accent-blue);
-}
-.level-button.active {
-  background-color: var(--accent-orange);
-  color: var(--text-dark);
-  border-color: var(--accent-orange);
-  font-weight: 600;
-  box-shadow: 0 0 8px rgba(255, 167, 38, 0.3);
-}
+.level-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel); color: var(--accent-blue); border-color: var(--accent-blue); }
+.level-button.active { background-color: var(--accent-orange); color: var(--text-dark); border-color: var(--accent-orange); font-weight: 600; box-shadow: 0 0 6px rgba(255, 167, 38, 0.25); }
 
 .routine-button {
-  background-color: var(--bg-left-column); /* Käytetään vasemman palstan taustaa */
-  color: var(--text-main);
-  border-color: var(--border-color);
-  font-size: var(--btn-font-size-normal);
-  font-family: var(--font-display); /* Erottuva fontti, jos halutaan */
-  font-weight: 500;
-  flex-grow: 1;
-  min-width: 200px;
+  background-color: var(--bg-panel); color: var(--text-main); border-color: var(--border-color);
+  font-family: var(--font-display); font-weight: 500; flex-grow: 1; min-width: 180px;
 }
-.routine-button .duration {
-  font-size: 0.8em;
-  color: var(--text-main);
-  opacity: 0.7;
-  margin-left: 0.5em;
-}
-.routine-button:hover:not(.active):not(:disabled) {
-  background-color: #2c3038; /* Hieman vaaleampi hover */
-  border-color: var(--accent-blue);
-  color: var(--accent-blue);
-}
-.routine-button.active {
-  background-color: var(--accent-blue);
-  color: var(--text-dark);
-  border-color: var(--accent-blue);
-  font-weight: 600;
-}
+.routine-button .duration { font-size: 0.8em; color: var(--text-subtle); opacity: 0.9; margin-left: 0.4em; }
+.routine-button:hover:not(.active):not(:disabled) { background-color: #2c3038; border-color: var(--accent-blue); color: var(--accent-blue); }
+.routine-button.active { background-color: var(--accent-blue); color: var(--text-dark); border-color: var(--accent-blue); font-weight: 600; }
 
 .start-button {
-  background-color: var(--accent-green);
-  color: var(--text-dark);
-  border-color: var(--accent-green);
-  font-size: var(--btn-font-size-large); /* Isompi fontti aloitusnapeille */
-  font-family: var(--font-display);
-  font-weight: 700; /* Lihavoitu */
-  padding: 0.8rem 1.8rem; /* Hieman enemmän paddingia */
-  display: block; /* Jotta voi käyttää margin auto keskitykseen */
-  width: 90%;
-  max-width: 320px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 1.5rem; /* Väli yläpuolelle */
+  background-color: var(--accent-green); color: var(--text-dark); border-color: transparent;
+  font-size: var(--btn-font-size-large); font-family: var(--font-display); font-weight: 700;
+  padding: 0.75rem 1.5rem; display: block; width: 90%; max-width: 300px;
+  margin: 1.25rem auto 0 auto;
 }
-.start-button:hover:not(:disabled) {
-  background-color: #81c784;
-  border-color: #81c784;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+.start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
 /* --- PÄÄNÄKYMÄN NAVIGOINTINAPIT (⏮, ⏭) --- */
 .title-nav-btn {
-  background: transparent;
-  border-color: var(--border-color);
-  color: var(--text-main);
-  width: 42px; /* Sopiva koko */
-  height: 42px;
-  padding: 0;
-  font-size: 1.3rem; /* Ikonin koko */
-  border-radius: 50%; /* Pyöreät napit edelleen ok täällä */
+  background: transparent; border: 1px solid var(--border-color); color: var(--text-subtle);
+  width: 40px; height: 40px; padding: 0; font-size: 1.2rem;
+  border-radius: 50% !important; /* Pyöreät napit */
 }
-.title-nav-btn:hover:not(:disabled) {
-  background-color: var(--bg-left-column);
-  color: var(--accent-blue);
-  border-color: var(--accent-blue);
-  transform: scale(1.08);
-}
+.title-nav-btn:hover:not(:disabled) { background-color: var(--bg-panel); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.08); }
 
 /* --- AJASTIMEN KONTROLLINAPIT (OIKEA PALSTA) --- */
-/* .control-button-container on jo määritelty */
 .control-button {
-  /* background-color, color, border-color määritellään yksitellen alla */
-  font-size: var(--btn-font-size-normal);
-  font-family: var(--font-display);
-  font-weight: 600;
-  width: 90%; /* Vie suurimman osan oikean palstan leveydestä */
-  max-width: 240px; /* Rajoitetaan maksimileveyttä */
-  padding: 0.8rem 1rem; /* Hieman säädetty padding */
-  /* border-radius periytyy */
-  /* display: none; hoidetaan JS:llä */
+  font-family: var(--font-display); font-weight: 600;
+  width: 100%; /* Ottaa containerin leveyden */
+  padding: 0.75rem 1rem;
 }
-.control-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+.control-button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+#pause-resume-btn { background-color: var(--accent-orange); color: var(--text-dark); border-color: transparent; }
+#pause-resume-btn:hover:not(:disabled) { background-color: #ffb74d; }
+#pause-resume-btn.paused { background-color: var(--accent-green); border-color: transparent; }
+#pause-resume-btn.paused:hover:not(:disabled) { background-color: #81c784; }
+
+#stop-btn { background-color: var(--accent-red); color: var(--text-light); border-color: transparent; }
+#stop-btn:hover:not(:disabled) { background-color: #e57373; }
+
+#next-step-btn { background-color: var(--accent-blue); color: var(--text-dark); border-color: transparent; }
+#next-step-btn:hover:not(:disabled) { background-color: #64b5f6; }
+
+
+/* --- RESPONSIIVISUUS --- */
+/* Isot näytöt: Kaksi palstaa */
+@media (min-width: 1025px) {
+  #app-wrapper {
+    gap: var(--outer-gap);
+    padding: var(--outer-gap);
+    /* background-color: var(--bg-main); on jo html/body tasolla */
+  }
+  #left-column, #right-column-timer {
+    /* border-radius: var(--border-radius-general); Yleinen pyöristys on 0, joten tämä ei tee mitään.
+       Jos haluat pyöristyksen tälle tasolle, muuta --border-radius-general arvoa.
+       Tai aseta se suoraan tässä: border-radius: 8px; */
+  }
+  header {
+    /* Jos --border-radius-general on 0, headerin ei tarvitse kumota sitä.
+       Jos se olisi esim 8px, tämä voisi olla:
+       border-radius: 8px 8px 0 0; */
+  }
 }
 
-#pause-resume-btn {
-  background-color: var(--accent-orange);
-  color: var(--text-dark);
-  border-color: var(--accent-orange);
+/* Tabletit ja Pienemmät Desktopit */
+@media (max-width: 1024px) {
+  #app-wrapper {
+    flex-direction: column;
+    gap: 0; /* Ei väliä kun päällekkäin */
+    padding: 0; /* Ei ylimääräistä paddingia wrapperille */
+  }
+  #left-column {
+    overflow-y: visible; /* Body skrollaa */
+    padding: var(--base-padding);
+    border-radius: 0; /* Ei pyöristystä kun täyttää leveyden */
+  }
+  #right-column-timer {
+    position: relative; top: auto; height: auto; width: auto;
+    border-left: none; box-shadow: var(--shadow-md);
+    margin: var(--base-padding); /* Väli ylä- ja sivureunoihin */
+    border-radius: var(--btn-border-radius); /* Nappien pyöristys tälle paneelille */
+  }
+  header {
+    position: sticky; top: 0; z-index: 1001;
+    margin: calc(-1 * var(--base-padding)) calc(-1 * var(--base-padding)) var(--base-padding) calc(-1 * var(--base-padding));
+    width: calc(100% + (2 * var(--base-padding)));
+    border-radius: 0; /* Ei pyöristystä kun täysleveä */
+  }
+  .main-content-area-left {
+     flex-direction: column; gap: var(--base-padding);
+  }
+  aside#sidebar {
+    width: 100%; border-right: none; border-radius: var(--btn-border-radius);
+  }
+   aside#sidebar.sidebar-hidden { margin-right: 0; }
 }
-#pause-resume-btn:hover:not(:disabled) { background-color: #ffb74d; border-color: #ffb74d;}
-#pause-resume-btn.paused {
-  background-color: var(--accent-green);
-  border-color: var(--accent-green);
-}
-#pause-resume-btn.paused:hover:not(:disabled) { background-color: #81c784; border-color: #81c784; }
 
-#stop-btn {
-  background-color: var(--accent-red);
-  color: var(--text-light); /* Vaalea teksti tummanpunaisella */
-  border-color: var(--accent-red);
-}
-#stop-btn:hover:not(:disabled) { background-color: #e57373; border-color: #e57373;}
+/* Puhelimet */
+@media (max-width: 767px) {
+  :root { /* Pienemmät paddingit ja header mobiilissa */
+    --base-padding: 0.75rem;
+    --header-height: 56px;
+    --btn-font-size-normal: 0.85rem; /* Hieman pienemmät napit */
+    --btn-padding-y: 0.55rem;
+    --btn-padding-x: 1rem;
+  }
+  #left-column { padding: var(--base-padding); }
+  header {
+    height: var(--header-height);
+    margin: calc(-1 * var(--base-padding)) calc(-1 * var(--base-padding)) var(--base-padding) calc(-1 * var(--base-padding));
+    width: calc(100% + (2 * var(--base-padding)));
+  }
+  #selection-area { padding: 1rem var(--base-padding); }
+  #right-column-timer { margin: var(--base-padding); }
 
-#next-step-btn {
-  background-color: var(--accent-blue);
-  color: var(--text-dark);
-  border-color: var(--accent-blue);
+  aside#sidebar {
+      position: fixed; top: 0; left: 0;
+      height: 100vh; width: min(85vw, 280px); /* Hieman leveämpi mobiilisidebar */
+      z-index: 1002; transform: translateX(-105%);
+      border-right: 1px solid var(--border-color-light);
+      border-radius: 0 var(--btn-border-radius) var(--btn-border-radius) 0;
+      padding-top: calc(var(--header-height) + var(--base-padding));
+      background-color: var(--bg-panel);
+      box-shadow: var(--shadow-lg); /* Selkeämpi varjo overlaylle */
+  }
+  aside#sidebar.sidebar-visible { transform: translateX(0); }
+  body.sidebar-open::before { /* Taustadimmennys */
+    content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.65); z-index: 1001; opacity: 0; visibility: hidden;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+  }
+  body.sidebar-open.sidebar-really-open::before { opacity: 1; visibility: visible; transition-delay: 0s; }
 }
-#next-step-btn:hover:not(:disabled) { background-color: #64b5f6; border-color: #64b5f6; }
 
-/* Varmistetaan, että poistetut nappien pyöristykset globaalista `*` säännöstä eivät ylikirjoita näitä */
-.title-nav-btn {
-    border-radius: 50% !important; /* Pakotetaan pyöreäksi */
-}
-/* Jos jokin muu nappi tarvitsee erityisen pyöristyksen, lisää se tähän !important kanssa */
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); }
+::-webkit-scrollbar-thumb { background-color: #4a4a4a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background-color: var(--accent-blue); }
+* { scrollbar-width: thin; scrollbar-color: #4a4a4a rgba(0,0,0,0.1); }
