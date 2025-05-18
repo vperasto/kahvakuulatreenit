@@ -175,3 +175,294 @@ p { margin-bottom: 0.5rem; }
     transition: none !important;
     animation: none !important;
 }
+
+
+
+/* ---------------------------------------------------- */
+/* style.css (Jatkoa Versio 2.5:lle - Nappien tyylittely) */
+
+:root {
+  /* ... Aiemmat muuttujat ... */
+  --bg-main: #101218;
+  --bg-left-column: #181a20;
+  --bg-right-column: #0D0E12;
+  --text-main: #eaeaea;
+  --text-light: #f0f0f0; /* Vaaleampi teksti napeille */
+  --text-dark: #1a1a1a;  /* Tummempi teksti vaaleille napeille */
+  --accent-blue: #42a5f5;
+  --accent-orange: #ffa726;
+  --accent-green: #66bb6a;
+  --accent-red: #ef5350;
+  --border-color: #373a40;
+  --border-color-light: #4f535a; /* Hieman vaaleampi reunaväri */
+
+  /* Uudet/muokatut nappimuuttujat */
+  --btn-padding-y: 0.65rem;  /* Yleinen pystysuuntainen padding napeille */
+  --btn-padding-x: 1.25rem; /* Yleinen vaakasuuntainen padding napeille */
+  --btn-font-size-normal: 0.9rem; /* Normaali fonttikoko */
+  --btn-font-size-large: 1rem;   /* Suurempi fonttikoko (esim. start-napit) */
+  --btn-border-radius: 4px;     /* Yhtenäinen, pieni pyöristys */
+  --btn-border-width: 1px;      /* Reunaviivan leveys */
+  --btn-transition-speed: 0.2s;
+
+  /* Fontit (jos haluat erotella) */
+  --font-display: 'Rajdhani', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+
+  /* Layout-muuttujat */
+  --right-timer-panel-width: 280px;
+  --header-height: 60px;
+  --base-padding: 1rem;
+}
+
+/* --- YLEISET NAPPIEN PERUSTYYLIT (LISÄYS) --- */
+button, .button { /* Yleinen luokka, jos käytät esim. <a>-tageja nappeina */
+  font-family: var(--font-body);
+  font-weight: 500; /* Hieman lihavoitu, mutta ei liikaa */
+  cursor: pointer;
+  border: var(--btn-border-width) solid transparent; /* Läpinäkyvä reuna oletuksena */
+  border-radius: var(--btn-border-radius);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-size: var(--btn-font-size-normal);
+  text-decoration: none;
+  display: inline-flex; /* Jotta ikonit ja teksti asettuvat hyvin */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em; /* Väli tekstin ja ikonin välillä */
+  transition: background-color var(--btn-transition-speed) ease-out,
+              border-color var(--btn-transition-speed) ease-out,
+              color var(--btn-transition-speed) ease-out,
+              transform var(--btn-transition-speed) ease-out,
+              box-shadow var(--btn-transition-speed) ease-out;
+  line-height: 1.4; /* Estää tekstin menemisen liian tiiviiksi */
+  -webkit-appearance: none; /* Poistaa oletusmuotoilut joissain selaimissa */
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button:disabled, .button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--border-color) !important; /* Selkeä disabled-väri */
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Fokus-tyylit napeille (jos haluat erilliset) */
+button:focus-visible, .button:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3); /* Hienovarainen hehku */
+}
+
+
+/* --- HEADERIN NAPIT --- */
+.header-icon-btn {
+  background: transparent;
+  border-color: var(--border-color);
+  color: var(--text-main);
+  width: 38px; /* Hieman pienempi */
+  height: 38px;
+  padding: 0; /* Ei ylimääräistä paddingia ikoninapeille */
+  /* border-radius periytyy yleisestä */
+}
+.header-icon-btn:hover:not(:disabled) {
+  background-color: var(--bg-left-column); /* Vasemman palstan tausta */
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  transform: scale(1.05);
+}
+.header-icon-btn.active { /* Esim. sidebar-toggle */
+  background-color: var(--accent-blue);
+  color: var(--text-dark);
+  border-color: var(--accent-blue);
+}
+
+#toggle-selection-area {
+  background-color: var(--accent-orange);
+  color: var(--text-dark);
+  border-color: var(--accent-orange);
+  font-weight: 600; /* Selkeästi tärkeä nappi */
+  padding: var(--btn-padding-y) 1rem; /* Hieman säädetty padding */
+  /* border-radius ja font-size periytyy */
+}
+#toggle-selection-area:hover:not(:disabled) {
+  background-color: #ffb74d; /* Hieman vaaleampi oranssi */
+  border-color: #ffb74d;
+  transform: translateY(-1px);
+}
+
+
+/* --- VALINTA-ALUEEN NAPIT --- */
+.button-container { /* Yleinen kontti napeille valinta-alueella */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem; /* Väli nappien välillä */
+  justify-content: center;
+}
+
+.week-button {
+  background-color: var(--accent-blue);
+  color: var(--text-dark);
+  border-color: var(--accent-blue);
+  font-size: var(--btn-font-size-normal); /* Yhtenäinen koko */
+  font-weight: 600;
+  flex-grow: 1; /* Antaa nappien kasvaa ja täyttää tilaa */
+  min-width: 150px; /* Minimileveys */
+  text-align: center;
+  /* border-radius periytyy */
+}
+.week-button:hover:not(.active):not(:disabled) {
+  background-color: #64b5f6;
+  border-color: #64b5f6;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.week-button.active {
+  background-color: var(--accent-green);
+  border-color: var(--accent-green);
+  color: var(--text-dark);
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(102, 187, 106, 0.4);
+}
+
+.level-button {
+  background-color: transparent;
+  color: var(--text-main);
+  border-color: var(--border-color-light);
+  font-size: 0.85rem; /* Hieman pienempi kuin muut */
+  min-width: 80px;
+  /* border-radius: var(--border-radius-pill); */ /* POISTETTU PILLERIMUOTO, käytetään yleistä */
+}
+.level-button:hover:not(.active):not(:disabled) {
+  background-color: var(--bg-left-column);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+.level-button.active {
+  background-color: var(--accent-orange);
+  color: var(--text-dark);
+  border-color: var(--accent-orange);
+  font-weight: 600;
+  box-shadow: 0 0 8px rgba(255, 167, 38, 0.3);
+}
+
+.routine-button {
+  background-color: var(--bg-left-column); /* Käytetään vasemman palstan taustaa */
+  color: var(--text-main);
+  border-color: var(--border-color);
+  font-size: var(--btn-font-size-normal);
+  font-family: var(--font-display); /* Erottuva fontti, jos halutaan */
+  font-weight: 500;
+  flex-grow: 1;
+  min-width: 200px;
+}
+.routine-button .duration {
+  font-size: 0.8em;
+  color: var(--text-main);
+  opacity: 0.7;
+  margin-left: 0.5em;
+}
+.routine-button:hover:not(.active):not(:disabled) {
+  background-color: #2c3038; /* Hieman vaaleampi hover */
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+.routine-button.active {
+  background-color: var(--accent-blue);
+  color: var(--text-dark);
+  border-color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.start-button {
+  background-color: var(--accent-green);
+  color: var(--text-dark);
+  border-color: var(--accent-green);
+  font-size: var(--btn-font-size-large); /* Isompi fontti aloitusnapeille */
+  font-family: var(--font-display);
+  font-weight: 700; /* Lihavoitu */
+  padding: 0.8rem 1.8rem; /* Hieman enemmän paddingia */
+  display: block; /* Jotta voi käyttää margin auto keskitykseen */
+  width: 90%;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1.5rem; /* Väli yläpuolelle */
+}
+.start-button:hover:not(:disabled) {
+  background-color: #81c784;
+  border-color: #81c784;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* --- PÄÄNÄKYMÄN NAVIGOINTINAPIT (⏮, ⏭) --- */
+.title-nav-btn {
+  background: transparent;
+  border-color: var(--border-color);
+  color: var(--text-main);
+  width: 42px; /* Sopiva koko */
+  height: 42px;
+  padding: 0;
+  font-size: 1.3rem; /* Ikonin koko */
+  border-radius: 50%; /* Pyöreät napit edelleen ok täällä */
+}
+.title-nav-btn:hover:not(:disabled) {
+  background-color: var(--bg-left-column);
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+  transform: scale(1.08);
+}
+
+/* --- AJASTIMEN KONTROLLINAPIT (OIKEA PALSTA) --- */
+/* .control-button-container on jo määritelty */
+.control-button {
+  /* background-color, color, border-color määritellään yksitellen alla */
+  font-size: var(--btn-font-size-normal);
+  font-family: var(--font-display);
+  font-weight: 600;
+  width: 90%; /* Vie suurimman osan oikean palstan leveydestä */
+  max-width: 240px; /* Rajoitetaan maksimileveyttä */
+  padding: 0.8rem 1rem; /* Hieman säädetty padding */
+  /* border-radius periytyy */
+  /* display: none; hoidetaan JS:llä */
+}
+.control-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+}
+
+#pause-resume-btn {
+  background-color: var(--accent-orange);
+  color: var(--text-dark);
+  border-color: var(--accent-orange);
+}
+#pause-resume-btn:hover:not(:disabled) { background-color: #ffb74d; border-color: #ffb74d;}
+#pause-resume-btn.paused {
+  background-color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+#pause-resume-btn.paused:hover:not(:disabled) { background-color: #81c784; border-color: #81c784; }
+
+#stop-btn {
+  background-color: var(--accent-red);
+  color: var(--text-light); /* Vaalea teksti tummanpunaisella */
+  border-color: var(--accent-red);
+}
+#stop-btn:hover:not(:disabled) { background-color: #e57373; border-color: #e57373;}
+
+#next-step-btn {
+  background-color: var(--accent-blue);
+  color: var(--text-dark);
+  border-color: var(--accent-blue);
+}
+#next-step-btn:hover:not(:disabled) { background-color: #64b5f6; border-color: #64b5f6; }
+
+/* Varmistetaan, että poistetut nappien pyöristykset globaalista `*` säännöstä eivät ylikirjoita näitä */
+.title-nav-btn {
+    border-radius: 50% !important; /* Pakotetaan pyöreäksi */
+}
+/* Jos jokin muu nappi tarvitsee erityisen pyöristyksen, lisää se tähän !important kanssa */
