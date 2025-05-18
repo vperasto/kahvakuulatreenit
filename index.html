@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Uusi Layout)</title>
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Tiivis Layout, Steps Oikealla)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="app-wrapper"> <!-- UUSI YLIMMÄN TASON WRAPPER KAH DELLE PALSTALLE -->
+    <div id="app-wrapper"> <!-- Ylin tason wrapper kahdelle pääpalstalle -->
 
         <!-- VASEN PALSTA (SKROLLAAVA) -->
         <div id="left-column">
-            <!-- Header tulee osaksi vasenta, skrollaavaa palstaa -->
+            <!-- Header osana vasenta, skrollaavaa palstaa -->
             <header>
                 <img src="img/logo_small.png" alt="Kuulapakki Logo">
                 <div class="header-controls">
@@ -62,9 +62,9 @@
                  </div>
             </section>
 
-            <!-- Pääsisältöalue (ilman ajastinta) -->
-            <div class="main-content-area-left"> <!-- Nimi muutettu selkeyden vuoksi -->
-                <!-- Sivupalkki (Info & Vaiheet) -->
+            <!-- Pääsisältöalue vasemmalla (ilman harjoituslistaa) -->
+            <div class="main-content-area-left">
+                <!-- Sivupalkki (Info & Vaiheet) - SISÄLTÄÄ NYT VAIN INFO-ALUEEN -->
                 <aside id="sidebar">
                     <div id="info-area">
                         <div class="info-header">
@@ -80,15 +80,10 @@
                             </div>
                         </div>
                     </div>
-                    <div id="steps-list-area">
-                        <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
-                        <ul id="steps-items">
-                            <li>Valitse toiminto yläpuolelta.</li>
-                        </ul>
-                    </div>
+                    <!-- STEPS-LIST-AREA (HARJOITUSLISTA) ON SIIRRETTY OIKEAAN PALSTAAN -->
                 </aside>
 
-                <!-- Päänäkymä (Harjoite) -->
+                <!-- Päänäkymä (Aktiivinen Harjoite) -->
                 <div id="main-view-area">
                     <section id="active-display">
                         <div id="title-area">
@@ -106,8 +101,10 @@
         </div> <!-- #left-column loppuu -->
 
         <!-- OIKEA PALSTA (STICKY) -->
-        <aside id="right-column-timer"> <!-- Uusi ID tälle sticky-palstalle -->
-            <div class="timer-controls-content"> <!-- Sisältö pysyy samana -->
+        <aside id="right-column-timer">
+            
+            <!-- Kellon ja kontrollien sisältö -->
+            <div class="timer-controls-content">
                 <p id="round-info" class="round-display"></p>
                 <div id="timer">
                     <span id="time-remaining">00:00</span>
@@ -119,7 +116,15 @@
                     <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
                 </div>
             </div>
-        </aside>
+            <!-- HARJOITUSLISTA ON NYT TÄÄLLÄ -->
+            <div id="steps-list-area">
+                <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
+                <ul id="steps-items">
+                    <li>Valitse toiminto yläpuolelta.</li> <!-- Oletusteksti -->
+                </ul>
+            </div>
+
+        </aside> <!-- #right-column-timer loppuu -->
 
     </div> <!-- #app-wrapper loppuu -->
 
