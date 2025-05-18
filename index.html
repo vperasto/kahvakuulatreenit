@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahvakuulakurssi – Ohjaajan Työkalu</title>
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,17 +12,20 @@
         <!-- Header -->
         <header>
             <img src="img/logo_small.png" alt="Kuulapakki Logo">
-            <!-- MUUTETTU: Nappi sisältää nyt spanit tekstille ja ikonille -->
-            <button id="toggle-selection-area">
-                <span class="toggle-text">Valinnat</span>
-                <!-- KORJATTU KOMMENTTI: JSX -> HTML -->
-                <span class="toggle-icon"></span> <!-- Nuoli tulee CSS:llä tähän -->
-            </button>
+            <div class="header-controls">
+                <!-- UUSI: Sivupalkin piilotus/näyttö -nappi -->
+                <button id="toggle-sidebar-btn" class="header-icon-btn" title="Näytä/Piilota sivupalkki">
+                    <span class="icon-menu"></span> <!-- Ikoni CSS:llä -->
+                </button>
+                <button id="toggle-selection-area">
+                    <span class="toggle-text">Valinnat</span>
+                    <span class="toggle-icon"></span>
+                </button>
+            </div>
         </header>
 
-        <!-- Valinta-alue -->
+        <!-- Valinta-alue (pysyy ennallaan rakenteeltaan) -->
         <section id="selection-area" class="collapsible hidden">
-
             <!-- Lämmittelyn valinta -->
             <div id="warmup-selection" class="routine-selection">
                  <h2>Lämmittely (valinnainen)</h2>
@@ -58,33 +61,26 @@
                  </div>
                  <button id="start-cooldown-btn" class="start-button" disabled>Aloita Jäähdyttely</button>
              </div>
-
         </section>
 
-        <!-- Pääsisältöalue -->
-        <main class="main-layout">
-
-            <!-- Sivupalkki -->
-            <aside id="sidebar">
-                <!-- MUUTETTU: Info-alueen rakenne -->
+        <!-- Pääsisältöalue (UUSI RAKENNE) -->
+        <div class="main-content-wrapper">
+            <!-- Sivupalkki (Info & Vaiheet) -->
+            <aside id="sidebar"> <!-- Luokka .sidebar-visible/.sidebar-hidden lisätään JS:llä -->
                 <div id="info-area">
-                    <div class="info-header"> <!-- Uusi wrapper otsikolle ja napille -->
+                    <div class="info-header">
                         <h2 id="info-area-title">Tiedot</h2>
                         <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
-                            <!-- Teksti muuttuu JS:llä -->
                             <span class="toggle-info-text">Piilota</span>
-                            <!-- Ikoni CSS:llä -->
                             <span class="toggle-info-icon"></span>
                         </button>
                     </div>
-                    <!-- Uusi wrapper sisällölle, TÄMÄ piilotetaan/näytetään -->
                     <div id="info-content" class="info-content-wrapper">
                         <div id="info-area-notes-container">
                             <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
                         </div>
                     </div>
                 </div>
-                <!-- Steps List Area säilyy ennallaan rakenteeltaan -->
                 <div id="steps-list-area">
                     <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
                     <ul id="steps-items">
@@ -93,37 +89,39 @@
                 </div>
             </aside>
 
-            <!-- Aktiivinen Näyttö -->
-            <section id="active-display">
-                <div id="title-area">
-                    <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen">⏮</button>
-                    <h2 id="item-name">Valitse toiminto</h2>
-                    <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
-                </div>
-                <div id="content-split">
-                    <div id="item-details">
+            <!-- Päänäkymä (Harjoite + Ajastin) -->
+            <div id="main-view-area"> <!-- Wrapper harjoitteelle ja ajastimelle -->
+                <!-- Aktiivinen Harjoite -->
+                <section id="active-display">
+                    <div id="title-area">
+                        <button id="prev-btn" class="title-nav-btn" disabled title="Edellinen">⏮</button>
+                        <h2 id="item-name">Valitse toiminto</h2>
+                        <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
+                    </div>
+                    <div id="item-details"> <!-- Kuva ja kuvaus -->
                         <img id="item-image" src="" alt="Kuva" style="display: none;">
                         <p id="item-description"></p>
                     </div>
-                    <div id="timer-and-controls">
+                </section>
+
+                <!-- Ajastin ja Kontrollit -->
+                <aside id="timer-controls-panel">
+                    <div class="timer-controls-content"> <!-- Tarvitaan sisempi wrapper jos paneelilla on oma skrollaus -->
                         <p id="round-info" class="round-display"></p>
                         <div id="timer">
                             <span id="time-remaining">00:00</span>
                             <p id="timer-label">Odottamassa...</p>
                         </div>
-                        <!-- Napit ovat nyt .control-button-containerin sisällä -->
                         <div class="control-button-container">
                             <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
                             <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
                             <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
                         </div>
                     </div>
-                </div>
-            </section>
-
-        </main>
-
-    </div>
+                </aside>
+            </div>
+        </div> <!-- .main-content-wrapper loppuu -->
+    </div> <!-- #app loppuu -->
 
     <script src="app.js"></script>
 </body>
