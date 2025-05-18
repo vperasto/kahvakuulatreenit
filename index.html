@@ -24,7 +24,7 @@
             </div>
         </header>
 
-        <!-- Valinta-alue (pysyy ennallaan rakenteeltaan) -->
+        <!-- Valinta-alue -->
         <section id="selection-area" class="collapsible hidden">
             <!-- Lämmittelyn valinta -->
             <div id="warmup-selection" class="routine-selection">
@@ -63,7 +63,7 @@
              </div>
         </section>
 
-        <!-- Pääsisältöalue (UUSI RAKENNE) -->
+        <!-- Pääsisältöalue (RAKENNE MUUTETTU) -->
         <div class="main-content-wrapper">
             <!-- Sivupalkki (Info & Vaiheet) -->
             <aside id="sidebar"> <!-- Luokka .sidebar-visible/.sidebar-hidden lisätään JS:llä -->
@@ -89,8 +89,8 @@
                 </div>
             </aside>
 
-            <!-- Päänäkymä (Harjoite + Ajastin) -->
-            <div id="main-view-area"> <!-- Wrapper harjoitteelle ja ajastimelle -->
+            <!-- Päänäkymä (Harjoite) - AJASTINPANELI ON SIIRRETTY TÄSTÄ POIS -->
+            <div id="main-view-area">
                 <!-- Aktiivinen Harjoite -->
                 <section id="active-display">
                     <div id="title-area">
@@ -103,23 +103,25 @@
                         <p id="item-description"></p>
                     </div>
                 </section>
-
-                <!-- Ajastin ja Kontrollit -->
-                <aside id="timer-controls-panel">
-                    <div class="timer-controls-content"> <!-- Tarvitaan sisempi wrapper jos paneelilla on oma skrollaus -->
-                        <p id="round-info" class="round-display"></p>
-                        <div id="timer">
-                            <span id="time-remaining">00:00</span>
-                            <p id="timer-label">Odottamassa...</p>
-                        </div>
-                        <div class="control-button-container">
-                            <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
-                            <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
-                            <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
-                        </div>
-                    </div>
-                </aside>
+                <!-- AJASTINPANELI ON SIIRRETTY TÄSTÄ POIS -->
             </div>
+
+            <!-- Ajastin ja Kontrollit -paneeli (UUSI SIJAINTI .main-content-wrapper:n SUORANA LAPSEKSI) -->
+            <aside id="timer-controls-panel">
+                <div class="timer-controls-content">
+                    <p id="round-info" class="round-display"></p>
+                    <div id="timer">
+                        <span id="time-remaining">00:00</span>
+                        <p id="timer-label">Odottamassa...</p>
+                    </div>
+                    <div class="control-button-container">
+                        <button id="pause-resume-btn" class="control-button" style="display: none;">⏸ Tauko</button>
+                        <button id="stop-btn" class="control-button" style="display: none;">⏹ Lopeta</button>
+                        <button id="next-step-btn" class="control-button" style="display: none;">Seuraava Vaihe ⏭</button>
+                    </div>
+                </div>
+            </aside>
+            
         </div> <!-- .main-content-wrapper loppuu -->
     </div> <!-- #app loppuu -->
 
