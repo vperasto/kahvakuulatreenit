@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Tiivis Layout, Steps Oikealla)</title>
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Modifioitu)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,15 +13,14 @@
         <div id="left-column">
             <!-- Header osana vasenta, skrollaavaa palstaa -->
             <header>
-                <div class="header-controls">
-                    <button id="toggle-sidebar-btn" class="header-icon-btn" title="Näytä/Piilota sivupalkki">
-                        <span class="icon-menu"></span>
-                    </button>
-                    <button id="toggle-selection-area">
-                        <span class="toggle-text">Valinnat</span>
-                        <span class="toggle-icon"></span>
-                    </button>
-                </div>
+                <button id="toggle-sidebar-btn" class="header-text-btn" title="Piilota sivuvalikko (Keskittymistila)">
+                    <span class="toggle-sidebar-text">Keskittymistila</span>
+                </button>
+                <!-- Logo tai otsikko voisi tulla tähän väliin, jos halutaan -->
+                <button id="toggle-selection-area" class="header-action-btn"> <!-- Siirretty ja tyyliä muutettu -->
+                    <span class="toggle-text">Valitse treeni</span>
+                    <span class="toggle-icon"></span>
+                </button>
             </header>
 
             <!-- Valinta-alue -->
@@ -63,17 +62,11 @@
 
             <!-- Pääsisältöalue vasemmalla (ilman harjoituslistaa) -->
             <div class="main-content-area-left">
-                <!-- Sivupalkki (Info & Vaiheet) - SISÄLTÄÄ NYT VAIN INFO-ALUEEN -->
+                <!-- Sivupalkki (Info) -->
                 <aside id="sidebar">
                     <div id="info-area">
-                        <div class="info-header">
-                            <h2 id="info-area-title">Tiedot</h2>
-                            <button id="toggle-info-btn" class="info-toggle" aria-expanded="true" aria-controls="info-content">
-                                <span class="toggle-info-text">Piilota</span>
-                                <span class="toggle-info-icon"></span>
-                            </button>
-                        </div>
-                        <div id="info-content" class="info-content-wrapper">
+                        <h2 id="info-area-title" class="sidebar-area-title">Tiedot</h2>
+                        <div id="info-content" class="info-content-wrapper"> <!-- Ei enää .collapsed-luokkaa oletuksena -->
                             <div id="info-area-notes-container">
                                 <p id="info-area-notes">Valitse toiminto yläpuolelta.</p>
                             </div>
@@ -90,7 +83,7 @@
                             <h2 id="item-name">Valitse toiminto</h2>
                             <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
                         </div>
-                        <div id="item-details">
+                        <div id="item-details"> <!-- Tämän sisällä kuva ja teksti -->
                             <img id="item-image" src="" alt="Kuva" style="display: none;">
                             <p id="item-description"></p>
                         </div>
@@ -117,7 +110,7 @@
             </div>
             <!-- HARJOITUSLISTA ON NYT TÄÄLLÄ -->
             <div id="steps-list-area">
-                <h2 id="steps-list-title">Vaiheet / Harjoitukset</h2>
+                <h2 id="steps-list-title" class="sidebar-area-title">Vaiheet / Harjoitukset</h2>
                 <ul id="steps-items">
                     <li>Valitse toiminto yläpuolelta.</li> <!-- Oletusteksti -->
                 </ul>

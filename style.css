@@ -1,4 +1,4 @@
-/* style.css (Versio 2.8 - Palautetut tyylit + Tiivis Layout + Steps Oikealla) */
+/* style.css (Versio 2.8 - Palautetut tyylit + Tiivis Layout + Steps Oikealla + Pyydetyt muutokset) */
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
@@ -67,7 +67,6 @@ body {
 #left-column {
   flex-grow: 1; overflow-y: auto; background-color: var(--bg-left-column);
   display: flex; flex-direction: column;
-  /* Ei omaa paddingia, lapset hoitavat */
 }
 
 #right-column-timer {
@@ -77,21 +76,24 @@ body {
   border-left: 1px solid var(--border-color);
   position: sticky; top: 0; height: 100vh;
   display: flex; flex-direction: column;
-  gap: var(--base-padding); /* Väli steps-listin ja timer-contentin välille */
-  overflow-y: hidden; /* Lapset skrollaavat itsenäisesti */
+  gap: var(--base-padding);
+  overflow-y: hidden;
   z-index: 950;
 }
 #right-column-timer > #steps-list-area {
   overflow-y: auto;
-  flex-grow: 1; /* Annetaan listan viedä tilaa, mutta ei liikaa */
-  min-height: 150px; /* Estää kutistumasta liikaa */
-  border-bottom: 1px solid var(--border-color); /* Erotin ajastimeen */
-  padding-bottom: var(--base-padding); /* Tilaa ennen erotinta */
-  margin-bottom: calc(-1 * var(--base-padding)); /* Kompensoi parentin gap, jotta border on kiinni */
+  flex-grow: 1;
+  min-height: 150px;
+  /* border-bottom: 1px solid var(--border-color); /* Poistettu, koska järjestys muuttui */
+  /* padding-bottom: var(--base-padding); */
+  /* margin-bottom: calc(-1 * var(--base-padding)); */
 }
 #right-column-timer > .timer-controls-content {
   overflow-y: auto;
-  flex-shrink: 0; /* Ajastimen ei pitäisi kutistua */
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color); /* Erotin ajastimen ja listan väliin */
+  padding-bottom: var(--base-padding);
+  margin-bottom: var(--base-padding); /* Tilaa ennen listaa */
 }
 
 
@@ -99,23 +101,23 @@ body {
 header {
   background-color: var(--bg-panel); color: var(--text-main);
   padding: 0 var(--base-padding); height: var(--header-height);
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; /* MUUTETTU */
   flex-shrink: 0; border-bottom: 1px solid var(--border-color);
   box-shadow: var(--shadow-md); z-index: 1000;
 }
 header img { height: calc(var(--header-height) - 16px); }
-.header-controls { display: flex; align-items: center; gap: 0.7rem; } /* Lisätty padding-right takaisin jos tarpeen */
+/* .header-controls poistettu käytöstä */
 
 #selection-area {
   background-color: var(--bg-panel-light);
   padding: var(--base-padding);
-  margin-bottom: 0; /* Ei marginaalia, koska headerin alla oleva .main-content-area-left hoitaa välin */
+  margin-bottom: 0;
   flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
   transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
   overflow: hidden;
-  position: relative; /* Jotta z-index toimii */
-  z-index: 990; /* Valikko voi mennä hieman muiden päälle avautuessaan */
+  position: relative;
+  z-index: 990;
 }
 #selection-area.hidden {
   max-height: 0 !important; opacity: 0 !important;
@@ -128,7 +130,7 @@ header img { height: calc(var(--header-height) - 16px); }
 .main-content-area-left {
   display: flex; flex-grow: 1;
   gap: var(--base-padding);
-  padding: var(--base-padding); /* Padding tälle alueelle */
+  padding: var(--base-padding);
   min-height: 0; overflow: hidden;
 }
 
@@ -144,16 +146,36 @@ aside#sidebar.sidebar-hidden {
   margin-right: calc(-1 * var(--base-padding));
 }
 #info-area { margin-bottom: var(--base-padding); }
-.info-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
-#info-area h2#info-area-title { font-size: 1.1rem; color: var(--accent-orange); font-weight: 600; font-family: var(--font-display); }
-.info-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-subtle); border-radius: var(--btn-border-radius); padding: 0.2rem 0.4rem; font-size: 0.75rem; }
-.toggle-info-icon { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform var(--btn-transition-speed); }
-.info-toggle[aria-expanded="false"] .toggle-info-icon { transform: rotate(-90deg); }
-.info-content-wrapper { border-left: 3px solid var(--accent-orange); background-color: rgba(0,0,0,0.15); padding: 0.75rem; border-radius: var(--btn-border-radius); transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out; overflow: hidden; }
-.info-content-wrapper.collapsed { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; }
-#info-area-notes { color: var(--text-main); font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; margin: 0; }
 
-/* #steps-list-area siirretty oikealle, sen tyylit alla */
+/* Poistettu .info-header tyylit */
+/* #info-area h2#info-area-title vanhat tyylit poistettu/muokataan .sidebar-area-title alle */
+
+.sidebar-area-title { /* Yleinen luokka sivupalkin ja oikean palstan otsikoille */
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-family: var(--font-display);
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border-color-light);
+}
+#info-area-title { /* Info-alueen otsikon erityisväri */
+  color: var(--accent-orange);
+}
+#steps-list-title { /* Steps-listan otsikon erityisväri */
+   color: var(--accent-blue);
+}
+
+
+/* Poistettu .info-toggle, .toggle-info-icon tyylit */
+.info-content-wrapper {
+  border-left: 3px solid var(--accent-orange);
+  background-color: rgba(0,0,0,0.15);
+  padding: 0.75rem;
+  border-radius: var(--btn-border-radius);
+  /* transition ja .collapsed poistettu, koska sisältö aina näkyvissä */
+  overflow: hidden; /* Säilytetään */
+}
+#info-area-notes { color: var(--text-main); font-size: 0.85rem; line-height: 1.5; white-space: pre-wrap; margin: 0; }
 
 #main-view-area {
   flex-grow: 1; background-color: var(--bg-panel);
@@ -165,21 +187,66 @@ aside#sidebar.sidebar-hidden {
 section#active-display { flex-grow: 1; display: flex; flex-direction: column; }
 #title-area { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 0.8rem; flex-shrink: 0; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); }
 #active-display h2#item-name { margin: 0 0.75rem; font-size: clamp(1.2rem, 2.2vw, 1.6rem); font-weight: 600; color: var(--text-light); flex-grow: 1; text-align: center; font-family: var(--font-display); }
-#item-details { flex-grow: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: 0.5rem; }
-#active-display img#item-image { display: block; max-width: 100%; width: auto; max-height: 320px; object-fit: contain; border-radius: var(--btn-border-radius); margin-bottom: 0.8rem; background-color: var(--bg-left-column); border: 1px solid var(--border-color); }
-#active-display p#item-description { color: var(--text-main); font-size: 0.9rem; line-height: 1.6; max-width: 100%; text-align: left; }
+
+/* --- PÄÄNÄKYMÄN KUVA JA TEKSTI --- */
+#item-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* Allekkain oletuksena */
+    align-items: center; /* Keskitä elementit pienellä näytöllä */
+    gap: var(--base-padding);
+    padding-top: 0.5rem;
+}
+#active-display img#item-image {
+    display: block;
+    width: auto;
+    max-width: 90%; /* Pienellä näytöllä voi olla leveämpi */
+    max-height: 280px; /* Hieman pienempi max-korkeus pienellä näytöllä */
+    object-fit: contain;
+    border-radius: var(--btn-border-radius);
+    background-color: var(--bg-left-column);
+    border: 1px solid var(--border-color);
+}
+#active-display p#item-description {
+    color: var(--text-main);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    width: 100%; /* Vie koko leveyden, kun allekkain */
+    max-width: 60ch; /* Parantaa luettavuutta, kun on tilaa */
+    text-align: left;
+    padding: 0 0.5rem; /* Pientä sivuttaista paddingia tekstille */
+}
+
+/* Isommat näytöt: Kuva ja teksti vierekkäin */
+@media (min-width: 800px) { /* Säädä breakpoint tarpeen mukaan */
+    #item-details {
+        flex-direction: row;
+        align-items: flex-start; /* Tasaa yläreunaan */
+        justify-content: center; /* Keskitä kokonaisuus, jos tilaa */
+        gap: calc(var(--base-padding) * 1.5); /* Isompi väli */
+    }
+    #active-display img#item-image {
+        width: 40%; /* Vie 40% leveydestä */
+        max-width: 320px; /* Mutta enintään 320px */
+        max-height: 350px; /* Voi olla hieman korkeampi isommalla näytöllä */
+        flex-shrink: 0; /* Estää kuvaa kutistumasta liikaa */
+    }
+    #active-display p#item-description {
+        flex-basis: 55%; /* Annetaan tilaa tekstille */
+        flex-grow: 0; /* Ei kasva liikaa, jos kuva on kapea */
+        max-width: 70ch; /* Säilytetään luettavuus */
+        padding: 0;
+    }
+}
+
 
 /* --- OIKEAN PALSTAN SISÄLTÖ (STEPS LIST + AJASTIN) --- */
 #steps-list-area {
-  /* flex-grow, overflow-y, border-bottom, padding-bottom, margin-bottom hoidettu #right-column-timer > #steps-list-area */
-  padding-right: 0.3rem; /* Tilaa scrollbarille */
+  padding-right: 0.3rem;
 }
-#steps-list-area h2#steps-list-title {
-  font-size: 1.1rem; color: var(--accent-blue); font-family: var(--font-display); font-weight: 600;
-  margin-bottom: 0.6rem;
-  padding-bottom: 0.4rem;
-}
-ul#steps-items { list-style: none; padding: 0; margin: 0; } /* Poistettu padding-right, koska #steps-list-area hoitaa */
+/* #steps-list-area h2#steps-list-title tyylit nyt .sidebar-area-title alla */
+
+ul#steps-items { list-style: none; padding: 0; margin: 0; }
 li.step-item {
   margin-bottom: 0.2rem; padding: 0.35rem 0.7rem;
   background-color: transparent;
@@ -188,14 +255,14 @@ li.step-item {
   font-size: 0.85rem; color: var(--text-subtle);
   transition: background-color var(--btn-transition-speed), border-color var(--btn-transition-speed), color var(--btn-transition-speed);
   cursor: pointer;
-  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; /* Säilytetään nämä */
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
 }
 li.step-item:hover {
-  background-color: rgba(66, 165, 245, 0.1); /* Käytetään aksenttivärin pohjaa hoveriin */
+  background-color: rgba(66, 165, 245, 0.1);
   border-left-color: var(--accent-blue); color: var(--accent-blue);
 }
 li.step-item.active {
-  background-color: rgba(66, 165, 245, 0.15); /* Hieman vahvempi aktiiviselle */
+  background-color: rgba(66, 165, 245, 0.15);
   border-left-color: var(--accent-blue); font-weight: 500; color: var(--accent-blue);
 }
 
@@ -203,7 +270,7 @@ li.step-item.active {
   display: flex; flex-direction: column; align-items: center;
   gap: 0.8rem; color: var(--text-main);
 }
-#timer { text-align: center; margin-top: 0.3rem; /* Pienempi ylämarginaali */ }
+#timer { text-align: center; margin-top: 0.3rem; }
 #time-remaining { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 700; font-family: var(--font-display); color: var(--accent-blue); line-height: 1; }
 #timer-label { font-size: 0.9rem; color: var(--text-subtle); margin-top: 0.2rem; }
 .round-display { font-size: 0.9rem; background: var(--bg-panel); padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-subtle); }
@@ -233,27 +300,49 @@ button:focus-visible, .button:focus-visible {
   box-shadow: 0 0 0 2px rgba(66, 165, 245, 0.2);
 }
 
-/* --- HEADERIN NAPIT --- */
-.header-icon-btn {
-  background: transparent; border-color: var(--border-color); color: var(--text-subtle);
-  width: 36px; height: 36px; padding: 0;
+/* --- HEADERIN NAPIT (UUDET) --- */
+.header-text-btn { /* Käytetään #toggle-sidebar-btn */
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-subtle);
+  padding: var(--btn-padding-y) 0.8rem;
+  font-size: var(--btn-font-size-normal);
+  border-radius: var(--btn-border-radius);
+  /* Perii yleiset nappityylit */
 }
-.header-icon-btn:hover:not(:disabled) { background-color: var(--bg-left-column); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.05); }
-.header-icon-btn.active { background-color: var(--accent-blue); color: var(--text-dark); border-color: var(--accent-blue); }
-.icon-menu { display: block; width: 15px; height: 11px; position: relative; }
-.icon-menu::before, .icon-menu::after, .icon-menu span { content: ''; display: block; background-color: currentColor; height: 2px; width: 100%; position: absolute; left: 0; border-radius: 1px; transition: transform 0.2s, opacity 0.2s; }
-.icon-menu::before { top: 0; } .icon-menu span { top: 50%; transform: translateY(-50%); } .icon-menu::after { bottom: 0; }
-#toggle-sidebar-btn.active .icon-menu::before { top: 5px; transform: rotate(45deg); }
-#toggle-sidebar-btn.active .icon-menu span { opacity: 0; }
-#toggle-sidebar-btn.active .icon-menu::after { bottom: 5px; transform: rotate(-45deg); }
+.header-text-btn:hover:not(:disabled) {
+  background-color: var(--bg-left-column); /* Tai var(--bg-panel) */
+  color: var(--accent-blue);
+  border-color: var(--accent-blue);
+}
+.header-text-btn.active { /* Esim. kun sivupalkki on piilossa */
+  background-color: var(--accent-blue);
+  color: var(--text-dark);
+  border-color: var(--accent-blue);
+}
 
-#toggle-selection-area {
-  background-color: var(--accent-orange); color: var(--text-dark); border-color: transparent;
-  font-weight: 600; padding: var(--btn-padding-y) 0.8rem;
+#toggle-selection-area.header-action-btn { /* Uusi luokka "Valitse treeni" -napille */
+  background-color: var(--accent-orange);
+  color: var(--text-dark);
+  border-color: transparent;
+  font-weight: 600;
+  /* Perii yleiset nappityylit paddingille jne. */
 }
-#toggle-selection-area:hover:not(:disabled) { background-color: #ffb74d; transform: translateY(-1px); }
-.toggle-icon { border-left: 4px solid transparent; border-right: 4px solid transparent; border-top: 5px solid currentColor; transition: transform 0.2s; }
-#toggle-selection-area.open .toggle-icon { transform: rotate(180deg); }
+#toggle-selection-area.header-action-btn:hover:not(:disabled) {
+  background-color: #ffb74d; /* Vaaleampi oranssi hover */
+  transform: translateY(-1px);
+}
+.toggle-icon { /* Nuoli-ikoni */
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid currentColor;
+    transition: transform 0.2s;
+    margin-left: 0.5em; /* Pieni väli tekstin ja nuolen välille */
+}
+#toggle-selection-area.open .toggle-icon { /* Käännetään nuoli, kun valikko auki */
+    transform: rotate(180deg);
+}
+
 
 /* --- VALINTA-ALUEEN NAPIT --- */
 .button-container { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
@@ -283,7 +372,7 @@ button:focus-visible, .button:focus-visible {
   background-color: var(--accent-green); color: var(--text-dark); border-color: transparent;
   font-size: var(--btn-font-size-large); font-family: var(--font-display); font-weight: 700;
   padding: 0.7rem 1.4rem; display: block; width: 90%; max-width: 280px;
-  margin: 1rem auto 0 auto; /* Pienennetty ylämarginaalia */
+  margin: 1rem auto 0 auto;
 }
 .start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
@@ -315,41 +404,44 @@ button:focus-visible, .button:focus-visible {
 
 
 /* --- RESPONSIIVISUUS --- */
-/* Isot näytöt: Kaksi palstaa, ei outer-gappia oletuksena */
 @media (min-width: 1025px) {
-  /* #app-wrapper {
-    gap: var(--outer-gap);
-    padding: var(--outer-gap);
-  } */
-  /* Jos haluat edelleen isomman tilan reunoille suurilla näytöillä, voit lisätä paddingin #app-wrapperille tässä. */
+  /* Ei erityisiä muutoksia tällä hetkellä */
 }
 
 /* Tabletit */
 @media (max-width: 1024px) {
   #app-wrapper { flex-direction: column; gap: 0; padding: 0; }
-  #left-column { overflow-y: visible; padding: 0; /* Ei paddingia, lapset hoitavat */ }
+  #left-column { overflow-y: visible; padding: 0; }
   #right-column-timer {
     position: relative; top: auto; height: auto; width: auto;
     border-left: none; box-shadow: var(--shadow-md);
     margin: var(--base-padding);
     border-radius: var(--btn-border-radius);
-    overflow-y: visible; /* Sisältö venyttää */
+    overflow-y: visible;
+  }
+   #right-column-timer > .timer-controls-content {
+    /* Ei tarvitse enää border-bottomia täällä, jos järjestys on muuttunut */
+    /* border-bottom: 1px solid var(--border-color); */
+    /* padding-bottom: var(--base-padding); */
+    /* margin-bottom: var(--base-padding); */
+    order: -1; /* Siirretään ajastin ylös listan yläpuolelle, jos halutaan */
   }
   #right-column-timer > #steps-list-area {
-    overflow-y: visible; border-bottom: 1px solid var(--border-color);
-    padding-bottom: var(--base-padding); margin-bottom: var(--base-padding);
-    min-height: auto; /* Annetaan sisällön määrittää korkeus */
+    overflow-y: visible;
+    /* border-bottom: none; */
+    padding-bottom: 0;
+    margin-bottom: 0;
+    min-height: auto;
   }
-  #right-column-timer > .timer-controls-content { overflow-y: visible; }
+
 
   header {
     position: sticky; top: 0; z-index: 1001; width: 100%;
-    /* Ei enää negatiivisia marginaaleja, koska #left-columnilla ei paddingia */
     border-radius: 0;
-    padding: 0 var(--base-padding); /* Varmistetaan padding headerille */
+    padding: 0 var(--base-padding);
   }
   .main-content-area-left { flex-direction: column; gap: var(--base-padding); padding: var(--base-padding); }
-  aside#sidebar { width: 100%; border-radius: var(--btn-border-radius); margin-right: 0; } /* Poistettu sidebar-hidden kompensaatio */
+  aside#sidebar { width: 100%; border-radius: var(--btn-border-radius); margin-right: 0; }
 }
 
 /* Puhelimet */
@@ -369,16 +461,42 @@ button:focus-visible, .button:focus-visible {
       z-index: 1002; transform: translateX(-105%);
       border-right: 1px solid var(--border-color);
       border-radius: 0 var(--btn-border-radius) var(--btn-border-radius) 0;
-      padding: var(--base-padding); /* Yleinen padding */
-      padding-top: calc(var(--header-height) + var(--base-padding)); /* Tilaa headerille */
+      padding: var(--base-padding);
+      padding-top: calc(var(--header-height) + var(--base-padding));
       background-color: var(--bg-panel); box-shadow: var(--shadow-lg);
+      /* Varmistetaan, että .sidebar-hidden toimii edelleen oikein */
   }
+  aside#sidebar.sidebar-hidden { /* Varmistetaan piilotus mobiilissa */
+      transform: translateX(-105%) !important; /* Tärkeä !important, jos on muita transform-sääntöjä */
+      width: min(85vw, 280px) !important; /* Leveys säilyy, jotta liukuu oikein */
+      opacity: 1 !important; /* Opasiteetti voi olla 1, transform hoitaa piilotuksen */
+      padding: var(--base-padding) !important;
+      padding-top: calc(var(--header-height) + var(--base-padding)) !important;
+  }
+  aside#sidebar.sidebar-visible { /* Kun tarkoituksella näkyvissä mobiilissa */
+      transform: translateX(0) !important;
+  }
+
+
   body.sidebar-open::before {
     content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
     background-color: rgba(0,0,0,0.7); z-index: 1001; opacity: 0; visibility: hidden;
     transition: opacity 0.25s, visibility 0s 0.25s;
   }
   body.sidebar-open.sidebar-really-open::before { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+  /* Main-view-area kuva ja teksti puhelimella */
+   #item-details {
+        align-items: center; /* Varmistetaan keskitys */
+    }
+    #active-display img#item-image {
+        max-width: 100%; /* Kuva voi olla hieman leveämpi */
+        max-height: 220px; /* Ja matalampi */
+    }
+    #active-display p#item-description {
+        font-size: 0.85rem;
+        padding: 0 0.2rem; /* Hieman tiiviimpi padding */
+    }
 }
 
 /* Scrollbar */
