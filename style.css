@@ -1,4 +1,4 @@
-/* style.css (Versio 2.8 - Palautetut tyylit + Tiivis Layout + Steps Oikealla + Header-muutokset + SelectionArea-muutokset) */
+/* style.css (Versio 2.8 - Grid asettelu button-containereille) */
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
@@ -75,14 +75,13 @@ body {
   overflow-y: hidden;
   z-index: 950;
 }
-#right-column-timer > .timer-controls-content { /* Ajastin ylhäällä */
+#right-column-timer > .timer-controls-content {
   overflow-y: auto;
   flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: var(--base-padding);
-  /* margin-bottom: var(--base-padding); /* Ei tarvita jos gap hoitaa */
 }
-#right-column-timer > #steps-list-area { /* Lista alhaalla */
+#right-column-timer > #steps-list-area {
   overflow-y: auto;
   flex-grow: 1;
   min-height: 150px;
@@ -99,10 +98,9 @@ header {
 }
 header img { height: calc(var(--header-height) - 16px); }
 
-/* VALINTA-ALUEEN YLEISET TYYLIT */
 #selection-area {
   background-color: var(--bg-panel-light);
-  padding: var(--base-padding); /* Ulkoinen padding koko alueelle */
+  padding: var(--base-padding);
   margin-bottom: 0;
   flex-shrink: 0;
   border-bottom: 1px solid var(--border-color);
@@ -117,16 +115,16 @@ header img { height: calc(var(--header-height) - 16px); }
   border-bottom: none;
 }
 
-/* --- VALINTA-ALUEEN MODUULIT (UUSI RAKENNE) --- */
+/* --- VALINTA-ALUEEN MODUULIT --- */
 .selection-grid {
   display: flex;
-  gap: calc(var(--base-padding) * 1.5); /* Väli palstojen välillä */
+  gap: calc(var(--base-padding) * 1.5);
 }
 
 .selection-column {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--base-padding) * 1.5); /* Väli moduulien välillä sarakkeessa */
+  gap: calc(var(--base-padding) * 1.5);
 }
 
 .selection-column-left {
@@ -135,9 +133,6 @@ header img { height: calc(var(--header-height) - 16px); }
 
 .selection-column-right {
   flex: 1.5;
-  /* Jos haluat erotinviivan: */
-  /* border-left: 1px solid var(--border-color); */
-  /* padding-left: calc(var(--base-padding) * 1.5); */
 }
 
 .selection-module {
@@ -148,10 +143,10 @@ header img { height: calc(var(--header-height) - 16px); }
   border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  height: 100%; /* Pyrii täyttämään sarakkeen korkeuden */
+  height: 100%;
 }
-.selection-module > div { /* Kohdistuu #warmup-selection, #cooldown-selection, #training-selection */
-    flex-grow: 1; /* Annetaan sisällön kasvaa napin yläpuolella */
+.selection-module > div {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
 }
@@ -166,36 +161,29 @@ header img { height: calc(var(--header-height) - 16px); }
   gap: 0.4em;
   text-align: center;
   justify-content: center;
-  /* border-bottom: 1px solid var(--border-color-light); */ /* Poistettu, jos ei haluta */
-  /* padding-bottom: 0.5rem; */
 }
 .module-icon {
     font-size: 1.1rem;
 }
 
-.selection-module .button-container {
+.selection-module .button-container { /* Yleinen grid asetus nappikontainereille moduuleissa */
+    display: grid;
+    gap: 0.5rem; /* Tilaa nappien välissä */
     margin-bottom: 1rem;
-    justify-content: center;
 }
 .selection-module .level-container {
     margin-top: 0.5rem;
     margin-bottom: 1rem;
 }
 .selection-module .start-button {
-    width: 100%; /* Täysleveä moduulin sisällä */
-    max-width: none; /* Ei rajoitusta */
+    width: 100%;
+    max-width: none;
     margin-left: auto;
     margin-right: auto;
-    margin-top: auto; /* Työntää napin moduulin alaosaan */
+    margin-top: auto;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
 }
-
-/* Puhdistetaan vanhat yleiset säännöt, jotka saattoivat koskea #training-selection jne. */
-/* #training-selection h2, .routine-selection h2 { ... } */
-/* #training-selection p, .routine-selection p { ... } */
-/* Yllä olevat .selection-module h2 korvaavat nämä. */
-
 
 .main-content-area-left {
   display: flex; flex-grow: 1;
@@ -252,7 +240,6 @@ section#active-display { flex-grow: 1; display: flex; flex-direction: column; }
 #title-area { display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 0.8rem; flex-shrink: 0; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-color); }
 #active-display h2#item-name { margin: 0 0.75rem; font-size: clamp(1.2rem, 2.2vw, 1.6rem); font-weight: 600; color: var(--text-light); flex-grow: 1; text-align: center; font-family: var(--font-display); }
 
-/* --- PÄÄNÄKYMÄN KUVA JA TEKSTI --- */
 #item-details {
     flex-grow: 1;
     display: flex;
@@ -302,7 +289,6 @@ section#active-display { flex-grow: 1; display: flex; flex-direction: column; }
     }
 }
 
-/* --- OIKEAN PALSTAN SISÄLTÖ (STEPS LIST + AJASTIN) --- */
 #steps-list-area {
   padding-right: 0.3rem;
 }
@@ -326,7 +312,7 @@ li.step-item.active {
   border-left-color: var(--accent-blue); font-weight: 500; color: var(--accent-blue);
 }
 
-.timer-controls-content { /* Tämä on jo määritelty ylempänä #right-column-timerin lapsena */
+.timer-controls-content {
   display: flex; flex-direction: column; align-items: center;
   gap: 0.8rem; color: var(--text-main);
 }
@@ -336,8 +322,6 @@ li.step-item.active {
 .round-display { font-size: 0.9rem; background: var(--bg-panel); padding: 0.25rem 0.7rem; border-radius: 20px; border: 1px solid var(--border-color); color: var(--text-subtle); }
 .control-button-container { display: flex; flex-direction: column; gap: 0.6rem; width: 100%; margin-top: 0.8rem; }
 
-
-/* --- YLEISET NAPPIEN PERUSTYYLIT --- */
 button, .button {
   font-family: var(--font-body); font-weight: 500; cursor: pointer;
   border: var(--btn-border-width) solid transparent;
@@ -360,7 +344,6 @@ button:focus-visible, .button:focus-visible {
   box-shadow: 0 0 0 2px rgba(66, 165, 245, 0.2);
 }
 
-/* --- HEADERIN NAPIT --- */
 .header-text-btn {
   background: transparent;
   border: 1px solid var(--border-color);
@@ -401,40 +384,55 @@ button:focus-visible, .button:focus-visible {
     transform: rotate(180deg);
 }
 
+/* --- VALINTA-ALUEEN SISÄISET NAPIT (week, level, routine) GRID-ASETUKSILLA --- */
 
-/* --- VALINTA-ALUEEN SISÄISET NAPIT (week, level, routine) --- */
-/* Nämä tyylit periytyvät yleisistä, mutta voidaan tarkentaa tarvittaessa */
+/* Week-buttonien kontainerin erityisasetukset */
+#week-buttons-container.button-container { /* Tarkennettu valitsin */
+    grid-template-columns: repeat(4, 1fr); /* 4 nappia per rivi */
+}
+
 .week-button {
   background-color: var(--accent-blue); color: var(--text-dark); border-color: transparent;
-  font-weight: 600; flex-grow: 1; min-width: 130px; text-align: center;
+  font-weight: 600;
+  text-align: center;
+  padding: var(--btn-padding-y) 0.5rem;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 .week-button:hover:not(.active):not(:disabled) { background-color: #64b5f6; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 .week-button.active { background-color: var(--accent-green); color: var(--text-dark); transform: scale(1.02); box-shadow: 0 0 6px rgba(102, 187, 106, 0.3); }
 
+/* Level-buttonien kontaineri */
+#level-buttons-container.button-container { /* Tarkennettu valitsin */
+    grid-template-columns: repeat(4, 1fr); /* 4 tasoa vierekkäin */
+}
+
 .level-button {
   background-color: transparent; color: var(--text-main); border-color: var(--border-color-light);
-  font-size: 0.75rem; min-width: 65px;
+  font-size: 0.75rem;
 }
 .level-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel); color: var(--accent-blue); border-color: var(--accent-blue); }
 .level-button.active { background-color: var(--accent-orange); color: var(--text-dark); border-color: var(--accent-orange); font-weight: 600; box-shadow: 0 0 6px rgba(255, 167, 38, 0.25); }
 
-.routine-button { /* Lämmittely/Jäähdyttely -valintanapit */
+/* Routine-buttonien (lämmittely/jäähdyttely) kontaineri */
+.routine-buttons.button-container { /* Tarkennettu valitsin */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+}
+
+.routine-button {
   background-color: var(--bg-panel); color: var(--text-main); border-color: var(--border-color);
-  font-family: var(--font-display); font-weight: 500; flex-grow: 1; min-width: 160px;
+  font-family: var(--font-display); font-weight: 500;
 }
 .routine-button .duration { font-size: 0.8em; color: var(--text-subtle); opacity: 0.9; margin-left: 0.4em; }
 .routine-button:hover:not(.active):not(:disabled) { background-color: #2c3038; border-color: var(--accent-blue); color: var(--accent-blue); }
 .routine-button.active { background-color: var(--accent-blue); color: var(--text-dark); border-color: var(--accent-blue); font-weight: 600; }
 
-/* START-NAPIT (yleinen tyyli, jota .selection-module .start-button tarkentaa) */
-.start-button { /* Tätä käytetään moduulien sisällä */
+.start-button {
   background-color: var(--accent-green); color: var(--text-dark); border-color: transparent;
   font-size: var(--btn-font-size-large); font-family: var(--font-display); font-weight: 700;
-  /* padding, width, max-width, margin hoidetaan .selection-module .start-button -säännöllä */
 }
 .start-button:hover:not(:disabled) { background-color: #81c784; transform: translateY(-2px); box-shadow: var(--shadow-md); }
 
-/* --- PÄÄNÄKYMÄN NAVIGOINTINAPIT --- */
 .title-nav-btn {
   background: transparent; border: 1px solid var(--border-color); color: var(--text-subtle);
   width: 38px; height: 38px; padding: 0; font-size: 1.1rem;
@@ -442,7 +440,6 @@ button:focus-visible, .button:focus-visible {
 }
 .title-nav-btn:hover:not(:disabled) { background-color: var(--bg-panel); color: var(--accent-blue); border-color: var(--accent-blue); transform: scale(1.08); }
 
-/* --- AJASTIMEN KONTROLLINAPIT --- */
 .control-button {
   font-family: var(--font-display); font-weight: 600;
   width: 100%; padding: 0.7rem 0.9rem;
@@ -460,13 +457,9 @@ button:focus-visible, .button:focus-visible {
 #next-step-btn { background-color: var(--accent-blue); color: var(--text-dark); border-color: transparent; }
 #next-step-btn:hover:not(:disabled) { background-color: #64b5f6; }
 
-
-/* --- RESPONSIIVISUUS (PÄÄASIALLINEN LAYOUT) --- */
 @media (min-width: 1025px) {
-  /* Ei erityisiä muutoksia tällä hetkellä */
 }
 
-/* Tabletit (PÄÄLAYOUT) */
 @media (max-width: 1024px) {
   #app-wrapper { flex-direction: column; gap: 0; padding: 0; }
   #left-column { overflow-y: visible; padding: 0; }
@@ -478,7 +471,7 @@ button:focus-visible, .button:focus-visible {
     overflow-y: visible;
   }
    #right-column-timer > .timer-controls-content {
-    order: -1; /* Ajastin ylös */
+    order: -1;
   }
   #right-column-timer > #steps-list-area {
     min-height: auto;
@@ -492,20 +485,20 @@ button:focus-visible, .button:focus-visible {
   .main-content-area-left { flex-direction: column; gap: var(--base-padding); padding: var(--base-padding); }
   aside#sidebar { width: 100%; border-radius: var(--btn-border-radius); margin-right: 0; }
 
-  /* Valinta-alueen palstat allekkain tabletilla ja pienemmillä */
   .selection-grid {
     flex-direction: column;
   }
   .selection-column-right {
-    border-left: none; /* Poista erotin, kun allekkain */
+    border-left: none;
     padding-left: 0;
-    /* margin-top: var(--base-padding); /* Tilaa edelliseen */
-    /* border-top: 1px solid var(--border-color); /* Erotin yläpuolelle */
-    /* padding-top: var(--base-padding); */
   }
+  /* Säädetään week-buttonien sarakemäärää tabletilla tarvittaessa */
+  #week-buttons-container.button-container {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Enemmän nappeja per rivi, jos mahtuu */
+  }
+
 }
 
-/* Puhelimet (PÄÄLAYOUT) */
 @media (max-width: 767px) {
   :root {
     --base-padding: 0.7rem; --header-height: 52px;
@@ -524,7 +517,7 @@ button:focus-visible, .button:focus-visible {
       border-radius: 0 var(--btn-border-radius) var(--btn-border-radius) 0;
       padding: var(--base-padding);
       padding-top: calc(var(--header-height) + var(--base-padding));
-      background-color: var(--bg-panel); box-shadow: var(--shadow-md); /* Pienennetty varjoa */
+      background-color: var(--bg-panel); box-shadow: var(--shadow-md);
   }
   aside#sidebar.sidebar-hidden {
       transform: translateX(-105%) !important;
@@ -555,9 +548,18 @@ button:focus-visible, .button:focus-visible {
         font-size: 0.85rem;
         padding: 0 0.2rem;
     }
+    /* Säädetään week-buttonien sarakemäärää mobiilissa tarvittaessa */
+    #week-buttons-container.button-container {
+      grid-template-columns: repeat(3, 1fr); /* Esim. 3 nappia per rivi mobiilissa */
+    }
+    #level-buttons-container.button-container {
+      grid-template-columns: repeat(2, 1fr); /* Esim. 2 nappia per rivi mobiilissa */
+    }
+    .routine-buttons.button-container {
+      grid-template-columns: 1fr; /* Yksi nappi per rivi mobiilissa */
+    }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
 ::-webkit-scrollbar-thumb { background-color: #404040; border-radius: 3px; }
