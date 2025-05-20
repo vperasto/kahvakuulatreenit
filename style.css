@@ -1,4 +1,4 @@
-/* style.css (Versio 2.8 - Grid asettelu button-containereille) */
+/* style.css (Versio 2.8 - Description listan tyylit) */
 
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Roboto:wght@400;500;700&display=swap');
@@ -166,9 +166,9 @@ header img { height: calc(var(--header-height) - 16px); }
     font-size: 1.1rem;
 }
 
-.selection-module .button-container { /* Yleinen grid asetus nappikontainereille moduuleissa */
+.selection-module .button-container {
     display: grid;
-    gap: 0.5rem; /* Tilaa nappien välissä */
+    gap: 0.5rem;
     margin-bottom: 1rem;
 }
 .selection-module .level-container {
@@ -258,7 +258,9 @@ section#active-display { flex-grow: 1; display: flex; flex-direction: column; }
     background-color: var(--bg-left-column);
     border: 1px solid var(--border-color);
 }
-#active-display p#item-description {
+
+/* --- KUVAUKSEN MUOTOILUT (SIS. LISTAT) --- */
+#active-display p#item-description { /* Tämä on kääre generoidulle sisällölle */
     color: var(--text-main);
     font-size: 0.9rem;
     line-height: 1.6;
@@ -267,6 +269,40 @@ section#active-display { flex-grow: 1; display: flex; flex-direction: column; }
     text-align: left;
     padding: 0 0.5rem;
 }
+
+#item-description p { /* Yksittäiset kappaleet kuvauksessa */
+    margin-bottom: 0.75em;
+}
+#item-description p:last-child {
+    margin-bottom: 0;
+}
+
+#item-description ol,
+#item-description ul {
+    list-style-position: outside;
+    padding-left: 1.5em; /* Sisennys listalle */
+    margin-top: 0.5em;
+    margin-bottom: 0.75em;
+}
+
+#item-description ol li,
+#item-description ul li {
+    margin-bottom: 0.4em;
+}
+
+#item-description li.description-note,
+#item-description p.description-note-paragraph {
+    font-style: italic;
+    color: var(--text-subtle);
+    margin-top: 0.6em;
+}
+#item-description li.description-note strong,
+#item-description p.description-note-paragraph strong {
+    font-style: normal;
+    color: var(--accent-orange);
+}
+/* --- KUVAUKSEN MUOTOILUT LOPPUU --- */
+
 
 @media (min-width: 800px) {
     #item-details {
@@ -384,11 +420,8 @@ button:focus-visible, .button:focus-visible {
     transform: rotate(180deg);
 }
 
-/* --- VALINTA-ALUEEN SISÄISET NAPIT (week, level, routine) GRID-ASETUKSILLA --- */
-
-/* Week-buttonien kontainerin erityisasetukset */
-#week-buttons-container.button-container { /* Tarkennettu valitsin */
-    grid-template-columns: repeat(4, 1fr); /* 4 nappia per rivi */
+#week-buttons-container.button-container {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .week-button {
@@ -402,9 +435,8 @@ button:focus-visible, .button:focus-visible {
 .week-button:hover:not(.active):not(:disabled) { background-color: #64b5f6; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 .week-button.active { background-color: var(--accent-green); color: var(--text-dark); transform: scale(1.02); box-shadow: 0 0 6px rgba(102, 187, 106, 0.3); }
 
-/* Level-buttonien kontaineri */
-#level-buttons-container.button-container { /* Tarkennettu valitsin */
-    grid-template-columns: repeat(4, 1fr); /* 4 tasoa vierekkäin */
+#level-buttons-container.button-container {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .level-button {
@@ -414,8 +446,7 @@ button:focus-visible, .button:focus-visible {
 .level-button:hover:not(.active):not(:disabled) { background-color: var(--bg-panel); color: var(--accent-blue); border-color: var(--accent-blue); }
 .level-button.active { background-color: var(--accent-orange); color: var(--text-dark); border-color: var(--accent-orange); font-weight: 600; box-shadow: 0 0 6px rgba(255, 167, 38, 0.25); }
 
-/* Routine-buttonien (lämmittely/jäähdyttely) kontaineri */
-.routine-buttons.button-container { /* Tarkennettu valitsin */
+.routine-buttons.button-container {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 }
 
@@ -492,11 +523,9 @@ button:focus-visible, .button:focus-visible {
     border-left: none;
     padding-left: 0;
   }
-  /* Säädetään week-buttonien sarakemäärää tabletilla tarvittaessa */
   #week-buttons-container.button-container {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* Enemmän nappeja per rivi, jos mahtuu */
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   }
-
 }
 
 @media (max-width: 767px) {
@@ -548,15 +577,14 @@ button:focus-visible, .button:focus-visible {
         font-size: 0.85rem;
         padding: 0 0.2rem;
     }
-    /* Säädetään week-buttonien sarakemäärää mobiilissa tarvittaessa */
     #week-buttons-container.button-container {
-      grid-template-columns: repeat(3, 1fr); /* Esim. 3 nappia per rivi mobiilissa */
+      grid-template-columns: repeat(3, 1fr);
     }
     #level-buttons-container.button-container {
-      grid-template-columns: repeat(2, 1fr); /* Esim. 2 nappia per rivi mobiilissa */
+      grid-template-columns: repeat(2, 1fr);
     }
     .routine-buttons.button-container {
-      grid-template-columns: 1fr; /* Yksi nappi per rivi mobiilissa */
+      grid-template-columns: 1fr;
     }
 }
 
