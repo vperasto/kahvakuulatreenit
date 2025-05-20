@@ -1,83 +1,44 @@
 {
   "warmups": [
     {
+      "id": "kb_flow_warmup",
+      "name": "Kahvakuula Flow-lämmittely",
+      "durationMinutes": 7,
+      "description": "Kevyt, virtaava lämmittely kahvakuulan kanssa, joka valmistaa kehoa tulevaan treeniin. Tee liikkeet rauhallisesti ja hallitusti, keskittyen liikeratoihin. Noin 30-45 sekuntia per liike tai annettu toistomäärä.",
+      "steps": [
+        {
+          "name": "Halo kevyellä kuulalla",
+          "description": "1. Ote: Pidä kevyestä kahvakuulasta kiinni sarvista, pohja ylöspäin, rinnan edessä.\n2. Liike: Pyöritä kuulaa hitaasti ja hallitusti pään ympäri, mahdollisimman lähellä vartaloa.\n3. Keskivartalo: Pidä keskivartalo tiukkana, vältä lantion liiallista heilumista.\n4. Toistot: 5-6 kiertoa molempiin suuntiin."
+        },
+        {
+          "name": "Pokaalikyykky (ilman pohjakosketusta)",
+          "description": "1. Ote: Pidä kevyttä kuulaa pokaaliotteessa rinnalla.\n2. Liike: Laskeudu hitaasti kyykkyyn niin syvälle kuin hyvällä ryhdillä pääset, mutta älä päästä kuulaa koskettamaan lattiaa.\n3. Ryhti: Pidä selkä suorana ja rinta ylhäällä.\n4. Toistot: 8-10 hidasta toistoa."
+        },
+        {
+          "name": "Lantion saranaharjoitus kuulalla (Good Morning)",
+          "description": "1. Asento: Seiso ryhdikkäästi, kuula rinnalla pokaaliotteessa tai kevyesti niskan takana (jos tuntuu hyvältä).\n2. Liike: Työnnä lantiota taakse ja kallista ylävartaloa eteenpäin lantiosta saranoimalla. Pidä selkä suorana ja polvet vain aavistuksen koukussa.\n3. Tuntuma: Tunne venytys takareisissä.\n4. Palautus: Ojenna lantio takaisin alkuasentoon.\n5. Toistot: 8-10 toistoa."
+        },
+        {
+          "name": "Kevyet etuheilautukset (pieni liikerata)",
+          "description": "1. Asento: Seiso hartioita leveämmässä haara-asennossa, kuula edessäsi.\n2. Liike: Tartu kuulaan ja tee kevyt taakseveto. Ojenna lantio kevyesti, anna kuulan heilua vain navan korkeudelle.\n3. Fokus: Keskity lantion liikkeeseen ja ajoitukseen, älä voimaan.\n4. Toistot: 10-15 toistoa."
+        },
+        {
+          "name": "Kulmasoutu kevyellä kuulalla (vuorotellen)",
+          "description": "1. Asento: Nojaa eteenpäin lantiosta, selkä suorana. Voit tukea vapaan käden polveen.\n2. Liike: Vedä kuulaa kevyesti kohti kylkeä, keskity lavan liikkeeseen.\n3. Toistot: 6-8 toistoa per puoli."
+        }
+      ]
+    },
+    {
       "id": "dynamic_general",
-      "name": "Dynaaminen Peruslämmittely",
+      "name": "Dynaaminen Peruslämmittely (ilman kuulaa)",
       "durationMinutes": 5,
       "description": "Yleislämmittely, joka herättelee kehon liikkeeseen dynaamisilla liikkeillä. Noin 30-60 sekuntia tai 10-15 toistoa per liike.",
       "steps": [
-        {
-          "name": "Nivelten Pyörittelyt",
-          "description": "1. Ranteet & Nilkat: Pyöritä molempia niveliä rauhallisesti myötä- ja vastapäivään n. 10 kertaa/suunta.\n2. Polvet: Seiso jalat yhdessä, kädet polvilla. Pyöritä polvia pienellä liikkeellä molempiin suuntiin.\n3. Lantio: Seiso haara-asennossa, kädet lantiolla. Pyöritä lantiota isosti molempiin suuntiin.\n4. Olkapäät: Pyöritä olkapäitä eteen ja taakse.\n5. Kyynärpäät: Koukista ja ojenna käsiä."
-        },
-        {
-          "name": "Jalan Heilautukset",
-          "description": "Ota tukea tarvittaessa. Heilauta jalkaa suorana:\n1. Eteen-taakse: Heilauta hallitusti niin korkealle kuin liikkuvuus sallii (10-15/jalka).\n2. Sivulle: Heilauta jalkaa vartalon eteen ja sivulle loitonnukseen (10-15/jalka). Pidä keskivartalo tiukkana."
-        },
-        {
-          "name": "Vartalon Kierrot",
-          "description": "Seiso lantionlevyisessä haara-asennossa, polvet hieman koukussa. Kierrä ylävartaloa rennosti puolelta toiselle, anna käsien seurata mukana. (n. 30 sek)"
-        },
-        {
-          "name": "Syväkyykky ilman painoa",
-          "description": "Seiso hartianlevyisessä asennossa, varpaat hieman ulospäin. Laskeudu hallitusti kyykkyyn niin syvälle kuin pystyt pitäen selän suorana ja kantapäät lattiassa. Voit pitää käsillä kiinni esim. ovikarmista alkuun. Nouse ylös pakaroita käyttäen. (10-12 toistoa)"
-        },
-        {
-          "name": "Kevyt Kardio",
-          "description": "Valitse yksi: \n- Kevyt hölkkä paikallaan nostellen polvia.\n- Haarahypyt rauhalliseen tahtiin.\n- Polvennostokävely.\nTavoite nostaa hieman sykettä. (n. 30-60 sek)"
-        }
-      ]
-    },
-    {
-      "id": "kb_specific_prep",
-      "name": "Kahvakuula Valmistelu",
-      "durationMinutes": 6,
-      "description": "Valmistelee kehoa erityisesti kahvakuulaliikkeisiin, kuten heilautuksiin ja nostoihin.",
-      "steps": [
-        {
-          "name": "Lantion Saranaharjoitus (Good Morning)",
-          "description": "Seiso ryhdikkäästi, kädet niskan takana tai rinnalla ristissä. Työnnä lantiota taakse ja kallista ylävartaloa eteenpäin pitäen selkä suorana (kuin niiaisit). Tunne venytys takareisissä. Ojenna lantio takaisin alkuasentoon. (10-12 hidasta toistoa)"
-        },
-        {
-          "name": "Olkapäiden Aktivointi (Halo)",
-          "description": "Ota kevyt kahvakuula (tai muu pieni paino) sarvista kiinni, pohja ylöspäin, rinnan edessä. Pyöritä kuulaa hitaasti ja hallitusti pään ympäri mahdollisimman lähellä vartaloa. Pidä keskivartalo tiukkana, älä anna lantion heilua. (4-6 kiertoa / suunta)"
-        },
-        {
-          "name": "Rintarangan Avaukset",
-          "description": "Asetu nelinkontin. Vie toinen käsi niskan taakse. Kierrä ylävartaloa avaten rintaa kohti kattoa ja laske kyynärpää hallitusti kohti lattiaa. (8-10 toistoa / puoli)"
-        },
-        {
-          "name": "Kevyet Heilautukset (ilman kuulaa/kepikepillä)",
-          "description": "Harjoittele heilautuksen liikerataa. Seiso haara-asennossa, tee lantion sarana ja kuvittele heilauttavasi kuulaa tai käytä keppiä. Keskity lantion räjähtävään ojennukseen. (10-15 toistoa)"
-        },
-        {
-          "name": "Pokaalikyykyn pito",
-          "description": "Ota kevyt kuula pokaaliotteeseen. Laskeudu kyykkyyn ja pidä asento alhaalla 10-15 sekuntia keskittyen hyvään ryhtiin ja keskivartalon tukeen. Nouse ylös. (2-3 pitoa)"
-        }
-      ]
-    },
-    {
-      "id": "quick_mobility",
-      "name": "Nopea Liikkuvuuslämmittely",
-      "durationMinutes": 4,
-      "description": "Lyhyt ja ytimekäs lämmittely liikkuvuuteen keskittyen.",
-      "steps": [
-        {
-          "name": "Kissakameli",
-          "description": "Nelinkontin. Sisäänhengityksellä notkista selkää kevyesti (lehmä/kameli). Uloshengityksellä pyöristä selkää voimakkaasti kohti kattoa (kissa). (8-10 rauhallista toistoa)"
-        },
-        {
-          "name": "Maailman Paras Venytys (syvä askelkyykky + kierto)",
-          "description": "Astu pitkä askel eteen. Laske takimmainen polvi maahan. Vie etummaisen jalan puoleinen käsi lattiaan jalan viereen. Kierrä toinen käsi ja ylävartalo kohti kattoa. Pidä hetki, palaa ja vaihda puoli. (4-5 kiertoa / puoli)"
-        },
-        {
-          "name": "Lonkan Pyöritykset Seisten",
-          "description": "Seiso yhdellä jalalla, ota tukea. Nosta toinen polvi 90 asteen kulmaan. Pyöritä reittä isosti ulko- ja sisäkautta lonkkanivelestä. (8-10 pyöräytystä / suunta / jalka)"
-        },
-        {
-          "name": "Olkapäiden Pyöritykset (CARs)",
-          "description": "Seiso ryhdikkäästi. Pidä toinen käsi paikallaan. Lähde viemään toista kättä hitaasti ja hallitusti etukautta ylös, kierrä kämmen ulospäin yläasennossa ja jatka liike hallitusti taakse alas. Palauta alkureittiä. Tee liike mahdollisimman laajasti ilman että vartalo kiertyy liikaa. (3-4 hidasta kiertoa / suunta / käsi)"
-        }
+        { "name": "Nivelten Pyörittelyt (Ranteet, Nilkat, Polvet, Lantio, Olkapäät)", "description": "Pyöritä kaikkia isoja niveliä rauhallisesti molempiin suuntiin noin 10 kertaa per suunta." },
+        { "name": "Jalan Heilautukset (Eteen-Taakse & Sivulle)", "description": "Ota tukea tarvittaessa. Heilauta jalkaa hallitusti 10-15 kertaa per suunta per jalka." },
+        { "name": "Vartalon Kierrot Seisten", "description": "Kierrä ylävartaloa rennosti puolelta toiselle n. 30 sekuntia." },
+        { "name": "Syväkyykky ilman painoa", "description": "Laskeudu hallitusti niin syvälle kuin pääset selkä suorana. 10-12 toistoa." },
+        { "name": "Kevyt Kardio (Paikallaan hölkkä, haarahypyt)", "description": "Nosta sykettä kevyesti n. 30-60 sekuntia." }
       ]
     }
   ],
@@ -86,100 +47,26 @@
       "id": "static_standard",
       "name": "Staattinen Perusjäähdyttely",
       "durationMinutes": 7,
-      "description": "Klassisia staattisia venytyksiä tärkeimmille lihasryhmille. Pidä jokaista venytystä rauhallisesti 20-30 sekuntia.",
+      "description": "Klassisia staattisia venytyksiä tärkeimmille lihasryhmille. Pidä jokaista venytystä rauhallisesti 20-30 sekuntia, hengitä syvään.",
       "steps": [
-        {
-          "name": "Takareiden Venytys",
-          "description": "Istu lattialla, toinen jalka suorana, toinen koukussa jalkapohja suoran jalan reittä vasten. Taivuta lantiosta suoraa jalkaa kohti pitäen selkä suorana. Tunne venytys takareidessä. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Pakaran Venytys",
-          "description": "Selinmakuulla. Nosta toinen nilkka vastakkaisen polven päälle. Ota käsillä koukussa olevan jalan reiden takaa kiinni ja vedä jalkoja kevyesti kohti rintaa. Tunne venytys pakarassa (nilkka polven päällä oleva puoli). Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Etureiden Venytys",
-          "description": "Seisten, ota tukea seinästä. Koukista toinen jalka taakse ja ota nilkasta kiinni. Vedä kantapäätä kohti pakaraa pitäen polvet vierekkäin ja lantio suorassa (älä notkista selkää). Tunne venytys etureidessä. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Rintalihaksen Venytys",
-          "description": "Seiso oviaukossa tai seinän vieressä. Aseta kyynärvarsi seinää vasten n. 90 asteen kulmassa. Astu eteenpäin ja kierrä vartaloa poispäin seinästä, kunnes tunnet venytyksen rinnassa ja etuolkapäässä. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Hartian/Takaolkapään Venytys",
-          "description": "Seisten tai istuen. Ojenna toinen käsi suorana vartalon eteen. Ota toisella kädellä kiinni ojennetun käden olkavarresta ja vedä kättä kevyesti lähemmäs vartaloa. Tunne venytys hartian takaosassa. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Ojentajan Venytys",
-          "description": "Nosta toinen käsi ylös pään viereen. Koukista kyynärpää ja anna kämmenen laskeutua lapaluiden väliin. Ota toisella kädellä kiinni koukistetun käden kyynärpäästä ja paina kevyesti alaspäin/taaksepäin. Tunne venytys ojentajassa. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Leveä Selkälihas (Lat Stretch)",
-          "description": "Polvistu lattialle. Vie kädet pitkälle eteen ja laske rintaa kohti lattiaa, pidä lantio polvien yläpuolella. Tunne venytys selässä ja kainaloiden alla. Voit kokeilla viedä käsiä hieman sivulle tehostaaksesi venytystä."
-        }
-      ]
-    },
-    {
-      "id": "lower_body_focus_cool",
-      "name": "Alavartalopainotteinen Jäähdyttely",
-      "durationMinutes": 8,
-      "description": "Keskittyy erityisesti jalkojen ja lantion alueen palauttaviin venytyksiin. Pidä venytykset 30 sekuntia.",
-      "steps": [
-        {
-          "name": "Perhosvenytys (Butterfly)",
-          "description": "Istu lattialla, tuo jalkapohjat vastakkain ja vedä kantapäitä lähelle vartaloa. Anna polvien laskeutua sivuille. Voit painaa kevyesti polvia alaspäin tai nojata hieman eteenpäin selkä suorana. Tunne venytys sisäreisissä."
-        },
-        {
-          "name": "Syvä Kyykkyasento (Malasana)",
-          "description": "Laskeudu syvään kyykkyyn, jalat hieman hartioita leveämmällä, varpaat ulospäin. Pyri pitämään kantapäät lattiassa. Tuo kämmenet yhteen rinnan eteen ja paina kyynärpäillä polvia kevyesti ulospäin. Avaa lantiota."
-        },
-        {
-          "name": "Lonkankoukistajan Venytys",
-          "description": "Asetu polviseisontaan, toinen jalka edessä 90 asteen kulmassa. Työnnä lantiota eteenpäin pitäen ylävartalo pystyssä. Tunne venytys takimmaisen jalan lonkan etuosassa. Voit tehostaa nostamalla takimmaisen jalan puoleisen käden ylös. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Pohkeen Venytys Seinää Vasten",
-          "description": "Asetu seinän eteen. Astu toisella jalalla taakse, pidä jalka suorana ja kantapää lattiassa. Nojaa eteenpäin, kunnes tunnet venytyksen takimmaisen jalan pohkeessa. Pidä ja vaihda puoli. Voit tehdä myös polvi hieman koukussa alempaa pohjelihasta varten."
-        },
-        {
-          "name": "Makaava Pakaravenytys (Supine Figure 4)",
-          "description": "Selinmakuulla, jalat koukussa, jalkapohjat lattiassa. Nosta oikea nilkka vasemman polven päälle. Pujota oikea käsi jalkojen välistä ja vasen käsi vasemman reiden ulkopuolelta. Ota kiinni vasemman reiden takaa ja vedä jalkoja kevyesti kohti rintaa. Tunne venytys oikeassa pakarassa. Pidä ja vaihda puoli."
-        },
-        {
-          "name": "Takareiden Venytys Selinmakuulla",
-          "description": "Selinmakuulla. Nosta toinen jalka suorana kohti kattoa. Ota käsillä kiinni reiden takaa tai pohkeesta (älä polvitaipeesta). Vedä jalkaa kevyesti kohti itseäsi pitäen polvi mahdollisimman suorana. Toinen jalka voi olla koukussa tai suorana lattialla. Pidä ja vaihda puoli."
-        }
+        { "name": "Takareiden Venytys", "description": "Istu lattialla, toinen jalka suorana, toinen koukussa jalkapohja suoran jalan reittä vasten. Taivuta lantiosta suoraa jalkaa kohti pitäen selkä suorana. Vaihda puoli." },
+        { "name": "Pakaran Venytys (Selinmakuulla, nilkka polven päälle)", "description": "Vedä jalkoja kevyesti kohti rintaa. Vaihda puoli." },
+        { "name": "Etureiden Venytys Seisten", "description": "Ota tukea, koukista jalka taakse ja vedä kantapäätä kohti pakaraa. Pidä polvet vierekkäin. Vaihda puoli." },
+        { "name": "Rintalihaksen Venytys (Oviaukossa tai seinää vasten)", "description": "Aseta kyynärvarsi seinää vasten, astu eteen ja kierrä vartaloa poispäin. Vaihda puoli." },
+        { "name": "Hartian/Takaolkapään Venytys", "description": "Ojenna käsi vartalon eteen, ota toisella kädellä kiinni ja vedä kevyesti lähemmäs. Vaihda puoli." },
+        { "name": "Ojentajan Venytys (Käsi niskan taakse)", "description": "Nosta käsi ylös, koukista kyynärpää. Paina toisella kädellä kevyesti kyynärpäästä. Vaihda puoli." }
       ]
     },
     {
       "id": "gentle_mobility_cool",
       "name": "Kevyt Liikkuvuusjäähdyttely",
       "durationMinutes": 6,
-      "description": "Rauhallisia liikkuvuusharjoitteita ja kevyitä venytyksiä kehon rentouttamiseen.",
+      "description": "Rauhallisia liikkuvuusharjoitteita ja kevyitä venytyksiä kehon rentouttamiseen. Liiku hengityksen tahdissa.",
       "steps": [
-        {
-          "name": "Selinmakuulla Kierrot",
-          "description": "Selinmakuulla, levitä kädet sivuille T-asentoon. Koukista polvet ja anna niiden kaatua hallitusti toiselle sivulle. Pidä hartiat lattiassa. Katse voi kääntyä vastakkaiseen suuntaan. Pidä hetki ja vaihda puoli. (3-4 rauhallista vaihtoa / puoli)"
-        },
-        {
-          "name": "Lapsen Asento (Child's Pose)",
-          "description": "Polvistu lattialle, isot varpaat yhdessä, polvet lantion leveydellä tai leveämmällä. Laskeudu istumaan kantapäille ja laske ylävartalo reisien väliin tai päälle, otsa lattiaan. Kädet voivat olla ojennettuna eteen tai vartalon vierellä taakse. Hengitä rauhallisesti ja rentoudu."
-        },
-        {
-          "name": "Neulansilmä (Thread the Needle)",
-          "description": "Nelinkontin. Pujota oikea käsi vasemman kainalon alta, laske oikea olkapää ja poski lattiaan. Vasen käsi voi jäädä koukkuun eteen tai ojentua eteenpäin. Tunne kierto ja venytys yläselässä ja hartianseudulla. Pidä hetki ja vaihda puoli."
-        },
-        {
-          "name": "Rintarangan Ojennus Polviseisonnassa",
-          "description": "Polviseisonnassa noin metrin päässä tuolista tai penkistä. Aseta kyynärpäät tuolin reunalle ja tuo kämmenet yhteen niskan taakse. Laske rintaa alaspäin ja työnnä päätä käsien välistä. Tunne venytys rintarangassa ja ojentajissa."
-        },
-        {
-          "name": "Nilkan Pyörittelyt & Ojennus/Koukistus",
-          "description": "Istu lattialla tai tuolilla. Pyörittele toista nilkkaa rauhallisesti molempiin suuntiin. Tee myös nilkan ojennus-koukistusliikettä. Vaihda jalka."
-        },
-        {
-          "name": "Niskan Kevyt Venytys",
-          "description": "Istu ryhdikkäästi. Kallista päätä varovasti oikealle, ikään kuin korva menisi kohti olkapäätä. Voit tehostaa kevyesti oikealla kädellä painamalla. ÄLÄ VENYTÄ LIIAN VOIMAKKAASTI. Pidä hetki ja vaihda puoli. Voit tehdä myös kevyen kallistuksen eteenpäin (leuka kohti rintaa)."
-        }
+        { "name": "Selinmakuulla Kierrot", "description": "Kädet T-asennossa, koukista polvet ja kaada sivulle. Pidä hartiat lattiassa. 3-4 / puoli." },
+        { "name": "Lapsen Asento (Child's Pose)", "description": "Polvistu, laske ylävartalo reisien päälle, otsa lattiaan. Rentoudu 30-60 sek." },
+        { "name": "Neulansilmä (Thread the Needle)", "description": "Nelinkontin, pujota käsi toisen kainalon alta, laske olkapää ja poski lattiaan. Pidä hetki, vaihda puoli." },
+        { "name": "Niskan Kevyt Venytys", "description": "Istu ryhdikkäästi, kallista päätä varovasti sivulle, sitten eteen. ÄLÄ PAKOTA. 15-20 sek / suunta." }
       ]
     }
   ],
@@ -188,121 +75,170 @@
       "id": "goblet_squat",
       "name": "Pokaalikyykky",
       "image": "img/goblet-kyykky.png",
-      "description": "1. Ote: Ota kahvakuulasta kiinni sarvista niin, että kuulan pohja osoittaa ylöspäin. Pidä kuula lähellä rintaa.\n2. Asento: Seiso jalat hartianlevyisessä asennossa, varpaat hieman ulospäin.\n3. Liike: Laskeudu hallitusti kyykkyyn työntämällä lantiota taakse ja koukistamalla polvia. Pidä selkä suorana ja rinta ylhäällä.\n4. Syvyys: Mene niin syvälle kuin hyvällä tekniikalla pääset, pyri vähintään reidet vaakatasoon.\n5. Ylösnousu: Ponnista jaloilla takaisin ylös, purista pakarat yläasennossa.\nHuom: Pidä paino kantapäillä/jalan keskiosalla, älä anna polvien kääntyä sisäänpäin.",
+      "description": "1. Ote: Ota kahvakuulasta kiinni sarvista, kuulan pohja ylöspäin. Pidä kuula tiiviisti rintaa vasten koko liikkeen ajan.\n2. Asento: Seiso jalat noin hartianlevyisessä asennossa, varpaat osoittaen hieman ulospäin.\n3. Liike: Laskeudu hallitusti kyykkyyn työntämällä lantiota taakse ja alas, ikään kuin istuisit tuolille. Pidä selkä suorana (luonnollinen notko säilyy) ja rinta ylhäällä.\n4. Syvyys: Pyri menemään niin syvälle, että reidet ovat vähintään vaakatasossa tai lonkat polvien alapuolella, jos liikkuvuus sallii hyvän tekniikan.\n5. Ylösnousu: Ponnista tasaisesti jalkapohjilla takaisin ylös, ojenna lantio ja polvet samanaikaisesti. Purista pakarat yläasennossa.\nHuom: Pidä paino tasaisesti koko jalkapohjalla, erityisesti kantapäillä ja jalan keskiosalla. Polvet seuraavat varpaiden suuntaa, eivätkä saa kääntyä sisäänpäin. Hengitä sisään alas mennessä, ulos ylös noustessa.",
       "muscleGroups": ["reidet", "pakarat", "keskivartalo", "ryhti"]
     },
     {
       "id": "two_hand_swing",
       "name": "Kahden käden etuheilautus",
       "image": "img/heilautus.png",
-      "description": "1. Asento: Seiso hartioita leveämmässä haara-asennossa, kuula edessäsi lattialla.\n2. Aloitus: Kallista ylävartaloa eteen lantiosta saranoimalla (selkä suorana!) ja tartu kuulaan molemmin käsin.\n3. Taakseveto: Vedä kuula jalkojen välistä taakse kohti nivusia (kuin syöttäisit jenkkifutispalloa).\n4. Heilautus: Ojenna lantio räjähtävästi eteenpäin, anna kuulan heilua eteen rinnan korkeudelle. Kädet ovat 'köydet', voima tulee lantiosta!\n5. Yläasento: Purista pakarat ja vatsalihakset tiukaksi yläasennossa, vartalo suorana linjana.\n6. Alaslasku: Anna kuulan painovoiman viedä se takaisin jalkojen väliin ja aloita heti uusi lantion ojennus.\nHuom: Pidä katse eteenpäin, älä nosta kuulaa käsillä.",
-      "muscleGroups": ["pakarat", "takareidet", "alaselkä", "keskivartalo", "voimantuotto"]
+      "description": "1. Asento: Seiso hartioita hieman leveämmässä haara-asennossa, kuula noin jalanmitan verran edessäsi lattialla.\n2. Aloitus (Sarana): Kallista ylävartaloa eteen lantiosta saranoimalla (kuin tekisit 'Good Morning' -liikettä). Selkä pysyy suorana, polvet hieman koukussa. Tartu kuulaan molemmin käsin.\n3. Taakseveto: Vedä kuula napakasti jalkojen välistä taakse kohti nivusia. Kuulan tulisi kulkea mahdollisimman korkealla reisien välissä.\n4. Heilautus (Lantion ojennus): Ojenna lantio räjähtävästi ja voimakkaasti eteenpäin. Voima tulee lantiosta ja pakaroista, ei käsistä! Anna kuulan heilua eteen noin rinnan korkeudelle.\n5. Yläasento: Purista pakarat ja vatsalihakset tiukaksi yläasennossa. Vartalo on suora linja (nilkat, polvet, lantio, hartiat).\n6. Alaslasku: Anna kuulan painovoiman viedä se takaisin jalkojen väliin, samalla kun saranoit lantiosta uudelleen taakseottoa varten. Aloita heti uusi lantion ojennus.\nHuom: Pidä katse eteenpäin tai hieman etuviistoon alas. Kädet ovat kuin 'köydet', jotka vain ohjaavat kuulaa. Vältä kuulan nostamista käsillä tai selän pyöristymistä. Hengitä ulos voimakkaasti yläasennossa.",
+      "muscleGroups": ["pakarat", "takareidet", "alaselkä", "keskivartalo", "voimantuotto", "hartiat (stabiloivina)"]
     },
     {
       "id": "halo",
       "name": "Halo",
       "image": "img/halo.png",
-      "description": "1. Ote: Ota kahvakuulasta kiinni sarvista, pohja ylöspäin. Pidä kuula rinnan edessä.\n2. Asento: Seiso ryhdikkäästi, jalat lantion leveydellä, polvet hieman koukussa.\n3. Liike: Lähde pyörittämään kuulaa pään ympäri toiseen suuntaan. Pidä kuula mahdollisimman lähellä päätä ja vartaloa.\n4. Keskivartalo: Jännitä vatsalihakset ja pakarat, estä lantion ja vartalon heiluminen.\n5. Suunnanvaihto: Kun olet tehnyt halutun määrän toistoja yhteen suuntaan, vaihda pyörityssuuntaa.\nHuom: Liike on hidas ja hallittu, keskity hartiarenkaan liikkuvuuteen.",
-      "muscleGroups": ["hartiat", "keskivartalo", "liikkuvuus", "yläselkä"]
+      "description": "1. Ote: Ota kahvakuulasta kiinni sarvista, kuulan pohja ylöspäin. Pidä kuula rinnan edessä.\n2. Asento: Seiso ryhdikkäästi, jalat lantion leveydellä, polvet hieman koukussa. Aktivoi keskivartalo.\n3. Liike: Lähde pyörittämään kuulaa pään ympäri toiseen suuntaan. Vie kuula ensin toisen olkapään yli, pään taakse ja toisen olkapään kautta takaisin eteen.\n4. Hallinta: Pidä kuula mahdollisimman lähellä päätä ja vartaloa. Liikkeen tulee olla hallittu ja sulava.\n5. Keskivartalo: Jännitä vatsalihakset ja pakarat tiukasti estääksesi vartalon ja lantion liiallisen heilumisen tai kiertymisen.\n6. Suunnanvaihto: Kun olet tehnyt halutun määrän toistoja yhteen suuntaan, vaihda pyörityssuuntaa.\nHuom: Tämä on erinomainen liike hartiarenkaan liikkuvuudelle ja keskivartalon stabiliteetille. Älä kiirehdi.",
+      "muscleGroups": ["hartiat", "keskivartalo", "yläselkä", "hauis (stabiloivana)", "ojentaja (stabiloivana)"]
     },
     {
       "id": "bent_over_row",
       "name": "Kulmasoutu",
       "image": "img/soutu.png",
-      "description": "1. Asento: Aseta kuula lattialle. Ota tukeva haara-asento. Nojaa eteenpäin lantiosta niin, että selkä on lähes vaakatasossa ja suorana. Voit tukea vapaan käden polveen tai penkkiin.\n2. Ote: Tartu kuulasta neutraalilla otteella (kämmen vartaloa kohti).\n3. Veto: Vedä kuulaa kohti kylkeä/lantiota vetämällä kyynärpäätä taakse ja puristamalla lapaluuta selkärankaa kohti.\n4. Huippusupistus: Pidä yläasento hetki ja tunne supistus selässä.\n5. Laske: Laske kuula hallitusti takaisin alas lähtöasentoon.\nHuom: Pidä selkä suorana koko liikkeen ajan, älä päästä sitä pyöristymään. Tee molemmat puolet.",
-      "muscleGroups": ["yläselkä", "lavanlähentäjät", "hauikset", "epäkäs"]
+      "description": "1. Asento: Aseta kuula lattialle. Ota tukeva haara-asento, noin hartianleveys. Nojaa eteenpäin lantiosta saranoimalla, kunnes ylävartalo on lähes vaakatasossa. Pidä selkä suorana (ei pyöreänä!) ja keskivartalo tiukkana. Voit tukea vapaan käden polveen tai penkkiin lisätuen saamiseksi.\n2. Ote: Tartu kuulasta yhdellä kädellä neutraalilla otteella (kämmen osoittaa vartaloa kohti).\n3. Veto: Vedä kuulaa kohti alempaa kylkeä tai lantiota. Keskity vetämään kyynärpäätä taakse ja ylöspäin, ja purista samalla lapaluuta selkärankaa kohti.\n4. Huippusupistus: Pidä yläasento hetken ja tunne voimakas supistus yläselän lihaksissa.\n5. Laske: Laske kuula hallitusti ja hitaasti takaisin alas lähtöasentoon, anna lavan venyä kevyesti.\n6. Toistot: Tee kaikki toistot ensin toisella puolella, sitten vaihda puolta.\nHuom: Pidä pää niskan jatkeena, älä roikota tai nosta sitä liikaa. Vältä vartalon kiertämistä vedon aikana. Hengitä ulos vedon aikana, sisään laskiessa.",
+      "muscleGroups": ["yläselkä", "lavanlähentäjät", "leveä selkälihas", "hauikset", "epäkäs (keski- ja alaosa)", "takareidet (stabiloivina)"]
     },
     {
         "id": "one_hand_swing",
         "name": "Yhden käden etuheilautus",
         "image": "img/one-hand-swing.png",
-        "description": "Periaate sama kuin kahden käden heilautuksessa, mutta kuula yhdessä kädessä.\n1. Aloitus: Tartu kuulaan yhdellä kädellä.\n2. Heilautus: Tee lantion sarana ja räjähtävä ojennus kuten kahden käden versiossa.\n3. Vartalon Hallinta: Keskity pitämään vartalo suorassa linjassa – ÄLÄ anna sen kiertyä kuulan mukana. Hartioiden ja lantion tulisi osoittaa eteenpäin koko liikkeen ajan.\n4. Vapaa Käsi: Voit pitää vapaan käden sivulla, edessä 'kilpenä' tai antaa sen seurata kevyesti liikettä mukana.\n5. Otteen Vaihto (valinnainen): Voit vaihtaa kättä heilautuksen yläasennossa turvallisesti, jos teet pidempää sarjaa.\nHuom: Tämä vaatii enemmän keskivartalon hallintaa kuin kahden käden heilautus.",
-        "muscleGroups": ["pakarat", "takareidet", "keskivartalo", "selkä", "hartiat", "puristusvoima"]
+        "description": "Periaate on sama kuin kahden käden heilautuksessa, mutta kuulaa pidetään vain yhdellä kädellä.\n1. Aloitus: Tartu kuulaan yhdellä kädellä. Toinen käsi voi olla rentona sivulla tai voit nostaa sen eteen 'kilveksi' tasapainon ja keskivartalon aktivoinnin helpottamiseksi.\n2. Taakseveto & Heilautus: Tee lantion sarana ja räjähtävä lantion ojennus kuten kahden käden versiossa.\n3. Vartalon Hallinta: Erittäin tärkeää! Vastusta vartalon kiertymistä. Hartioiden ja lantion tulisi pysyä mahdollisimman suorassa eteenpäin koko liikkeen ajan. Keskivartalon on työskenneltävä voimakkaasti tämän estämiseksi.\n4. Otteen Vaihto (valinnainen, edistyneemmille): Voit vaihtaa kättä heilautuksen yläasennossa, jos teet pidempää sarjaa tai haluat virtaavuutta. Tämä vaatii harjoittelua.\n5. Toistot: Tee kaikki toistot ensin toisella puolella, sitten vaihda puolta TAI vaihda kättä jokaisen toiston jälkeen (jos osaat turvallisen vaihdon).\nHuom: Tämä liike vaatii enemmän keskivartalon hallintaa ja voimaa kuin kahden käden heilautus. Varmista, että kahden käden heilautus on hyvin hallussa ennen tähän siirtymistä.",
+        "muscleGroups": ["pakarat", "takareidet", "keskivartalo (erityisesti vinot vatsalihakset)", "selkä", "hartiat (stabiloivina)", "puristusvoima"]
     },
     {
         "id": "clean",
         "name": "Rinnalleveto",
         "image": "img/clean.png",
-        "description": "Nostaa kuulan maasta tai heilautuksesta hallitusti rinnalle 'räkkiasentoon'.\n1. Aloitus: Kuten heilautuksessa (maasta tai taaksevedosta).\n2. Nosto: Käytä lantion ojennusta nostamaan kuula ylöspäin. Pidä kuula lähellä vartaloa.\n3. Käden Vienti Läpi: Kun kuula on nousemassa, vedä kyynärpää taakse ja anna käden 'sukeltaa' kuulan kahvan ali.\n4. Räkkiasento: Vastaanota kuula pehmeästi rintakehän päälle / olkapään eteen. Kyynärpää on lähellä kylkeä, ranne suorana.\n5. Vaimennus: Jalkojen tulisi hieman joustaa vastaanotossa.\nHuom: Vältä kuulan 'kolahdusta' ranteeseen tai olkapäähän. Harjoittele liikettä hitaasti.",
-        "muscleGroups": ["pakarat", "reidet", "keskivartalo", "selkä", "hartiat", "käsivarret"]
+        "description": "Rinnalleveto nostaa kuulan maasta tai heilautuksesta hallitusti rinnalle 'räkkiasentoon'.\n1. Aloitus: Voit aloittaa kuula edessäsi maassa (kuten heilautuksessa) tai kevyestä taakseheilautuksesta.\n2. Nosto (Lantion voima): Käytä voimakasta lantion ojennusta (kuten heilautuksessa) saadaksesi kuulan liikkeelle ylöspäin. Pidä kuula lähellä vartaloa koko noston ajan.\n3. Käden ohjaus & Kyynärpään veto: Kun kuula nousee lantion voimasta, ohjaa se vartalonmyötäisesti ylös. Vedä kyynärpää korkealle ja taakse, ikään kuin vetäisit vetoketjua takin edessä ylös.\n4. Käden vienti läpi ('Sukellus'): Kun kuula on lähellä rinnan korkeutta, anna käden nopeasti ja pehmeästi 'sukeltaa' kuulan kahvan ali ja ympäri niin, että kuula asettuu räkkiasentoon.\n5. Räkkiasento: Vastaanota kuula pehmeästi kyynärvarren ulkosyrjälle, olkapään eteen. Kämmen osoittaa kohti sinua, kyynärpää on lähellä kylkeä ja hieman vartalon etupuolella. Ranne on suora ja vahva. Kuula lepää käden ja rintakehän/olkapään muodostamassa 'hyllyssä'.\n6. Vaimennus: Jalkojen tulisi hieman joustaa polvista, kun otat kuulan vastaan.\nHuom: Vältä kuulan 'kolahdusta' ranteeseen tai olkapäähän – tämä on yleinen virhe alussa. Liikkeen tulee olla sulava ja tehokas, ei kivulias. Harjoittele liikettä hitaasti ja keskity ajoitukseen.",
+        "muscleGroups": ["pakarat", "reidet", "keskivartalo", "selkä", "hartiat", "käsivarret", "puristusvoima"]
     },
     {
         "id": "overhead_press",
         "name": "Pystypunnerrus",
         "image": "img/pystypunnerrus.png",
-        "description": "1. Aloitus: Seiso ryhdikkäästi, kuula räkkiasennossa (Cleanin jälkeen).\n2. Keskivartalon Tuki: Jännitä vatsa ja pakarat tiukaksi.\n3. Punnerrus: Punnerra kuula suoraan ylöspäin pään viereen, kunnes käsi on täysin suorana.\n4. Linjaus: Yläasennossa käsivarsi on lähellä korvaa, hauis korvan kohdalla.\n5. Laske: Laske kuula hallitusti takaisin räkkiasentoon.\nHuom: Pidä ranne suorana koko liikkeen ajan. Älä nojaa taaksepäin.",
-        "muscleGroups": ["hartiat", "ojentajat", "yläselkä", "keskivartalo"]
+        "description": "1. Aloitus: Seiso ryhdikkäästi, jalat lantion tai hartian leveydellä. Kuula on räkkiasennossa (katso Rinnalleveto-ohje).\n2. Keskivartalon Tuki: Jännitä vatsalihakset ja pakarat tiukaksi luodaksesi vakaan pohjan punnerrukselle. Tämä estää selän liiallisen notkistumisen.\n3. Punnerrus: Punnerra kuula suoraan ylöspäin, kunnes käsi on täysin suorana pään vieressä. Pyri pitämään kyynärpää lähellä vartaloa punnerruksen alkuvaiheessa.\n4. Linjaus ylhäällä: Yläasennossa käsivarsi on lähellä korvaa, hauislihas on noin korvan kohdalla. Olkapää on alhaalla (ei korvissa). Ranne pysyy suorana.\n5. Laske: Laske kuula hallitusti ja hitaasti takaisin räkkiasentoon.\n6. Toistot: Tee kaikki toistot ensin toisella puolella, sitten vaihda puolta.\nHuom: Vältä vartalon nojaamista taaksepäin tai sivulle punnerruksen aikana. Voima tulee hartiasta ja ojentajasta, keskivartalo tukee. Hengitä ulos punnertaessa ylös, sisään laskiessa.",
+        "muscleGroups": ["hartiat (erityisesti etu- ja sivuosa)", "ojentajat", "yläselkä (epäkäs, lavan tukilihakset)", "keskivartalo"]
     },
     {
         "id": "reverse_lunge",
         "name": "Askelkyykky taakse",
         "image": "img/askelkyykky.png",
-        "description": "1. Aloitus: Seiso suorana, kuula joko rinnalla pokaaliotteessa tai yhdellä kädellä vartalon sivulla (tai räkissä).\n2. Askel Taakse: Astu toisella jalalla pitkä askel suoraan taakse.\n3. Lasku: Laskeudu alas koukistamalla molempia polvia, kunnes etummainen reisi on noin vaakatasossa ja takimmainen polvi lähellä lattiaa. Molemmat polvet n. 90 asteen kulmassa.\n4. Ylävartalo: Pidä ylävartalo pystyssä ja keskivartalo tiukkana.\n5. Ponnistus: Ponnista etummaisen jalan kantapäällä takaisin alkuasentoon.\n6. Vaihto: Tee haluttu määrä toistoja yhdellä jalalla tai vuorotellen.\nHuom: Pidä etummainen polvi linjassa varpaiden kanssa, älä anna sen kääntyä sisään.",
-        "muscleGroups": ["reidet", "pakarat", "keskivartalo", "tasapaino"]
+        "description": "1. Aloitus: Seiso suorana, jalat lantionleveydellä. Voit pitää kuulaa joko rinnalla pokaaliotteessa, yhdellä kädellä vartalon sivulla roikkuen (samalla puolella kuin taakse astuva jalka tai vastakkaisella puolella haastaaksesi tasapainoa) tai räkkiasennossa.\n2. Askel Taakse: Astu toisella jalalla pitkä askel suoraan taaksepäin. Jalkaterät osoittavat eteenpäin.\n3. Lasku: Laskeudu alas koukistamalla molempia polvia, kunnes molemmat polvet ovat noin 90 asteen kulmassa. Etummainen reisi on noin vaakatasossa ja takimmainen polvi on lähellä lattiaa (mutta ei välttämättä kosketa sitä).\n4. Ylävartalo: Pidä ylävartalo pystyssä (älä nojaa eteenpäin) ja keskivartalo tiukkana.\n5. Ponnistus: Ponnista voimakkaasti etummaisen jalan kantapäällä takaisin alkuasentoon. Tuo takimmainen jalka etummaisen viereen.\n6. Vaihto: Tee haluttu määrä toistoja yhdellä jalalla tai vuorottele jalkoja jokaisen toiston jälkeen.\nHuom: Pidä etummainen polvi linjassa varpaiden kanssa, älä anna sen kääntyä sisään- tai ulospäin. Keskity tasapainoon.",
+        "muscleGroups": ["reidet (erityisesti etureidet ja pakarat)", "pakarat", "keskivartalo", "tasapaino"]
     },
     {
         "id": "farmers_carry",
         "name": "Farmarikävely",
         "image": "img/farmers-walk.png",
-        "description": "1. Ote: Ota yksi tai kaksi kahvakuulaa käteen/käsiin. Pidä ote tiukkana.\n2. Ryhti: Seiso suorana, vedä hartiat taakse ja alas, pidä rinta auki.\n3. Keskivartalo: Jännitä keskivartalo tukevaksi.\n4. Kävely: Kävele määrätty matka tai aika ryhdikkäästi, kontrolloiduilla askelilla. Älä anna vartalon heilua sivusuunnassa.\n5. Yhdellä Kuulalla: Jos käytät vain yhtä kuulaa, vastusta vartalon kallistumista vastakkaiselle puolelle. Vaihda kuulan puolta puolivälissä tai kierrosten välissä.\nHuom: Tämä harjoittaa pitoa, keskivartaloa ja ryhtiä.",
-        "muscleGroups": ["koko keho", "puristusvoima", "kyynärvarret", "epäkäs", "keskivartalo", "ryhti"]
+        "description": "1. Ote: Ota yksi tai kaksi kahvakuulaa käteen/käsiin. Jos käytät kahta kuulaa, pyri valitsemaan yhtä painavat. Tartu kahvoista tiukasti.\n2. Ryhti: Seiso täysin suorana. Vedä hartiat kevyesti taakse ja alas (pois korvista), pidä rinta auki ja ylpeänä.\n3. Keskivartalo: Jännitä keskivartalon lihakset tiukaksi, ikään kuin odottaisit iskua vatsaan. Tämä tukee selkärankaa ja parantaa ryhtiä.\n4. Kävely: Lähde kävelemään määrätty matka tai aika. Ota normaaleja, kontrolloituja askelia. Pidä katse eteenpäin.\n5. Yhdellä Kuulalla: Jos käytät vain yhtä kuulaa, keskity erityisesti vastustamaan vartalon kallistumista kuulan vastakkaiselle puolelle. Keskivartalon on työskenneltävä kovemmin. Vaihda kuulan puolta puolivälissä matkaa/aikaa tai kierrosten välissä.\nHuom: Tämä on erinomainen liike koko kehon voimalle, erityisesti puristusvoimalle, epäkkäille, ja keskivartalon stabiliteetille. Älä anna hartioiden pyöristyä eteen.",
+        "muscleGroups": ["koko keho", "puristusvoima", "kyynärvarret", "epäkäs", "keskivartalo", "hartiat (stabiloivina)", "ryhti"]
     },
     {
         "id": "snatch",
         "name": "Tempaus",
         "image": "img/snatch.png",
-        "description": "Räjähtävä liike, jossa kuula heilautetaan yhdellä liikkeellä suoraan pään päälle.\n1. Aloitus: Kuten yhden käden heilautuksessa.\n2. Heilautus & Veto: Käytä voimakasta lantion ojennusta. Kun kuula nousee, vedä kyynärpäätä korkealle ja taakse (kuin käynnistäisit ruohonleikkuria).\n3. Käden Pujotus: Kun kuula saavuttaa rinnan korkeuden, anna käden 'pujottautua' kahvan läpi.\n4. Lukitus Ylhäällä: Ojenna käsi täysin suoraksi pään päälle. Vastaanota kuula pehmeästi kämmenselkään, älä anna sen paiskautua.\n5. Laske: Laske kuula hallitusti joko suoraan alas tai heilautuksen kautta takaisin jalkojen väliin.\nHuom: Vaatii hyvää tekniikkaa ja ajoitusta. Aloita kevyellä kuulalla.",
-        "muscleGroups": ["koko keho", "pakarat", "reidet", "selkä", "hartiat", "keskivartalo", "voimantuotto"]
+        "description": "Tempaus on räjähtävä liike, jossa kahvakuula heilautetaan yhdellä sulavalla liikkeellä maasta tai heilautuksesta suoraan pään päälle lukittuun asentoon.\n1. Aloitus: Kuten yhden käden heilautuksessa. Kuula voi olla edessäsi maassa tai voit aloittaa kevyellä taakseheilautuksella.\n2. Heilautus & Veto ylös: Käytä voimakasta lantion ojennusta saadaksesi kuulan liikkeelle. Kun kuula nousee ja on noin rinnan korkeudella, vedä kyynärpäätä korkealle ja taakse, ikään kuin käynnistäisit ruohonleikkuria tai vetäisit vetoketjua ylös. Pidä kuula lähellä vartaloa.\n3. Käden Pujotus & Lukitus: Kun kuula saavuttaa pään tason, anna käden nopeasti 'pujottautua' kahvan läpi ja ojenna käsi täysin suoraksi pään päälle. Kyynärpään tulisi osoittaa eteenpäin ja ranne olla suora. Vastaanota kuula pehmeästi kämmenselkään – vältä kuulan paiskautumista ranteeseen.\n4. Yläasento: Seiso hetki vakaana, kuula suoralla kädellä ylhäällä, olkapää aktiivisena (ei roikkuen).\n5. Laske: Laske kuula hallitusti alas. Voit laskea sen ensin räkkiasentoon ja siitä alas, tai suoraan heilautuksen kautta takaisin jalkojen väliin uutta toistoa varten (edistyneempi tapa).\n6. Toistot: Tee kaikki toistot ensin toisella puolella, sitten vaihda puolta.\nHuom: Tempaus vaatii hyvää tekniikkaa, ajoitusta ja liikkuvuutta. Aloita harjoittelu kevyellä kuulalla ja keskity tekniikkaan. Katso videoita ja harkitse ohjausta.",
+        "muscleGroups": ["koko keho", "pakarat", "takareidet", "selkä", "hartiat", "keskivartalo", "ojentajat", "voimantuotto", "koordinaatio"]
     },
     {
         "id": "clean_and_press",
         "name": "Rinnalleveto ja Työntö",
         "image": "img/clean-press.png",
-        "description": "Yhdistää kaksi liikettä: Rinnalleveto (Clean) ja Pystypunnerrus (Press).\n1. Clean: Tee rinnalleveto nostaen kuula räkkiasentoon.\n2. Vakauta: Varmista hyvä, tukeva asento räkissä.\n3. Press: Punnerra kuula suoralle kädelle pään päälle.\n4. Laske: Laske kuula hallitusti takaisin räkkiasentoon ja sieltä alas (esim. heilautuksen kautta tai suoraan maahan).\nHuom: Tee liikkeet peräkkäin, mutta selkeinä erillisinä vaiheina, älä hosu.",
-        "muscleGroups": ["koko keho", "reidet", "pakarat", "hartiat", "keskivartalo", "ojentajat"]
+        "description": "Tämä liike yhdistää kaksi perusliikettä: Rinnalleveto (Clean) ja Pystypunnerrus (Press).\n1. Rinnalleveto (Clean): Suorita rinnalleveto, nostaen kahvakuula hallitusti räkkiasentoon olkapään eteen. (Katso Rinnalleveto-ohje tarkemmin).\n2. Vakauta Räkkiasento: Varmista ennen punnerrusta, että sinulla on hyvä ja tukeva asento. Keskivartalo on tiukka, kuula lepää vakaasti.\n3. Pystypunnerrus (Press): Punnerra kuula räkkiasennosta suoraan ylöspäin, kunnes käsi on täysin ojennettuna pään vieressä. (Katso Pystypunnerrus-ohje tarkemmin).\n4. Laske Alas: Laske kuula hallitusti takaisin räkkiasentoon. Sieltä voit laskea sen maahan (esim. heilautuksen kautta tai suoraan) tai jatkaa seuraavaan toistoon, jos sarja jatkuu.\n5. Toistot: Tee kaikki toistot ensin toisella puolella, sitten vaihda puolta.\nHuom: Tee liikkeet peräkkäin yhtenä kokonaisuutena, mutta varmista, että kumpikin vaihe (rinnalleveto ja punnerrus) on teknisesti puhdas. Älä hosu siirtymissä.",
+        "muscleGroups": ["koko keho", "reidet", "pakarat", "hartiat", "keskivartalo", "ojentajat", "yläselkä"]
     },
     {
         "id": "front_squat",
         "name": "Etukyykky",
         "image": "img/etukyykky.png",
-        "description": "Kyykky kuula(t) räkkiasennossa.\n1. Aloitus: Vedä yksi tai kaksi kuulaa rinnalle räkkiasentoon (Clean).\n2. Asento: Seiso ryhdikkäästi, jalat hartianleveydellä, keskivartalo tiukkana.\n3. Kyykky: Laskeudu kyykkyyn pitäen selkä mahdollisimman pystyssä ja kyynärpäät ylhäällä (eivät saa tippua reisien päälle).\n4. Syvyys: Mene niin syvälle kuin pystyt hyvällä ryhdillä.\n5. Ylösnousu: Ponnista takaisin ylös.\nHuom: Etukyykky haastaa enemmän etureisiä ja keskivartalon pitoa kuin takakyykky tai pokaalikyykky.",
-        "muscleGroups": ["reidet", "pakarat", "keskivartalo", "ryhti", "hartiat"]
+        "description": "Kyykky yhdellä tai kahdella kahvakuulalla räkkiasennossa.\n1. Aloitus (Räkkiasento): Vedä yksi tai kaksi kuulaa rinnalle räkkiasentoon (Clean-liikkeellä). Jos käytät yhtä kuulaa, pidä se keskellä rintaa tai toisella olkapäällä. Jos kaksi, molemmat olkapäillä.\n2. Asento: Seiso ryhdikkäästi, jalat noin hartianleveydellä, varpaat hieman ulospäin. Pidä keskivartalo erittäin tiukkana koko liikkeen ajan.\n3. Kyykky: Laskeudu kyykkyyn työntämällä lantiota taakse ja alas. Pidä selkä mahdollisimman pystyssä. Kyynärpäiden tulisi osoittaa eteenpäin ja pysyä ylhäällä – ne eivät saa tippua polvien päälle tai antaa yläselän pyöristyä.\n4. Syvyys: Mene niin syvälle kuin pystyt säilyttäen hyvän ryhdin ja kontrollin. Pyri vähintään siihen, että reidet ovat vaakatasossa.\n5. Ylösnousu: Ponnista tasaisesti jalkapohjilla takaisin ylös lähtöasentoon.\nHuom: Etukyykky haastaa voimakkaasti etureisiä ja keskivartalon pitoa. Varmista, että kyynärpäät pysyvät ylhäällä ja selkä suorana. Hengitä sisään laskiessa, ulos noustessa.",
+        "muscleGroups": ["reidet (erityisesti etureidet)", "pakarat", "keskivartalo", "ryhti", "hartiat (stabiloivina)"]
     },
     {
         "id": "turkish_get_up",
         "name": "Turkkilainen Ylösnousu (TGU)",
         "image": "img/turkish-getup.png",
-        "description": "Monivaiheinen liike lattialta ylös ja takaisin, kuula koko ajan ylhäällä. Vaatii keskittymistä!\n1. Aloitus (oikea käsi): Makaa selälläsi, oikea käsi ojentuneena kohti kattoa kuulan kanssa. Oikea polvi koukussa, jalkapohja lattiassa. Vasen käsi ja jalka suorana sivulla.\n2. Kyynärnojaan: Nouse vasemman kyynärpään varaan pitäen katse kuulassa.\n3. Suoralle Kädele: Ojenna vasen käsi suoraksi.\n4. Lantion Nosto: Nosta lantio korkealle ilmaan.\n5. Jalan Vienti Alle: Vie vasen jalka vartalon ali polviseisontaan oikean jalan taakse.\n6. Ylösnousu: Nouse hallitusti seisomaan.\n7. Alasmeno: Peruuta vaiheet päinvastaisessa järjestyksessä hallitusti takaisin makuulle.\nHuom: Tee liike hitaasti ja kontrolloidusti. Harjoittele ensin ilman painoa. Katse seuraa kuulaa suurimman osan liikkeestä.",
-        "muscleGroups": ["koko keho", "keskivartalo", "hartiat", "lonkat", "tasapaino", "liikkuvuus"]
+        "description": "Monivaiheinen koko kehon liike, joka kehittää voimaa, liikkuvuutta, tasapainoa ja kehonhallintaa. Kuula pidetään koko ajan ylhäällä suoralla kädellä. Tässä oikean käden versio:\n1. Aloitus: Makaa selälläsi. Oikea polvi on koukussa, jalkapohja lattiassa lähellä pakaraa. Oikea käsi pitelee kuulaa suorana kohti kattoa. Vasen käsi on noin 45 asteen kulmassa vartalosta sivulla, kämmen lattiaa vasten. Vasen jalka on suorana, myös noin 45 asteen kulmassa.\n2. Nousu kyynärpäälle: Ponnista oikealla jalalla ja työnnä vasemmalla kyynärpäällä itseäsi ylös istuma-asentoon nojaten vasempaan kyynärpäähän. Pidä katse kuulassa.\n3. Nousu kädelle: Ojenna vasen käsi suoraksi, jolloin olet tuettuna vasemmalla kädellä ja oikealla jalalla.\n4. Lantion nosto: Nosta lantio korkealle ilmaan, niin että vartalo muodostaa suoran linjan vasemmasta olkapäästä oikeaan polveen.\n5. Jalan vienti alle: Vie vasen jalka vartalon ali ja aseta vasen polvi lattiaan oikean jalan taakse, linjaan vasemman käden kanssa (asento muistuttaa syvää askelkyykkyä sivuttain).\n6. Ylävartalon ojennus: Suorista ylävartalo pystyasentoon, katse eteenpäin. Olet nyt polviseisonnassa, kuula ylhäällä.\n7. Ylösnousu seisomaan: Ponnista seisomaan, tuo takimmainen jalka etummaisen viereen.\n8. Alasmeno: Peruuta kaikki vaiheet hitaasti ja hallitusti täsmälleen päinvastaisessa järjestyksessä takaisin makuuasentoon.\nHuom: TEE LIIKE ERITTÄIN HITAASTI JA KONTROLLOIDUSTI. Harjoittele ensin ilman painoa, sitten hyvin kevyellä kuulalla. Katse seuraa kuulaa suurimman osan liikkeestä, paitsi ylösnoustessa polviseisonnasta. Tämä on liike, jonka opetteluun kannattaa käyttää aikaa.",
+        "muscleGroups": ["koko keho", "keskivartalo", "hartiat (erityisesti tukilihakset)", "lonkat", "reidet", "pakarat", "tasapaino", "koordinaatio", "liikkuvuus"]
     },
     {
         "id": "windmill",
         "name": "Tuulimylly",
         "image": "img/windmill.png",
-        "description": "Liikkuvuus- ja voimaliike keskivartalolle ja hartioille.\n1. Aloitus: Seiso jalat leveällä (leveämpi kuin hartiat), varpaat noin 45 asteen kulmassa ulospäin. Nosta kuula suoralle kädelle pään päälle (esim. oikea käsi).\n2. Katse: Pidä katse kuulassa koko liikkeen ajan.\n3. Lantion Siirto: Työnnä lantiota sivulle ja taakse (kuulaa vastakkaiseen suuntaan, eli vasemmalle).\n4. Lasku: Kallista ylävartaloa ja liu'uta vapaata (vasenta) kättä reittä/säärtä pitkin alas kohti lattiaa. Pidä kuulaa kantava käsi ja molemmat jalat mahdollisimman suorina.\n5. Ylösnousu: Nouse hallitusti takaisin alkuasentoon käyttäen vinoja vatsalihaksia ja pakaroita.\nHuom: Liike tapahtuu lantiosta, ei selkärangasta. Vaatii hyvää liikkuvuutta.",
-        "muscleGroups": ["keskivartalo", "vinot vatsalihakset", "takareidet", "pakarat", "hartiat", "liikkuvuus"]
+        "description": "Erinomainen liike liikkuvuudelle, keskivartalon voimalle ja hartian vakaudelle.\n1. Aloitus: Seiso jalat leveässä haara-asennossa (selvästi hartioita leveämpi). Käännä toisen jalan (esim. vasen) varpaita noin 45 astetta ulospäin, ja toisen jalan (oikea) varpaita suoraan eteenpäin tai hieman sisäänpäin. Nosta kuula suoralle kädelle pään päälle (esim. oikea käsi).\n2. Katse: Pidä katse tiukasti ylhäällä olevassa kuulassa koko liikkeen ajan.\n3. Lantion siirto & Sarana: Työnnä lantiota sivulle ja taakse siihen suuntaan, jonka jalan varpaat osoittavat eteen/sivulle (eli oikealle, jos kuula on oikeassa kädessä). Samalla kallista ylävartaloa suorana kohti lattiaa, ikään kuin saranoisit lantiosta.\n4. Lasku: Liu'uta vapaata (vasenta) kättä reittä ja säärtä pitkin alas kohti lattiaa tai nilkkaa. Pidä kuulaa kantava käsi täysin suorana ja pystysuorassa kohti kattoa. Molemmat jalat pysyvät mahdollisimman suorina (pieni koukistus etummaisessa polvessa sallittu).\n5. Syvyys: Mene niin alas kuin liikkuvuutesi sallii hyvällä tekniikalla. Älä pakota.\n6. Ylösnousu: Nouse hallitusti takaisin alkuasentoon käyttäen vinoja vatsalihaksia ja pakaroita.\n7. Toistot: Tee kaikki toistot ensin toiselle puolelle, sitten vaihda puolta.\nHuom: Liike tapahtuu pääasiassa lantiosta, ei niinkään selkärangan taivutuksesta. Vaatii hyvää liikkuvuutta takareisissä, lonkissa ja rintarangassa. Aloita ilman painoa tai hyvin kevyellä.",
+        "muscleGroups": ["keskivartalo (erityisesti vinot vatsalihakset)", "takareidet", "pakarat", "hartiat (stabiloivina)", "selän ojentajat", "liikkuvuus (lonkat, rintaranka)"]
     },
     {
         "id": "rack_carry",
         "name": "Räkkikanto",
         "image": "img/rack-carry.png",
-        "description": "Kävely kuula(t) räkkiasennossa.\n1. Aloitus: Vedä yksi tai kaksi kuulaa rinnalle räkkiasentoon (Clean).\n2. Asento: Seiso ryhdikkäästi, pidä kyynärpää(t) lähellä kylkeä, ranne suorana, kuula lepää olkapään/rintakehän päällä.\n3. Keskivartalo: Jännitä keskivartalo tiukaksi.\n4. Kävely: Kävele määrätty matka tai aika pitäen asento vakaana ja ryhti hyvänä.\n5. Yhdellä Kuulalla: Vastusta vartalon kiertymistä ja kallistumista.\nHuom: Haastaa keskivartalon pitoa ja hartian/ranteen asentoa.",
-        "muscleGroups": ["keskivartalo", "hartiat", "selkä", "reidet", "pakarat", "ryhti"]
+        "description": "Kävely yhdellä tai kahdella kahvakuulalla räkkiasennossa.\n1. Aloitus (Räkkiasento): Nosta yksi tai kaksi kuulaa rinnalle räkkiasentoon (Clean-liikkeellä). Kuula(t) lepäävät olkapään ja rintakehän päällä, kyynärpää(t) lähellä kylkeä, ranne suorana.\n2. Asento: Seiso ryhdikkäästi, vedä hartiat kevyesti taakse ja alas. Pidä rinta auki.\n3. Keskivartalo: Jännitä keskivartalon lihakset erittäin tiukaksi. Kuvittele, että joku yrittää työntää sinua sivulta – vastusta liikettä.\n4. Kävely: Lähde kävelemään määrätty matka tai aika. Ota hallittuja, tasaisia askelia. Pidä asento vakaana ja ryhti hyvänä koko kävelyn ajan.\n5. Yhdellä Kuulalla: Jos kannat vain yhtä kuulaa, keskity erityisesti vastustamaan vartalon kallistumista ja kiertymistä. Keskivartalon on työskenneltävä kovemmin. Vaihda kuulan puolta tarvittaessa (esim. puolivälissä tai kierrosten välissä).\nHuom: Tämä on erinomainen harjoitus keskivartalon voimalle ja stabiliteetille, sekä hartian ja ranteen asennon ylläpitämiselle kuormituksen alla.",
+        "muscleGroups": ["keskivartalo", "hartiat (stabiloivina)", "selkä (ryhdin ylläpito)", "reidet", "pakarat", "ryhti"]
     },
     {
         "id": "waiters_carry",
         "name": "Tarjoilijankanto",
         "image": "img/waiters-carry.png",
-        "description": "Kävely kuula suoralla kädellä pään päällä.\n1. Aloitus: Nosta kuula turvallisesti suoralle kädelle pään päälle (esim. Clean + Press tai Snatch).\n2. Asento: Lukitse olkapää (vedä lapa alas), pidä käsivarsi pystysuorassa, ranne neutraalina.\n3. Keskivartalo: Jännitä keskivartalo erittäin tiukaksi.\n4. Kävely: Kävele määrätty matka tai aika hitaasti ja hallitusti. Pidä katse eteenpäin.\n5. Laske: Laske kuula turvallisesti alas (esim. hallitusti räkkiin ja maahan).\nHuom: Erittäin haastava tasapainolle ja hartian vakaudelle. Aloita kevyellä painolla.",
-        "muscleGroups": ["hartiat", "keskivartalo", "tasapaino", "ryhti", "ojentajat"]
+        "description": "Kävely kahvakuula suoralla kädellä pään päällä, kuin tarjoilija kantaisi tarjotinta.\n1. Aloitus: Nosta kuula turvallisesti suoralle kädelle pään päälle. Tämä voi tapahtua esimerkiksi rinnallevedon ja pystypunnerruksen (Clean & Press) tai tempauksen (Snatch) kautta.\n2. Asento Ylhäällä: Lukitse olkapää aktiivisesti vetämällä lapaa kevyesti alas ja taakse (vältä olkapään nousemista korvaan). Käsivarsi on täysin suora ja pystysuorassa linjassa, ranne neutraalina ja suorana. Kuula lepää kämmenpohjalla.\n3. Keskivartalo: Jännitä keskivartalo erittäin tiukaksi. Tämä on avainasemassa tasapainon ja kontrollin säilyttämisessä.\n4. Kävely: Lähde kävelemään määrätty matka tai aika. Ota hitaita, hallittuja ja tasaisia askelia. Pidä katse eteenpäin ja keskity pitämään kuula vakaana.\n5. Laske Alas: Laske kuula turvallisesti ja hallitusti alas, esimerkiksi ensin räkkiasentoon ja siitä maahan.\n6. Toistot: Vaihda kättä ja toista.\nHuom: Tämä on erittäin haastava liike tasapainolle, hartian vakaudelle ja keskivartalon voimalle. Aloita hyvin kevyellä painolla tai jopa ilman painoa totutellaksesi liikkeeseen. Keskity laatuun, älä matkaan tai aikaan aluksi.",
+        "muscleGroups": ["hartiat (erityisesti tukilihakset ja kiertäjäkalvosin)", "keskivartalo (syvät vatsalihakset, selän ojentajat)", "tasapaino", "ryhti", "ojentajat", "epäkäs"]
+    },
+    {
+      "id": "clean_high_pull",
+      "name": "Rinnallevedon korkea veto",
+      "image": "",
+      "description": "Tämä on rinnallevedon esiharjoite, joka opettaa kuulan nostamista vartalon lähellä ja kyynärpään käyttöä.\n1. Aloitus: Kuten kahden käden heilautuksessa, ota kuulasta kiinni yhdellä tai kahdella kädellä.\n2. Lantion käyttö: Käytä lantion ojennusta saadaksesi kuulan liikkeelle ylöspäin, aivan kuten heilautuksessa.\n3. Kyynärpään johto: Kun kuula nousee, vedä kyynärpää(t) korkealle ja taaksepäin, pitäen kuula lähellä vartaloa. Kuvittele vetäväsi vetoketjua ylös rintakehää pitkin.\n4. Pysäytys: Pysäytä liike, kun kuula on noin rinnan korkeudella ja kyynärpää(t) osoittavat ylös/sivulle. Älä anna kuulan kääntyä ympäri (kuten täydessä rinnallevedossa).\n5. Laske: Laske kuula hallitusti takaisin alas jalkojen väliin tai maahan.\nHuom: Tämä auttaa opettelemaan rinnallevedon nostovaiheen ilman ranteen 'läpsähdystä'. Keskity pitämään kuula lähellä ja kyynärpää korkealla.",
+      "muscleGroups": ["pakarat", "takareidet", "selkä", "hartiat", "hauikset", "epäkäs"]
+    },
+    {
+      "id": "alternating_swing",
+      "name": "Jatkuva kädenvaihtoheilautus",
+      "image": "",
+      "description": "Dynaaminen heilautus, jossa vaihdetaan kättä jokaisen toiston yläasennossa.\n1. Aloitus: Aloita yhden käden heilautuksella.\n2. Kädenvaihto: Kun kuula saavuttaa heilautuksen yläpisteen (noin rinnan korkeudella ja tuntuu hetken painottomalta), irrota ote ja tartu kuulasta vapaalla kädellä. Toinen käsi ohjaa kuulan kevyesti toiselle kädelle.\n3. Jatkuvuus: Jatka heilautusta uudella kädellä sulavasti ilman taukoa. Toista vaihto seuraavan toiston yläosassa.\n4. Vartalon Hallinta: Kuten yhden käden heilautuksessa, vastusta vartalon kiertymistä. Pidä hartiat ja lantio suorassa.\nHuom: Tämä vaatii hyvää ajoitusta ja koordinaatiota. Harjoittele ensin kevyellä kuulalla. Varmista, että ote on pitävä vaihdon aikana.",
+      "muscleGroups": ["pakarat", "takareidet", "keskivartalo", "selkä", "hartiat", "koordinaatio", "puristusvoima"]
+    },
+    {
+      "id": "lateral_swing",
+      "name": "Sivuttaisheilautus",
+      "image": "",
+      "description": "Heilautus, jossa kuulaa liikutetaan sivuttaissuunnassa vartalon editse.\n1. Asento: Seiso leveässä haara-asennossa, varpaat hieman ulospäin.\n2. Aloitus: Ota kuulasta kiinni molemmin käsin. Vie kuula toisen jalan ulkopuolelle (esim. oikea) kevyesti koukistaen saman puolen polvea ja saranoimalla lantiosta.\n3. Heilautus: Käytä jalkojen ja lantion voimaa heilauttaaksesi kuula kaaressa vartalon eteen ja toisen jalan ulkopuolelle (vasen). Vartalo kiertyy kevyesti mukana.\n4. Hallinta: Pidä liike hallittuna, älä anna kuulan viedä sinua. Keskivartalo tekee työtä.\n5. Palautus: Heilauta kuula takaisin lähtöpuolelle.\nHuom: Tämä liike haastaa erityisesti vinoja vatsalihaksia ja lantion kiertäjiä. Aloita kevyellä kuulalla ja keskity liikerataan.",
+      "muscleGroups": ["keskivartalo (erityisesti vinot vatsalihakset)", "pakarat", "reidet (sisä- ja ulkoreidet)", "selkä", "hartiat"]
+    },
+    {
+      "id": "tgu_get_to_elbow",
+      "name": "TGU: Nousu kyynärpäälle",
+      "image": "",
+      "description": "Turkkilaisen ylösnousun ensimmäinen osa.\n1. Aloitus: Makaa selälläsi. Oikea polvi koukussa, jalkapohja lattiassa. Oikea käsi pitelee kuulaa (tai on ilman) suorana kohti kattoa. Vasen käsi 45 asteen kulmassa sivulla, kämmen lattiaa vasten. Vasen jalka suorana, myös 45 asteen kulmassa.\n2. Liike: Ponnista oikealla jalalla ja aktivoi vatsalihakset. Nouse samanaikaisesti vasemman kyynärpään varaan. Pidä katse ylhäällä olevassa kädessä (tai siellä missä kuula olisi).\n3. Pito: Pysähdy hetkeksi tähän asentoon ja varmista tukevuus.\n4. Paluu: Laskeudu hallitusti takaisin makuulle.\nHuom: Keskity siihen, että liike on hallittu ja että sekä tukikäsi että vatsalihakset tekevät työtä. Tämä on hyvä harjoitus olkapään stabiliteetille.",
+      "muscleGroups": ["keskivartalo", "hartiat", "rintalihakset", "ojentajat"]
+    },
+    {
+      "id": "tgu_get_to_hand",
+      "name": "TGU: Nousu kädelle (kyynärpäältä)",
+      "image": "",
+      "description": "Turkkilaisen ylösnousun toinen osa, jatkaen noususta kyynärpäälle.\n1. Aloitus: Olet kyynärnoja-asennossa (katso 'TGU: Nousu kyynärpäälle' -ohje). Oikea käsi kuulan kanssa ylhäällä, vasen kyynärpää lattiassa.\n2. Liike: Ojenna vasen käsi suoraksi, jolloin nouset istuma-asentoon tuettuna vasemmalla kädellä. Pidä katse ylhäällä olevassa kädessä.\n3. Pito: Pysähdy hetkeksi tähän asentoon ja varmista tukevuus. Hartia on aktiivinen, ei lysähtänyt.\n4. Paluu: Laskeudu hallitusti takaisin kyynärnojaan ja siitä makuulle.\nHuom: Tämä vahvistaa edelleen olkapäätä ja keskivartaloa.",
+      "muscleGroups": ["keskivartalo", "hartiat", "rintalihakset", "ojentajat", "selän ojentajat"]
+    },
+    {
+      "id": "plank_basic",
+      "name": "Peruslankku",
+      "image": "",
+      "description": "1. Asento: Asetu päinmakuulle. Nouse kyynärvarsien ja varpaiden varaan. Kyynärpäät ovat suoraan olkapäiden alapuolella.\n2. Linjaus: Pidä vartalo suorana linjana päästä kantapäihin. Älä anna lantion notkahtaa alas tai nousta liian ylös.\n3. Keskivartalo: Jännitä vatsa- ja pakaralihakset voimakkaasti. Vedä napaa kevyesti kohti selkärankaa.\n4. Pito: Pidä asento halutun ajan.\nHuom: Jos liike tuntuu liian raskaalta, voit tehdä sen polvet maassa. Keskity hyvään linjaukseen.",
+      "muscleGroups": ["keskivartalo (syvät vatsalihakset, suorat vatsalihakset)", "selän ojentajat", "pakarat", "hartiat"]
+    },
+    {
+      "id": "glute_bridge",
+      "name": "Lantionnosto",
+      "image": "",
+      "description": "1. Asento: Makaa selälläsi, polvet koukussa, jalkapohjat lattiassa lantion leveydellä, lähellä pakaroita. Kädet voivat olla vartalon vierellä tai vatsan päällä.\n2. Nosto: Jännitä pakarat ja nosta lantio ylös lattiasta, kunnes vartalo muodostaa suoran linjan olkapäistä polviin.\n3. Huippusupistus: Purista pakarat tiukasti yhteen yläasennossa. Älä yliojenna alaselkää.\n4. Laske: Laske lantio hallitusti takaisin alas melkein lattiaan asti ja toista.\nHuom: Tämä on erinomainen liike pakaralihasten aktivoimiseen ja vahvistamiseen. Voit lisätä haastetta asettamalla kevyen kahvakuulan lantion päälle.",
+      "muscleGroups": ["pakarat", "takareidet", "alaselkä", "keskivartalo (stabiloivana)"]
     }
   ],
   "kettlebellProgram11Weeks": {
     "programInfo": {
-        "programName": "11 Viikon Kahvakuulaohjelma (4 Tasoa)",
-        "frequency": "1 kerta / viikko",
-        "estimatedTotalDurationMinutes": 45,
-        "workoutDurationMinutes": 30,
+        "programName": "11 Viikon Kahvakuulaohjelma Kansalaisopistoon",
+        "frequency": "1 kerta / viikko ohjattuna",
+        "estimatedTotalDurationMinutes": 50,
+        "workoutDurationMinutes": 35,
         "levels": [
             { "level": 1, "description": "Vasta-alkaja: Perusteiden turvallinen oppiminen, kevyet painot, pidemmät tauot." },
             { "level": 2, "description": "Harrastelija: Perusliikkeet hallussa, intensiteetin ja volyymin nosto, keskipainot." },
@@ -313,80 +249,119 @@
     "phases": [
       {
         "phaseInfo": {
-            "name": "Perusteiden Vahvistaminen",
-            "weeks": [1, 2, 3],
-            "focus": "Liikeratojen opettelu, keskivartalon tuki, perusliikkeiden hallinta."
+            "name": "Vaihe 1: Perusteet ja Liikemallit",
+            "weeks": [1, 2],
+            "focus": "Heilautuksen, kyykyn ja vedon perusteet. Keskivartalon tuki ja turvallinen tekniikka."
         },
-        "workoutPlan": {
-          "rounds": "3-4 (aloita 3:sta, lisää 4. viikolla 3 jos sopii)",
-          "restBetweenRoundsSeconds": "60-90"
-        },
+        "workoutPlan": { "rounds": "3-4", "restBetweenRoundsSeconds": "60-90" },
         "levels": {
-          "1": { "timeBased": { "workSeconds": 30, "restSeconds": 30 }, "repBased": { "repsDescription": "8 toistoa (Halo 4/suunta)", "restBetweenExercisesSeconds": "15-20" } },
-          "2": { "timeBased": { "workSeconds": 35, "restSeconds": 25 }, "repBased": { "repsDescription": "10 toistoa (Halo 5/suunta)", "restBetweenExercisesSeconds": "15-20" } },
-          "3": { "timeBased": { "workSeconds": 40, "restSeconds": 20 }, "repBased": { "repsDescription": "12 toistoa (Halo 6/suunta)", "restBetweenExercisesSeconds": "15-20" } },
-          "4": { "timeBased": { "workSeconds": 45, "restSeconds": 15 }, "repBased": { "repsDescription": "15 toistoa (Halo 8/suunta)", "restBetweenExercisesSeconds": "15-20" } }
+          "1": { "timeBased": { "workSeconds": 30, "restSeconds": 30 } },
+          "2": { "timeBased": { "workSeconds": 35, "restSeconds": 25 } },
+          "3": { "timeBased": { "workSeconds": 40, "restSeconds": 20 } },
+          "4": { "timeBased": { "workSeconds": 40, "restSeconds": 20, "notes":"Lisää toistoja/raskaampi kuula" } }
         },
         "weeklyExercises": [
           { "exerciseId": "two_hand_swing", "displayTitle": "Kahden käden etuheilautus" },
           { "exerciseId": "goblet_squat", "displayTitle": "Pokaalikyykky" },
-          { "exerciseId": "halo", "displayTitle": "Halo", "notes": "Vaihda kiertosuuntaa joka kierroksella tai puolivälissä." },
-          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Vasen)" },
-          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Oikea)" }
+          { "exerciseId": "halo", "displayTitle": "Halo", "notes": "Vaihda suuntaa joka kierroksella." },
+          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Vasen)"},
+          { "exerciseId": "bent_over_row", "displayTitle": "Kulmasoutu (Oikea)"},
+          { "exerciseId": "farmers_carry", "displayTitle": "Farmarikävely", "notes": "Lyhyt matka, keskity ryhtiin." }
         ]
       },
       {
         "phaseInfo": {
-            "name": "Kehitys & Yhden Käden Liikkeet",
-            "weeks": [4, 5, 6, 7],
-            "focus": "Työkapasiteetin nosto, yhden käden liikkeiden ja koordinaation kehittäminen."
+            "name": "Vaihe 2: Voimaa ja Yhden Käden Perusteita",
+            "weeks": [3, 4],
+            "focus": "Heilautuksen voimantuoton parantaminen, yhden käden kuormitukseen totuttelu, rinnallevedon alkeet (high pull)."
         },
         "workoutPlan": { "rounds": "4", "restBetweenRoundsSeconds": "60" },
         "levels": {
-          "1": { "timeBased": { "workSeconds": 35, "restSeconds": 25 }, "repBased": { "repsDescription": "6-8 per puoli (Farmarikävely ~20m)", "restBetweenExercisesSeconds": "10-15" } },
-          "2": { "timeBased": { "workSeconds": 40, "restSeconds": 20 }, "repBased": { "repsDescription": "8-10 per puoli (Farmarikävely ~30m)", "restBetweenExercisesSeconds": "10-15" } },
-          "3": { "timeBased": { "workSeconds": 45, "restSeconds": 15 }, "repBased": { "repsDescription": "10-12 per puoli (Farmarikävely ~40m)", "restBetweenExercisesSeconds": "10-15" } },
-          "4": { "timeBased": { "workSeconds": 50, "restSeconds": 10 }, "repBased": { "repsDescription": "12-15 per puoli (Farmarikävely ~50m)", "restBetweenExercisesSeconds": "10-15" } }
+          "1": { "timeBased": { "workSeconds": 35, "restSeconds": 25 } },
+          "2": { "timeBased": { "workSeconds": 40, "restSeconds": 20 } },
+          "3": { "timeBased": { "workSeconds": 45, "restSeconds": 15 } },
+          "4": { "timeBased": { "workSeconds": 45, "restSeconds": 15, "notes":"Raskaampi kuula." } }
         },
         "weeklyExercises": [
-          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Vasen)", "notes": "Taso 1 voi tehdä 2K." },
-          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Oikea)", "notes": "Taso 1 voi tehdä 2K." },
-          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Vasen)", "notes": "Taso 1 voi tehdä pokaalikyykyn." },
-          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Oikea)", "notes": "Taso 1 voi tehdä pokaalikyykyn." },
-          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Vasen)" },
-          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Oikea)" },
-          { "exerciseId": "reverse_lunge", "displayTitle": "Askelkyykky taakse (Vasen jalka taakse)", "notes": "Kuula V tai pokaali." },
-          { "exerciseId": "reverse_lunge", "displayTitle": "Askelkyykky taakse (Oikea jalka taakse)", "notes": "Kuula O tai pokaali." },
-          { "exerciseId": "farmers_carry", "displayTitle": "Farmarikävely", "notes": "1 kuula: vaihda puolta / kierros. 2 kuulaa: tee molemmilla." }
+          { "exerciseId": "two_hand_swing", "displayTitle": "Kahden käden etuheilautus", "notes":"Pyri räjähtävyyteen." },
+          { "exerciseId": "reverse_lunge", "displayTitle": "Askelkyykky taakse (Pokaaliote)" },
+          { "exerciseId": "clean_high_pull", "displayTitle": "Rinnallevedon korkea veto (Vasen)" },
+          { "exerciseId": "clean_high_pull", "displayTitle": "Rinnallevedon korkea veto (Oikea)" },
+          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Vasen)", "notes": "Kevyt kuula, keskity tekniikkaan." },
+          { "exerciseId": "overhead_press", "displayTitle": "Pystypunnerrus (Oikea)", "notes": "Kevyt kuula, keskity tekniikkaan." }
         ]
       },
       {
         "phaseInfo": {
-            "name": "Huippu & Haastavammat Liikkeet",
-            "weeks": [8, 9, 10, 11],
-            "focus": "Voimakestävyys, teho, haastavammat liikkeet ja liikeyhdistelmät. Valitse 4-5 liikeparia/liikettä viikoittain."
+            "name": "Vaihe 3: Yhden Käden Liikkeet ja Virtaus",
+            "weeks": [5, 6, 7],
+            "focus": "Yhden käden heilautus ja rinnalleveto. Liikkeiden yhdistäminen. Koordinaatio."
         },
-        "workoutPlan": { "rounds": "4-5 (Pyri 5:een vko 10-11)", "restBetweenRoundsSeconds": "45-60" },
+        "workoutPlan": { "rounds": "4", "restBetweenRoundsSeconds": "60" },
         "levels": {
-          "1": { "timeBased": { "workSeconds": 40, "restSeconds": 20 }, "repBased": { "repsDescription": "5-6 per puoli (TGU 1/puoli, Kanto ~20m)", "restBetweenExercisesSeconds": "10" } },
-          "2": { "timeBased": { "workSeconds": 45, "restSeconds": 15 }, "repBased": { "repsDescription": "6-8 per puoli (TGU 1/puoli, Kanto ~30m)", "restBetweenExercisesSeconds": "10" } },
-          "3": { "timeBased": { "workSeconds": 50, "restSeconds": 10 }, "repBased": { "repsDescription": "8-10 per puoli (TGU 1-2/puoli, Kanto ~40m)", "restBetweenExercisesSeconds": "10" } },
-          "4": { "timeBased": { "workSeconds": 50, "restSeconds": 10, "notes": "Tai AMRAP-osioita" }, "repBased": { "repsDescription": "10+ per puoli (TGU 1-2/puoli, Kanto ~50m+)", "restBetweenExercisesSeconds": "0-10" } }
+          "1": { "timeBased": { "workSeconds": 30, "restSeconds": 30 } },
+          "2": { "timeBased": { "workSeconds": 35, "restSeconds": 25 } },
+          "3": { "timeBased": { "workSeconds": 40, "restSeconds": 20 } },
+          "4": { "timeBased": { "workSeconds": 40, "restSeconds": 20, "notes":"Enemmän toistoja/raskaampi." } }
         },
-        "exerciseOptions": [
-           { "optionId": "snatch_pair", "exercises": [ { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "T1-2: 1h heil./clean." }, { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "T1-2: 1h heil./clean." } ] },
-           { "optionId": "cleanpress_pair", "exercises": [ { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (V)" }, { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (O)" } ] },
-           { "optionId": "frontsquat_pair", "exercises": [ { "exerciseId": "front_squat", "displayTitle": "Etukyykky (1 kuula V)", "notes": "Tai 2 kuulaa." }, { "exerciseId": "front_squat", "displayTitle": "Etukyykky (1 kuula O)", "notes": "Tai 2 kuulaa." } ] },
-           { "optionId": "tgu_pair", "exercises": [ { "exerciseId": "turkish_get_up", "displayTitle": "TGU (Vasen)", "notes": "T1-2: Puolikas. Aikaa!" }, { "exerciseId": "turkish_get_up", "displayTitle": "TGU (Oikea)", "notes": "T1-2: Puolikas." } ] },
-           { "optionId": "windmill_pair", "exercises": [ { "exerciseId": "windmill", "displayTitle": "Tuulimylly (V kuula ylh.)" }, { "exerciseId": "windmill", "displayTitle": "Tuulimylly (O kuula ylh.)" } ] },
-           { "optionId": "rackcarry_pair", "exercises": [ { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (V kuula)", "notes": "Tai 2 kuulaa." }, { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (O kuula)", "notes": "Tai 2 kuulaa." } ] },
-           { "optionId": "waiterscarry_pair", "exercises": [ { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (V käsi)" }, { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (O käsi)" } ] }
+        "weeklyExercises": [
+          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Vasen)" },
+          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Oikea)" },
+          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Vasen)" },
+          { "exerciseId": "clean", "displayTitle": "Rinnalleveto (Oikea)" },
+          { "exerciseId": "front_squat", "displayTitle": "Etukyykky (Yksi kuula räkissä, vuoropuoli/kierros)"},
+          { "exerciseId": "plank_basic", "displayTitle": "Peruslankku", "notes":"Pidä niin kauan kuin hyvä tekniikka säilyy työajan sisällä."}
+        ]
+      },
+      {
+        "phaseInfo": {
+            "name": "Vaihe 4: Voimakestävyys ja Yhdistelmät",
+            "weeks": [8, 9],
+            "focus": "Työkapasiteetin kasvattaminen, liikkeiden yhdistäminen (Clean & Press). Kantoliikkeet."
+        },
+        "workoutPlan": { "rounds": "4-5", "restBetweenRoundsSeconds": "45-60" },
+        "levels": {
+          "1": { "timeBased": { "workSeconds": 35, "restSeconds": 25 } },
+          "2": { "timeBased": { "workSeconds": 40, "restSeconds": 20 } },
+          "3": { "timeBased": { "workSeconds": 45, "restSeconds": 15 } },
+          "4": { "timeBased": { "workSeconds": 45, "restSeconds": 15, "notes":"Pyri tekemään 5. kierros." } }
+        },
+        "weeklyExercises": [
+          { "exerciseId": "alternating_swing", "displayTitle": "Jatkuva kädenvaihtoheilautus" },
+          { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (Vasen)" },
+          { "exerciseId": "clean_and_press", "displayTitle": "Rinnalleveto ja Työntö (Oikea)" },
+          { "exerciseId": "goblet_squat", "displayTitle": "Pokaalikyykky", "notes":"Pyri syvempään kyykkyyn." },
+          { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto", "notes":"Kävele tilassa, vaihda kuulan puolta puolivälissä aikaa tai kierroksilla."}
+        ]
+      },
+      {
+        "phaseInfo": {
+            "name": "Vaihe 5: Tehoa ja Haastetta",
+            "weeks": [10, 11],
+            "focus": "Räjähtävyys (tempaus-harjoitteet), monipuoliset liikkeet ja kehonhallinta (TGU-harjoitteet)."
+        },
+        "workoutPlan": { "rounds": "4", "restBetweenRoundsSeconds": "60" },
+        "levels": {
+          "1": { "timeBased": { "workSeconds": 30, "restSeconds": 30 } },
+          "2": { "timeBased": { "workSeconds": 35, "restSeconds": 25 } },
+          "3": { "timeBased": { "workSeconds": 40, "restSeconds": 20 } },
+          "4": { "timeBased": { "workSeconds": 45, "restSeconds": 15 } }
+        },
+        "exampleWeeklyExercises": [
+          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Vasen)", "notes": "Keskity tehoon." },
+          { "exerciseId": "one_hand_swing", "displayTitle": "1K Etuheilautus (Oikea)", "notes": "Keskity tehoon." },
+          { "exerciseId": "snatch", "displayTitle": "Tempauksen harjoite (Vasen)", "notes": "Tee korkea veto tai puolikas tempaus, keskity tekniikkaan." },
+          { "exerciseId": "snatch", "displayTitle": "Tempauksen harjoite (Oikea)", "notes": "Tee korkea veto tai puolikas tempaus, keskity tekniikkaan." },
+          { "exerciseId": "tgu_get_to_elbow", "displayTitle": "TGU: Nousu kyynärpäälle (Vasen)" },
+          { "exerciseId": "tgu_get_to_elbow", "displayTitle": "TGU: Nousu kyynärpäälle (Oikea)" },
+          { "exerciseId": "goblet_squat", "displayTitle": "Pokaalikyykky" }
         ],
-         "exampleWeeklyExercises": [
-              { "exerciseId": "snatch", "displayTitle": "Tempaus (Vasen)", "notes": "T1-2: 1h heil./clean." }, { "exerciseId": "snatch", "displayTitle": "Tempaus (Oikea)", "notes": "T1-2: 1h heil./clean." },
-              { "exerciseId": "front_squat", "displayTitle": "Etukyykky (1 kuula V)", "notes": "Tai 2 kuulaa." }, { "exerciseId": "front_squat", "displayTitle": "Etukyykky (1 kuula O)", "notes": "Tai 2 kuulaa." },
-              { "exerciseId": "turkish_get_up", "displayTitle": "TGU (Vasen)", "notes": "T1-2: Puolikas. Aikaa!" }, { "exerciseId": "turkish_get_up", "displayTitle": "TGU (Oikea)", "notes": "T1-2: Puolikas." },
-              { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (V kuula)", "notes": "Tai 2 kuulaa." }, { "exerciseId": "rack_carry", "displayTitle": "Räkkikanto (O kuula)", "notes": "Tai 2 kuulaa." }
+        "exerciseOptions": [
+           { "optionId": "snatch_progression", "exercises": [ { "exerciseId": "snatch", "displayTitle": "Tempaus (V)", "notes":"Tai korkea veto" }, { "exerciseId": "snatch", "displayTitle": "Tempaus (O)", "notes":"Tai korkea veto" } ] },
+           { "optionId": "tgu_progression", "exercises": [ { "exerciseId": "tgu_get_to_hand", "displayTitle": "TGU: Nousu kädelle (V)" }, { "exerciseId": "tgu_get_to_hand", "displayTitle": "TGU: Nousu kädelle (O)" } ] },
+           { "optionId": "full_tgu_practice", "exercises": [ { "exerciseId": "turkish_get_up", "displayTitle": "TGU (V)", "notes":"Hidas ja hallittu" }, { "exerciseId": "turkish_get_up", "displayTitle": "TGU (O)", "notes":"Hidas ja hallittu" } ] },
+           { "optionId": "power_combo", "exercises": [ { "exerciseId": "clean_and_press", "displayTitle": "Clean & Press (V)" }, { "exerciseId": "clean_and_press", "displayTitle": "Clean & Press (O)" } ] },
+           { "optionId": "carry_challenge", "exercises": [ { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (V)" }, { "exerciseId": "waiters_carry", "displayTitle": "Tarjoilijankanto (O)" } ] }
         ]
       }
     ]
