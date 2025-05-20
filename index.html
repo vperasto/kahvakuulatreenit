@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Modifioitu Selection)</title>
+    <title>Kahvakuulakurssi – Ohjaajan Työkalu v2.1 (Modifioitu Description)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,11 +22,10 @@
                 </button>
             </header>
 
-            <!-- Valinta-alue (UUSI RAKENNE) -->
+            <!-- Valinta-alue -->
             <section id="selection-area" class="collapsible hidden">
                 <div class="selection-grid">
                     <div class="selection-column selection-column-left">
-                        <!-- Lämmittelyn valintamoduuli -->
                         <div class="selection-module">
                             <h2><span class="module-icon">🔥</span> Alkulämmittely</h2>
                             <div id="warmup-selection">
@@ -37,7 +36,6 @@
                             </div>
                         </div>
 
-                        <!-- Jäähdyttelyn valintamoduuli -->
                         <div class="selection-module">
                              <h2><span class="module-icon">❄️</span> Loppuverryttely</h2>
                              <div id="cooldown-selection">
@@ -50,7 +48,6 @@
                     </div>
 
                     <div class="selection-column selection-column-right">
-                        <!-- Treenin valintamoduuli -->
                         <div class="selection-module">
                             <h2><span class="module-icon">🏋️</span> Varsinainen Treeni</h2>
                             <div id="training-selection">
@@ -72,9 +69,8 @@
                 </div>
             </section>
 
-            <!-- Pääsisältöalue vasemmalla (ilman harjoituslistaa) -->
+            <!-- Pääsisältöalue vasemmalla -->
             <div class="main-content-area-left">
-                <!-- Sivupalkki (Info) -->
                 <aside id="sidebar">
                     <div id="info-area">
                         <h2 id="info-area-title" class="sidebar-area-title">Tiedot</h2>
@@ -86,7 +82,6 @@
                     </div>
                 </aside>
 
-                <!-- Päänäkymä (Aktiivinen Harjoite) -->
                 <div id="main-view-area">
                     <section id="active-display">
                         <div id="title-area">
@@ -94,16 +89,24 @@
                             <h2 id="item-name">Valitse toiminto</h2>
                             <button id="next-btn" class="title-nav-btn" disabled title="Seuraava">⏭</button>
                         </div>
-                        <div id="item-details">
+                        <div id="item-details"> <!-- MUOKATTU OSA ALKAA -->
                             <img id="item-image" src="" alt="Kuva" style="display: none;">
-                            <p id="item-description"></p>
-                        </div>
+                            <div id="item-text-content">
+                                <div id="item-description-wrapper">
+                                    <!-- "Suoritusohje"-otsikko lisätään JS:llä tähän -->
+                                    <div id="item-description"></div> <!-- JS täyttää tämän sisällön -->
+                                </div>
+                                <div id="item-muscle-groups" style="display: none;">
+                                    <h3 id="muscle-groups-title">Työskentelevät lihasryhmät</h3>
+                                    <p id="muscle-groups-list"></p>
+                                </div>
+                            </div>
+                        </div> <!-- MUOKATTU OSA PÄÄTTYY -->
                     </section>
                 </div>
-            </div> <!-- .main-content-area-left loppuu -->
-        </div> <!-- #left-column loppuu -->
+            </div>
+        </div>
 
-        <!-- OIKEA PALSTA (STICKY) -->
         <aside id="right-column-timer">
             <img src="img/kuulapakki_logo_valk.png" alt="Kuulapakki Logo" style="max-width: 65%; margin: auto;">
             <div class="timer-controls-content">
@@ -124,9 +127,9 @@
                     <li>Valitse toiminto yläpuolelta.</li>
                 </ul>
             </div>
-        </aside> <!-- #right-column-timer loppuu -->
+        </aside>
 
-    </div> <!-- #app-wrapper loppuu -->
+    </div>
 
     <script src="app.js"></script>
 </body>

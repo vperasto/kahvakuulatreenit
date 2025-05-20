@@ -1,4 +1,4 @@
-// app.js (Versio 2.2 - Korjauksia sticky-paneeliin ja sivupalkin hallintaan + Pyydetyt muutokset)
+// app.js (Versio 2.2 - Description listaus + Lihasryhmät)
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Elementit ---
@@ -20,10 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainViewArea = document.getElementById('main-view-area');
     const timerControlsPanel = document.getElementById('timer-controls-panel');
 
-    const infoAreaTitleH2 = document.getElementById('info-area-title'); // Säilytetään, jos otsikkoa päivitetään
-    // const toggleInfoBtn = document.getElementById('toggle-info-btn'); // POISTETTU
-    // const toggleInfoTextSpan = toggleInfoBtn.querySelector('.toggle-info-text'); // POISTETTU
-    const infoContentWrapper = document.getElementById('info-content'); // Säilytetään, jos sisältöön viitataan
+    const infoAreaTitleH2 = document.getElementById('info-area-title');
+    const infoContentWrapper = document.getElementById('info-content');
     const infoAreaNotesP = document.getElementById('info-area-notes');
     const stepsListTitleH2 = document.getElementById('steps-list-title');
     const stepsListUl = document.getElementById('steps-items');
@@ -33,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemNameH2 = document.getElementById('item-name');
     const nextBtn = document.getElementById('next-btn');
     const itemImageImg = document.getElementById('item-image');
-    const itemDescriptionP = document.getElementById('item-description');
+    const itemDescriptionP = document.getElementById('item-description'); // Tämä on nyt div
 
     const roundInfoP = document.getElementById('round-info');
     const timerDiv = document.getElementById('timer');
@@ -84,10 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleSidebarVisibility() {
         if (sidebar && toggleSidebarBtn) {
-            const isCurrentlyVisible = sidebar.classList.contains('sidebar-visible'); // Käännetty logiikka
+            const isCurrentlyVisible = sidebar.classList.contains('sidebar-visible');
             sidebar.classList.toggle('sidebar-hidden', isCurrentlyVisible);
             sidebar.classList.toggle('sidebar-visible', !isCurrentlyVisible);
-            toggleSidebarBtn.classList.toggle('active', !isCurrentlyVisible); // Active kun sivupalkki on näkyvissä
+            toggleSidebarBtn.classList.toggle('active', !isCurrentlyVisible);
             toggleSidebarBtn.setAttribute('aria-expanded', String(!isCurrentlyVisible));
 
             const toggleSidebarTextElem = toggleSidebarBtn.querySelector('.toggle-sidebar-text');
@@ -97,7 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleSidebarBtn.title = !isCurrentlyVisible ? "Piilota sivuvalikko (Keskittymistila)" : "Näytä sivuvalikko";
 
 
-            // Mobiilin overlay-tausta
             if (window.innerWidth <= 767) {
                 document.body.classList.toggle('sidebar-open', !isCurrentlyVisible);
                 setTimeout(() => {
@@ -108,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (toggleSidebarBtn && sidebar) {
-        // Oletustila: Aseta sivupalkki näkyväksi isommilla näytöillä, piiloon pienemmillä
         const showSidebarByDefault = window.innerWidth > 900;
         sidebar.classList.toggle('sidebar-hidden', !showSidebarByDefault);
         sidebar.classList.toggle('sidebar-visible', showSidebarByDefault);
@@ -142,7 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
             populateCooldownSelector();
             populateWeekSelectors();
             addLevelButtonListeners();
-            // initializeInfoArea(); // POISTETTU
             resetAppState();
         } catch (error) {
             console.error("Could not load or process program data:", error);
@@ -254,16 +249,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const phase = fullProgramData.kettlebellProgram11Weeks.phases[phaseIdx]; const level = currentWorkoutInfo.level; const levelData = phase.levels?.[level];
         if (!levelData?.timeBased) { itemNameH2.textContent = `Tason ${level} tietoja ei löytynyt.`; resetAppState(true); return; }
         const workTime = levelData.timeBased.workSeconds; const restTime = levelData.timeBased.restSeconds;
-        let exerciseListSource = phase.exampleWeeklyExercises && phaseIdx === 2 ? phase.exampleWeeklyExercises : phase.weeklyExercises;
+
+        let exerciseListSource = phase.weeklyExercises;
+        if (phaseIdx === 2 && phase.exampleWeeklyExercises) {
+            exerciseListSource = phase.exampleWeeklyExercises;
+        } else if (phaseIdx === 2 && phase.exerciseOptions && !phase.exampleWeeklyExercises) {
+             console.warn("Vaiheelle 3 (indeksi 2) ei löytynyt 'exampleWeeklyExercises', käytetään 'weeklyExercises' jos on, tai harkitse 'exerciseOptions' käyttöä.");
+             if (!exerciseListSource) exerciseListSource = [];
+        }
+
         if (!exerciseListSource) { itemNameH2.textContent = "Harjoituslistaa ei löytynyt."; resetAppState(true); return; }
+
         const mappedEx = exerciseListSource.map((pEx, index) => {
             if (!pEx?.exerciseId) return null;
             const fEx = fullProgramData.exercises.find(ex => ex.id === pEx.exerciseId);
             if (!fEx) { console.warn(`Exercise ID ${pEx.exerciseId} not found.`); return null; }
             return { ...fEx, displayTitle: pEx.displayTitle || fEx.name, notes: pEx.notes || '', workTime, restTime, index };
         }).filter(ex => ex !== null);
+
         if (mappedEx.length === 0) { itemNameH2.textContent = "Kelvollisia harjoituksia ei löytynyt."; resetAppState(true); return; }
-        currentRoutineSteps = mappedEx; currentStepIndex = 0; currentRound = 1; // currentWorkoutExercises poistettu, koska currentRoutineSteps ajaa saman asian
+        currentRoutineSteps = mappedEx; currentStepIndex = 0; currentRound = 1;
         currentWorkoutInfo = { ...currentWorkoutInfo, week: weekNumber, phaseIndex: phaseIdx, rounds: parseInt(phase.workoutPlan?.rounds?.match(/\d+/)?.[0] || '1', 10) || 1, restBetweenRounds: parseInt(phase.workoutPlan?.restBetweenRoundsSeconds?.match(/\d+/)?.[0] || '0', 10) || 0, notes: phase.phaseInfo.focus || '', focus: phase.phaseInfo.focus || '' };
         document.querySelectorAll('.routine-button').forEach(btn => btn.classList.remove('active'));
         infoAreaTitleH2.textContent = `Viikko ${weekNumber} / Taso ${level}`;
@@ -308,10 +313,22 @@ document.addEventListener('DOMContentLoaded', () => {
             displayStep(currentStepIndex); updateButtonStates(); clearNextUpHighlight(); updateRoundDisplay();
         }
     }
-        function displayStep(index) {
+
+    function displayStep(index) {
+        const descriptionWrapper = document.getElementById('item-description-wrapper');
+        const muscleGroupsDiv = document.getElementById('item-muscle-groups');
+        const muscleGroupsListP = document.getElementById('muscle-groups-list');
+
+        itemDescriptionP.innerHTML = '';
+        if (descriptionWrapper) descriptionWrapper.classList.remove('has-content');
+        if (muscleGroupsListP) muscleGroupsListP.textContent = '';
+        if (muscleGroupsDiv) muscleGroupsDiv.style.display = 'none';
+
+
         if (index < 0 || !currentRoutineSteps || index >= currentRoutineSteps.length || !currentRoutineSteps[index]) {
             itemNameH2.textContent = "Valitse toiminto";
-            itemDescriptionP.innerHTML = "<p>Valitse ensin lämmittely, treeni tai jäähdyttely.</p>"; // Käytä innerHTML:ää oletusviestillekin
+            itemDescriptionP.innerHTML = "<p>Valitse ensin lämmittely, treeni tai jäähdyttely.</p>";
+            if (descriptionWrapper) descriptionWrapper.classList.add('has-content');
             itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
             timerDiv.style.visibility = 'hidden'; roundInfoP.textContent = '';
             timerLabelP.textContent = 'Odottamassa...'; timeRemainingSpan.textContent = '00:00';
@@ -320,100 +337,100 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const step = currentRoutineSteps[index];
         itemNameH2.textContent = step.displayTitle || step.name || 'Nimetön vaihe';
-        itemDescriptionP.innerHTML = ''; // Tyhjennä aina ensin!
 
         const descriptionToParse = step.description || "";
-
         if (descriptionToParse.trim()) {
+            if (descriptionWrapper) descriptionWrapper.classList.add('has-content');
+
+            let instructionTitle = itemDescriptionP.querySelector('.instruction-title');
+            if (!instructionTitle) {
+                instructionTitle = document.createElement('h3');
+                instructionTitle.classList.add('instruction-title');
+                instructionTitle.textContent = "Suoritusohje";
+                itemDescriptionP.appendChild(instructionTitle);
+            }
+
             const lines = descriptionToParse.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-            let ol = null; // Järjestetty lista
-            let ul = null; // Järjestämätön lista (esim. "- " alkaville)
-            let currentList = null; // Viittaus aktiiviseen listaan (ol tai ul)
+            let ol = null;
+            let ul = null;
+            let currentList = null;
 
             lines.forEach(line => {
-                // Tarkista numeroidut kohdat (esim. "1. Teksti")
                 if (/^\d+\.\s/.test(line)) {
-                    if (!ol) { // Jos <ol> ei ole, luo se
+                    if (!ol) {
                         ol = document.createElement('ol');
                         itemDescriptionP.appendChild(ol);
-                        ul = null; // Nollaa ul, jos siirrytään numeroituun listaan
+                        ul = null;
                     }
                     currentList = ol;
                     const li = document.createElement('li');
-                    // Poista "N. " alusta, koska <ol> hoitaa numeroinnin
-                    li.textContent = line.replace(/^\d+\.\s*/, '');
-                    if (/^Huom:\s/.test(line.replace(/^\d+\.\s*/, ''))) { // Tarkista Huom: jäljelle jäävästä tekstistä
+                    let content = line.replace(/^\d+\.\s*/, '');
+                    if (/^Huom:\s/i.test(content)) {
                         li.classList.add('description-note');
-                        li.textContent = line.replace(/^\d+\.\s*/, '').replace(/^Huom:\s*/, ''); // Poista myös Huom:
-                         // Lisää "Huom: " takaisin vahvennettuna, jos halutaan
+                        content = content.replace(/^Huom:\s*/i, '');
                         const strongHuom = document.createElement('strong');
                         strongHuom.textContent = "Huom: ";
-                        li.insertBefore(strongHuom, li.firstChild);
+                        li.appendChild(strongHuom);
                     }
+                    li.appendChild(document.createTextNode(content));
                     currentList.appendChild(li);
-                }
-                // Tarkista "Huom:"-alkuiset rivit, jotka EIVÄT ole osa numeroitua listaa
-                else if (/^Huom:\s/.test(line)) {
-                    if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
-                        // Jos on aktiivinen lista, lisätään Huom: edellisen listakohdan loppuun tai omana kohtanaan
+                } else if (/^Huom:\s/i.test(line)) {
+                     if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
                         const li = document.createElement('li');
-                        li.textContent = line.replace(/^Huom:\s*/, '');
                         li.classList.add('description-note');
                         const strongHuom = document.createElement('strong');
                         strongHuom.textContent = "Huom: ";
-                        li.insertBefore(strongHuom, li.firstChild);
+                        li.appendChild(strongHuom);
+                        li.appendChild(document.createTextNode(line.replace(/^Huom:\s*/i, '')));
                         currentList.appendChild(li);
-
-                    } else { // Ei aktiivista listaa, tee Huom: omaksi kappaleekseen
+                    } else {
                         const p = document.createElement('p');
-                        p.innerHTML = `<strong>Huom:</strong> ${line.replace(/^Huom:\s*/, '')}`;
                         p.classList.add('description-note-paragraph');
+                        const strongHuom = document.createElement('strong');
+                        strongHuom.textContent = "Huom: ";
+                        p.appendChild(strongHuom);
+                        p.appendChild(document.createTextNode(line.replace(/^Huom:\s*/i, '')));
                         itemDescriptionP.appendChild(p);
-                        ol = null; ul = null; currentList = null; // Nollaa listat, koska tämä on erillinen
+                        ol = null; ul = null; currentList = null;
                     }
-                }
-                // Tarkista luetelmamerkki "-" tai "*"
-                else if (/^[-*]\s/.test(line)) {
-                    if (!ul) { // Jos <ul> ei ole, luo se
+                } else if (/^[-*]\s/.test(line)) {
+                    if (!ul) {
                         ul = document.createElement('ul');
                         itemDescriptionP.appendChild(ul);
-                        ol = null; // Nollaa ol, jos siirrytään järjestämättömään listaan
+                        ol = null;
                     }
                     currentList = ul;
                     const li = document.createElement('li');
-                    li.textContent = line.replace(/^[-*]\s*/, ''); // Poista "- " tai "* " alusta
+                    li.textContent = line.replace(/^[-*]\s*/, '');
                     currentList.appendChild(li);
-                }
-                // Jos rivi ei ole listan alku, mutta lista on jo aloitettu
-                else if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
-                    // Lisätään rivi edellisen li-elementin sisällön jatkoksi <br>:n kanssa
-                    // Tämä on yksinkertaistus, monimutkaisempi jäsennys voisi olla parempi
-                    // jos rivit voivat olla todella pitkiä kappaleita listan sisällä.
-                    const br = document.createElement('br');
-                    currentList.lastChild.appendChild(br);
+                } else if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
+                    currentList.lastChild.appendChild(document.createElement('br'));
                     currentList.lastChild.appendChild(document.createTextNode(line));
-                }
-                // Muuten se on normaali tekstikappale
-                else {
+                } else {
                     const p = document.createElement('p');
                     p.textContent = line;
                     itemDescriptionP.appendChild(p);
-                    ol = null; ul = null; currentList = null; // Nollaa listat, koska tämä on erillinen kappale
+                    ol = null; ul = null; currentList = null;
                 }
             });
 
-            if (!itemDescriptionP.hasChildNodes()) {
+            if (itemDescriptionP.children.length <= (instructionTitle ? 1 : 0)) {
                 const p = document.createElement('p');
                 p.textContent = "Suorita harjoitus ohjeen mukaan.";
                 itemDescriptionP.appendChild(p);
             }
         } else {
             const p = document.createElement('p');
-            p.textContent = (activeRoutineType === 'workout' || activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') ? "Suorita ohjeen mukaan." : "Valitse toiminto.";
+            p.textContent = "Suorita harjoitus ohjeen mukaan.";
             itemDescriptionP.appendChild(p);
+            if (descriptionWrapper) descriptionWrapper.classList.add('has-content');
         }
 
-        // Kuvan ja ajastimen näyttölogiikka
+        if (activeRoutineType === 'workout' && step.muscleGroups && step.muscleGroups.length > 0 && muscleGroupsDiv && muscleGroupsListP) {
+            muscleGroupsListP.textContent = step.muscleGroups.join(', ');
+            muscleGroupsDiv.style.display = 'block';
+        }
+
         if (activeRoutineType === 'workout') {
             if (step.image) { itemImageImg.src = step.image; itemImageImg.alt = step.displayTitle || step.name; itemImageImg.style.display = 'block'; }
             else { itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = ''; }
@@ -422,7 +439,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 remainingTime = step.workTime || 0; updateTimerDisplay(remainingTime); timerLabelP.textContent = "Valmiina";
             }
         } else if (activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') {
-            // Warmup/cooldown vaiheilla ei yleensä ole kuvia JSONissa, mutta jos olisi, ne näytettäisiin tässä
             itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
             timerDiv.style.visibility = 'visible'; timerDiv.classList.add('routine-timer-active');
             if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
@@ -433,19 +449,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         highlightCurrentStep(); updateRoundDisplay();
     }
-
-    // function initializeInfoArea() { // POISTETTU
-    //     if (infoContentWrapper && toggleInfoBtn && toggleInfoTextSpan) {
-    //         infoContentWrapper.classList.add('collapsed'); toggleInfoBtn.setAttribute('aria-expanded', 'false');
-    //         toggleInfoTextSpan.textContent = "Näytä";
-    //         toggleInfoBtn.addEventListener('click', toggleInfoArea);
-    //     }
-    // }
-    // function toggleInfoArea() { // POISTETTU
-    //     const isCollapsed = infoContentWrapper.classList.toggle('collapsed'); const isExpanded = !isCollapsed;
-    //     toggleInfoBtn.setAttribute('aria-expanded', String(isExpanded));
-    //     if (toggleInfoTextSpan) toggleInfoTextSpan.textContent = isExpanded ? "Piilota" : "Näytä";
-    // }
 
     function startSelectedRoutine() {
         if (activeRoutineType === 'none' || currentRoutineSteps.length === 0 || timerState !== TimerState.IDLE) return;
@@ -467,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
             beepSound.volume = 0.001; beepSound.play().then(() => {
                 beepSound.pause(); beepSound.currentTime = 0; beepSound.volume = 1.0;
                 isAudioUnlocked = true; proceedWithWorkoutStart();
-            }).catch(error => { isAudioUnlocked = true; proceedWithWorkoutStart(); });
+            }).catch(error => { console.warn("Audio unlock failed:", error); isAudioUnlocked = true; proceedWithWorkoutStart(); });
         } else { proceedWithRoutineStart(); }
     }
 
@@ -529,7 +532,8 @@ document.addEventListener('DOMContentLoaded', () => {
          const finishedType = activeRoutineType;
          stopTimer(); stopRoutineTimer(); timerState = TimerState.FINISHED; clearNextUpHighlight();
          let routineName = selectedRoutineData ? selectedRoutineData.name : (finishedType === 'workout' ? `Viikko ${currentWorkoutInfo.week} Treeni` : finishedType.charAt(0).toUpperCase() + finishedType.slice(1));
-         itemNameH2.textContent = `${routineName} Valmis!`; itemDescriptionP.textContent = "Hyvää työtä!";
+         itemNameH2.textContent = `${routineName} Valmis!`;
+         itemDescriptionP.innerHTML = "<p>Hyvää työtä!</p>";
          itemImageImg.style.display = 'none';
          updateTimerDisplay(finishedType === 'workout' ? 0 : elapsedRoutineTime);
          timerLabelP.textContent = finishedType === 'workout' ? "Valmis" : "Valmis (Kesto)";
@@ -591,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isLastR = currentRound >= currentWorkoutInfo.rounds;
             const restDur = currentEx.restTime ?? 0;
             if (isLastEx) {
-                if (isLastR) moveToNextPhase();
+                if (isLastR) { moveToNextPhase(); }
                 else { const roundRest = currentWorkoutInfo.restBetweenRounds || 0;
                        if (roundRest > 0) startTimerForPhase(TimerState.RUNNING_ROUND_REST, roundRest); else moveToNextPhase(); }
             } else { if (restDur > 0) startTimerForPhase(TimerState.RUNNING_REST, restDur); else moveToNextPhase(); }
@@ -600,23 +604,23 @@ document.addEventListener('DOMContentLoaded', () => {
     function moveToNextPhase() {
         const comingFromRest = timerState === TimerState.RUNNING_REST || timerState === TimerState.RUNNING_ROUND_REST;
         const comingFromRoundRest = timerState === TimerState.RUNNING_ROUND_REST;
+
         if (comingFromRoundRest) { currentRound++; currentStepIndex = 0; }
         else if (comingFromRest) { currentStepIndex++; }
-        else { // Tuli suoraan edellisestä harjoituksesta (ei lepoa välissä)
+        else {
             const isLastEx = currentStepIndex === currentRoutineSteps.length - 1;
-            const isLastR = currentRound >= currentWorkoutInfo.rounds;
-            if(isLastEx && !isLastR) { currentRound++; currentStepIndex = 0; }
+            if(isLastEx && currentRound < currentWorkoutInfo.rounds) { currentRound++; currentStepIndex = 0; }
             else if (!isLastEx) { currentStepIndex++; }
-            // Jos oli lastEx JA lastR, finishRoutine kutsutaan handleTimerEnd:ssä tai aiemmin moveToNextPhase:ssa
         }
-        if (currentRound > currentWorkoutInfo.rounds) finishRoutine();
-        else if (currentStepIndex < currentRoutineSteps.length) {
+
+        if (currentRound > currentWorkoutInfo.rounds) {
+            finishRoutine();
+        } else if (currentStepIndex < currentRoutineSteps.length) {
             const nextEx = currentRoutineSteps[currentStepIndex];
             if (!nextEx || typeof nextEx.workTime === 'undefined') { resetAppState(); return; }
             startTimerForPhase(TimerState.RUNNING_EXERCISE, nextEx.workTime);
         } else {
-             // Tänne ei pitäisi päätyä, jos currentRound <= currentWorkoutInfo.rounds
-             // Mutta jos päädytään, se tarkoittaa, että kierrokset ovat täynnä.
+            console.warn("Unexpected state in moveToNextPhase, finishing routine.");
             finishRoutine();
         }
     }
@@ -639,7 +643,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const seconds = (displayTime % 60).toString().padStart(2, "0");
         timeRemainingSpan.textContent = `${minutes}:${seconds}`;
         if (timerState === TimerState.IDLE && activeRoutineType === 'none') timerLabelP.textContent = 'Odottamassa...';
-        // Timer labelia päivitetään myös displayStep, startTimerForPhase ja finishRoutine -funktioissa
     }
     function updateRoundDisplay() {
         if (activeRoutineType === 'workout') {
@@ -702,12 +705,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetAppState(resetSelections = true) {
         stopTimerInterval(); stopRoutineTimer();
-        selectedRoutineData = null; currentRoutineSteps = []; // currentWorkoutExercises poistettu
+        selectedRoutineData = null; currentRoutineSteps = [];
         currentStepIndex = 0; currentRound = 1; remainingTime = 0; elapsedRoutineTime = 0;
         timerState = TimerState.IDLE; pausedState = null;
         const savedLevel = currentWorkoutInfo.level;
         currentWorkoutInfo = { week: null, phaseIndex: null, level: resetSelections ? '2' : savedLevel, rounds: 0, restBetweenRounds: 0, notes: '', focus: '' };
-        itemNameH2.textContent = "Valitse toiminto"; itemDescriptionP.textContent = "Valitse toiminto yläpuolelta."; infoAreaTitleH2.textContent = "Tiedot";
+        itemNameH2.textContent = "Valitse toiminto";
+        itemDescriptionP.innerHTML = "<p>Valitse toiminto yläpuolelta.</p>";
+        infoAreaTitleH2.textContent = "Tiedot";
         updateInfoAreaNotes();
         itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
         stepsListUl.innerHTML = '<li>Valitse toiminto yläpuolelta.</li>'; stepsListTitleH2.textContent = "Vaiheet";
@@ -716,23 +721,22 @@ document.addEventListener('DOMContentLoaded', () => {
         timerDiv.style.visibility = 'hidden';
         highlightCurrentStep(); clearNextUpHighlight(); updateRoundDisplay();
 
-        // Palauta sivupalkin oletustila
+        const muscleGroupsDiv = document.getElementById('item-muscle-groups');
+        if(muscleGroupsDiv) muscleGroupsDiv.style.display = 'none';
+
+
         if (sidebar && toggleSidebarBtn) {
             const showSidebarByDefault = window.innerWidth > 900;
             const sidebarIsHidden = sidebar.classList.contains('sidebar-hidden');
 
             if (showSidebarByDefault && sidebarIsHidden) {
-                toggleSidebarVisibility(); // Näytä, jos piilossa isolla näytöllä ja pitäisi olla näkyvissä
+                toggleSidebarVisibility();
             } else if (!showSidebarByDefault && !sidebarIsHidden) {
-                toggleSidebarVisibility(); // Piilota, jos näkyvissä pienellä näytöllä ja pitäisi olla piilossa
+                toggleSidebarVisibility();
             }
-            // Mobiili overlayn poisto
              if (window.innerWidth <= 767) {
                 document.body.classList.remove('sidebar-open', 'sidebar-really-open');
-                 // Varmistetaan, että jos sivupalkki ei ole oletuksena auki, se on piilossa
                  if (!showSidebarByDefault && !sidebar.classList.contains('sidebar-hidden')) {
-                    // toggleSidebarVisibility() kutsuttiin jo yllä, jos tarpeen.
-                    // Varmistetaan kuitenkin, että tekstit ja tilat ovat oikein.
                     sidebar.classList.add('sidebar-hidden');
                     sidebar.classList.remove('sidebar-visible');
                     toggleSidebarBtn.classList.remove('active');
@@ -749,7 +753,6 @@ document.addEventListener('DOMContentLoaded', () => {
              startWarmupBtn.style.display = 'none'; startWorkoutBtn.style.display = 'none'; startCooldownBtn.style.display = 'none';
              document.querySelectorAll('.week-button, .routine-button').forEach(btn => btn.classList.remove('active'));
              levelButtonsContainer.querySelectorAll('.level-button').forEach(btn => { btn.classList.toggle('active', btn.dataset.level === '2'); });
-             // if (infoContentWrapper && !infoContentWrapper.classList.contains('collapsed')) toggleInfoArea(); // POISTETTU
              if (selectionArea && !selectionArea.classList.contains('hidden')) toggleTrainingSelectionVisibility();
         } else {
              levelButtonsContainer.querySelectorAll('.level-button').forEach(btn => { btn.classList.toggle('active', btn.dataset.level === currentWorkoutInfo.level); });
@@ -775,7 +778,6 @@ document.addEventListener('DOMContentLoaded', () => {
         clearNextUpHighlight(); let nextIdx = -1;
         if (forceIndex !== -1) nextIdx = forceIndex;
         else if (timerState === TimerState.RUNNING_REST) nextIdx = currentStepIndex + 1;
-        // Jos RUNNING_ROUND_REST, nextIdx on 0, joka hoidetaan displayStepissä ja highlightCurrentStepissä
         if (nextIdx >= 0 && nextIdx < currentRoutineSteps.length) {
             const nextItem = stepsListUl.querySelector(`li[data-index="${nextIdx}"]`);
             if (nextItem) nextItem.classList.add('next-up');
@@ -789,9 +791,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleTrainingSelectionVisibility() {
         const hidden = selectionArea.classList.toggle('hidden');
         toggleSelectionAreaBtn.classList.toggle('open', !hidden);
-        // Tekstin muuttaminen poistettu, koska nappiteksti on nyt staattinen "Valitse treeni"
-        // const toggleTextElem = toggleSelectionAreaBtn.querySelector('.toggle-text');
-        // if (toggleTextElem) toggleTextElem.textContent = hidden ? "Valinnat" : "Piilota valinnat";
     }
 
     // --- Tapahtumankuuntelijoiden asetus ---
