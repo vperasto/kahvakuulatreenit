@@ -308,19 +308,113 @@ document.addEventListener('DOMContentLoaded', () => {
             displayStep(currentStepIndex); updateButtonStates(); clearNextUpHighlight(); updateRoundDisplay();
         }
     }
-    function displayStep(index) {
+        function displayStep(index) {
         if (index < 0 || !currentRoutineSteps || index >= currentRoutineSteps.length || !currentRoutineSteps[index]) {
-            itemNameH2.textContent = "Valitse toiminto"; itemDescriptionP.textContent = "Valitse ensin lämmittely, treeni tai jäähdyttely.";
+            itemNameH2.textContent = "Valitse toiminto";
+            itemDescriptionP.innerHTML = "<p>Valitse ensin lämmittely, treeni tai jäähdyttely.</p>"; // Käytä innerHTML:ää oletusviestillekin
             itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
             timerDiv.style.visibility = 'hidden'; roundInfoP.textContent = '';
             timerLabelP.textContent = 'Odottamassa...'; timeRemainingSpan.textContent = '00:00';
             highlightCurrentStep(); updateRoundDisplay(); return;
         }
+
         const step = currentRoutineSteps[index];
         itemNameH2.textContent = step.displayTitle || step.name || 'Nimetön vaihe';
+        itemDescriptionP.innerHTML = ''; // Tyhjennä aina ensin!
+
+        const descriptionToParse = step.description || "";
+
+        if (descriptionToParse.trim()) {
+            const lines = descriptionToParse.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+            let ol = null; // Järjestetty lista
+            let ul = null; // Järjestämätön lista (esim. "- " alkaville)
+            let currentList = null; // Viittaus aktiiviseen listaan (ol tai ul)
+
+            lines.forEach(line => {
+                // Tarkista numeroidut kohdat (esim. "1. Teksti")
+                if (/^\d+\.\s/.test(line)) {
+                    if (!ol) { // Jos <ol> ei ole, luo se
+                        ol = document.createElement('ol');
+                        itemDescriptionP.appendChild(ol);
+                        ul = null; // Nollaa ul, jos siirrytään numeroituun listaan
+                    }
+                    currentList = ol;
+                    const li = document.createElement('li');
+                    // Poista "N. " alusta, koska <ol> hoitaa numeroinnin
+                    li.textContent = line.replace(/^\d+\.\s*/, '');
+                    if (/^Huom:\s/.test(line.replace(/^\d+\.\s*/, ''))) { // Tarkista Huom: jäljelle jäävästä tekstistä
+                        li.classList.add('description-note');
+                        li.textContent = line.replace(/^\d+\.\s*/, '').replace(/^Huom:\s*/, ''); // Poista myös Huom:
+                         // Lisää "Huom: " takaisin vahvennettuna, jos halutaan
+                        const strongHuom = document.createElement('strong');
+                        strongHuom.textContent = "Huom: ";
+                        li.insertBefore(strongHuom, li.firstChild);
+                    }
+                    currentList.appendChild(li);
+                }
+                // Tarkista "Huom:"-alkuiset rivit, jotka EIVÄT ole osa numeroitua listaa
+                else if (/^Huom:\s/.test(line)) {
+                    if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
+                        // Jos on aktiivinen lista, lisätään Huom: edellisen listakohdan loppuun tai omana kohtanaan
+                        const li = document.createElement('li');
+                        li.textContent = line.replace(/^Huom:\s*/, '');
+                        li.classList.add('description-note');
+                        const strongHuom = document.createElement('strong');
+                        strongHuom.textContent = "Huom: ";
+                        li.insertBefore(strongHuom, li.firstChild);
+                        currentList.appendChild(li);
+
+                    } else { // Ei aktiivista listaa, tee Huom: omaksi kappaleekseen
+                        const p = document.createElement('p');
+                        p.innerHTML = `<strong>Huom:</strong> ${line.replace(/^Huom:\s*/, '')}`;
+                        p.classList.add('description-note-paragraph');
+                        itemDescriptionP.appendChild(p);
+                        ol = null; ul = null; currentList = null; // Nollaa listat, koska tämä on erillinen
+                    }
+                }
+                // Tarkista luetelmamerkki "-" tai "*"
+                else if (/^[-*]\s/.test(line)) {
+                    if (!ul) { // Jos <ul> ei ole, luo se
+                        ul = document.createElement('ul');
+                        itemDescriptionP.appendChild(ul);
+                        ol = null; // Nollaa ol, jos siirrytään järjestämättömään listaan
+                    }
+                    currentList = ul;
+                    const li = document.createElement('li');
+                    li.textContent = line.replace(/^[-*]\s*/, ''); // Poista "- " tai "* " alusta
+                    currentList.appendChild(li);
+                }
+                // Jos rivi ei ole listan alku, mutta lista on jo aloitettu
+                else if (currentList && currentList.lastChild && currentList.lastChild.tagName === 'LI') {
+                    // Lisätään rivi edellisen li-elementin sisällön jatkoksi <br>:n kanssa
+                    // Tämä on yksinkertaistus, monimutkaisempi jäsennys voisi olla parempi
+                    // jos rivit voivat olla todella pitkiä kappaleita listan sisällä.
+                    const br = document.createElement('br');
+                    currentList.lastChild.appendChild(br);
+                    currentList.lastChild.appendChild(document.createTextNode(line));
+                }
+                // Muuten se on normaali tekstikappale
+                else {
+                    const p = document.createElement('p');
+                    p.textContent = line;
+                    itemDescriptionP.appendChild(p);
+                    ol = null; ul = null; currentList = null; // Nollaa listat, koska tämä on erillinen kappale
+                }
+            });
+
+            if (!itemDescriptionP.hasChildNodes()) {
+                const p = document.createElement('p');
+                p.textContent = "Suorita harjoitus ohjeen mukaan.";
+                itemDescriptionP.appendChild(p);
+            }
+        } else {
+            const p = document.createElement('p');
+            p.textContent = (activeRoutineType === 'workout' || activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') ? "Suorita ohjeen mukaan." : "Valitse toiminto.";
+            itemDescriptionP.appendChild(p);
+        }
+
+        // Kuvan ja ajastimen näyttölogiikka
         if (activeRoutineType === 'workout') {
-            let descriptionText = step.description || ''; if (step.notes) descriptionText += `\n\nHuom: ${step.notes}`;
-            itemDescriptionP.textContent = descriptionText.trim() || "Suorita harjoitus ohjeen mukaan.";
             if (step.image) { itemImageImg.src = step.image; itemImageImg.alt = step.displayTitle || step.name; itemImageImg.style.display = 'block'; }
             else { itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = ''; }
             timerDiv.style.visibility = 'visible'; timerDiv.classList.remove('routine-timer-active');
@@ -328,8 +422,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 remainingTime = step.workTime || 0; updateTimerDisplay(remainingTime); timerLabelP.textContent = "Valmiina";
             }
         } else if (activeRoutineType === 'warmup' || activeRoutineType === 'cooldown') {
-            itemDescriptionP.textContent = step.description || "Suorita ohjeen mukaan.";
-            itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = ''; // Kuvaa ei näytetä lämmittelyissä/jäähdyttelyissä
+            // Warmup/cooldown vaiheilla ei yleensä ole kuvia JSONissa, mutta jos olisi, ne näytettäisiin tässä
+            itemImageImg.style.display = 'none'; itemImageImg.src = ''; itemImageImg.alt = '';
             timerDiv.style.visibility = 'visible'; timerDiv.classList.add('routine-timer-active');
             if (timerState === TimerState.IDLE || timerState === TimerState.FINISHED) {
                 updateTimerDisplay(elapsedRoutineTime); timerLabelP.textContent = timerState === TimerState.FINISHED ? "Valmis (Kesto)" : "Valmiina";
