@@ -40,6 +40,30 @@
         { "name": "Syväkyykky ilman painoa", "description": "Laskeudu hallitusti niin syvälle kuin pääset selkä suorana. 10-12 toistoa." },
         { "name": "Kevyt Kardio (Paikallaan hölkkä, haarahypyt)", "description": "Nosta sykettä kevyesti n. 30-60 sekuntia." }
       ]
+    },
+    {
+      "id": "quick_mobility",
+      "name": "Nopea Liikkuvuuslämmittely",
+      "durationMinutes": 4,
+      "description": "Lyhyt ja ytimekäs lämmittely liikkuvuuteen keskittyen.",
+      "steps": [
+        {
+          "name": "Kissakameli",
+          "description": "Nelinkontin. Sisäänhengityksellä notkista selkää kevyesti (lehmä/kameli). Uloshengityksellä pyöristä selkää voimakkaasti kohti kattoa (kissa). (8-10 rauhallista toistoa)"
+        },
+        {
+          "name": "Maailman Paras Venytys (syvä askelkyykky + kierto)",
+          "description": "Astu pitkä askel eteen. Laske takimmainen polvi maahan. Vie etummaisen jalan puoleinen käsi lattiaan jalan viereen. Kierrä toinen käsi ja ylävartalo kohti kattoa. Pidä hetki, palaa ja vaihda puoli. (4-5 kiertoa / puoli)"
+        },
+        {
+          "name": "Lonkan Pyöritykset Seisten",
+          "description": "Seiso yhdellä jalalla, ota tukea. Nosta toinen polvi 90 asteen kulmaan. Pyöritä reittä isosti ulko- ja sisäkautta lonkkanivelestä. (8-10 pyöräytystä / suunta / jalka)"
+        },
+        {
+          "name": "Olkapäiden Pyöritykset (CARs)",
+          "description": "Seiso ryhdikkäästi. Pidä toinen käsi paikallaan. Lähde viemään toista kättä hitaasti ja hallitusti etukautta ylös, kierrä kämmen ulospäin yläasennossa ja jatka liike hallitusti taakse alas. Palauta alkureittiä. Tee liike mahdollisimman laajasti ilman että vartalo kiertyy liikaa. (3-4 hidasta kiertoa / suunta / käsi)"
+        }
+      ]
     }
   ],
   "cooldowns": [
@@ -67,6 +91,38 @@
         { "name": "Lapsen Asento (Child's Pose)", "description": "Polvistu, laske ylävartalo reisien päälle, otsa lattiaan. Rentoudu 30-60 sek." },
         { "name": "Neulansilmä (Thread the Needle)", "description": "Nelinkontin, pujota käsi toisen kainalon alta, laske olkapää ja poski lattiaan. Pidä hetki, vaihda puoli." },
         { "name": "Niskan Kevyt Venytys", "description": "Istu ryhdikkäästi, kallista päätä varovasti sivulle, sitten eteen. ÄLÄ PAKOTA. 15-20 sek / suunta." }
+      ]
+    },
+    {
+      "id": "lower_body_focus_cool",
+      "name": "Alavartalopainotteinen Jäähdyttely",
+      "durationMinutes": 8,
+      "description": "Keskittyy erityisesti jalkojen ja lantion alueen palauttaviin venytyksiin. Pidä venytykset 30 sekuntia.",
+      "steps": [
+        {
+          "name": "Perhosvenytys (Butterfly)",
+          "description": "Istu lattialla, tuo jalkapohjat vastakkain ja vedä kantapäitä lähelle vartaloa. Anna polvien laskeutua sivuille. Voit painaa kevyesti polvia alaspäin tai nojata hieman eteenpäin selkä suorana. Tunne venytys sisäreisissä."
+        },
+        {
+          "name": "Syvä Kyykkyasento (Malasana)",
+          "description": "Laskeudu syvään kyykkyyn, jalat hieman hartioita leveämmällä, varpaat ulospäin. Pyri pitämään kantapäät lattiassa. Tuo kämmenet yhteen rinnan eteen ja paina kyynärpäillä polvia kevyesti ulospäin. Avaa lantiota."
+        },
+        {
+          "name": "Lonkankoukistajan Venytys",
+          "description": "Asetu polviseisontaan, toinen jalka edessä 90 asteen kulmassa. Työnnä lantiota eteenpäin pitäen ylävartalo pystyssä. Tunne venytys takimmaisen jalan lonkan etuosassa. Voit tehostaa nostamalla takimmaisen jalan puoleisen käden ylös. Pidä ja vaihda puoli."
+        },
+        {
+          "name": "Pohkeen Venytys Seinää Vasten",
+          "description": "Asetu seinän eteen. Astu toisella jalalla taakse, pidä jalka suorana ja kantapää lattiassa. Nojaa eteenpäin, kunnes tunnet venytyksen takimmaisen jalan pohkeessa. Pidä ja vaihda puoli. Voit tehdä myös polvi hieman koukussa alempaa pohjelihasta varten."
+        },
+        {
+          "name": "Makaava Pakaravenytys (Supine Figure 4)",
+          "description": "Selinmakuulla, jalat koukussa, jalkapohjat lattiassa. Nosta oikea nilkka vasemman polven päälle. Pujota oikea käsi jalkojen välistä ja vasen käsi vasemman reiden ulkopuolelta. Ota kiinni vasemman reiden takaa ja vedä jalkoja kevyesti kohti rintaa. Tunne venytys oikeassa pakarassa. Pidä ja vaihda puoli."
+        },
+        {
+          "name": "Takareiden Venytys Selinmakuulla",
+          "description": "Selinmakuulla. Nosta toinen jalka suorana kohti kattoa. Ota käsillä kiinni reiden takaa tai pohkeesta (älä polvitaipeesta). Vedä jalkaa kevyesti kohti itseäsi pitäen polvi mahdollisimman suorana. Toinen jalka voi olla koukussa tai suorana lattialla. Pidä ja vaihda puoli."
+        }
       ]
     }
   ],
